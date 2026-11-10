@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sales Order</title>
+<style>
+  body { font-family: Verdana, sans-serif; margin: 24px; max-width: 900px; background: #f7f7fb; }
+  .grp { margin: 10px 0; }
+  .grp > label { display: block; font-size: 12px; color: #555; }
+  .item-row { display: flex; gap: 10px; padding: 6px; border-bottom: 1px dashed #bbb; }
+  .item-row label { font-size: 11px; display: flex; flex-direction: column; }
+  #status { margin-top: 12px; font-weight: bold; }
+</style>
+</head>
+<body>
+<h2>New Sales Order</h2>
+
+<div class="grp"><label for="ref_no">Customer PO #</label><input id="ref_no" name="ref" type="text"></div>
+<div class="grp"><label for="acct">Account</label><select id="acct" name="account"></select></div>
+<div class="grp"><label for="req_date">Required Date</label><input id="req_date" name="required" type="date"></div>
+
+<fieldset>
+  <legend>Items</legend>
+  <div id="items"></div>
+</fieldset>
+
+<div class="grp"><label for="memo">Order Comments</label><textarea id="memo" name="memo" rows="3" cols="50"></textarea></div>
+<button id="btn_new_row" type="button">+ New Row</button>
+<hr>
+<button id="btn_place" type="button">Place Order</button>
+<div id="status" role="status"></div>
+
+<script>
+window.FORM = {
+  customer: "#acct", po: "#ref_no", ship: "#req_date", notes: "#memo",
+  addBtn: "#btn_new_row", submitBtn: "#btn_place",
+  rows: "#items", row: ".item-row", rowTag: "div",
+  rowHtml: '<div class="item-row">' +
+    '<label>Units<input class="f-units" name="units_{n}" type="number" min="0"></label>' +
+    '<label>Item Code<input class="f-code" name="code_{n}" type="text"></label>' +
+    '<label>Size<select class="f-size" name="sz_{n}"></select></label>' +
+    '<label>Color<select class="f-color" name="clr_{n}"></select></label>' +
+    '<label>Price Each<input class="f-each" name="each_{n}" type="number" step="0.01" min="0"></label>' +
+    '</div>',
+  fields: { sku: ".f-code", color: ".f-color", size: ".f-size", qty: ".f-units", unit_price: ".f-each" },
+  labels: { customer: "Account", po: "Customer PO #" },
+};
+</script>
+<script src="app.js"></script>
+</body>
+</html>

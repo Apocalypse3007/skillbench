@@ -1,0 +1,15 @@
+{
+  "customer": "Redline Robotics",
+  "po_number": "RR-1100",
+  "ship_by": "2026-12-20",
+  "lines": [
+    {
+      "sku": "TB-100",
+      "color": "Natural",
+      "size": "N/A",
+      "qty": 40,
+      "unit_price": 2.8
+    }
+  ],
+  "notes": ""
+}

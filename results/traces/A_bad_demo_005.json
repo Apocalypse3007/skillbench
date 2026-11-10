@@ -1,0 +1,179 @@
+{
+ "config": "A",
+ "condition": "bad_demo",
+ "po": "005",
+ "form": "v1",
+ "demo": "bad",
+ "outcome": "silent_failure",
+ "field_accuracy": 0.875,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7781",
+  "ship_by": "2027-01-15",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 25,
+    "unit_price": 14
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.2,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for the product/color/size combination, converting units as needed.",
+  "Use the catalog price for the unit price, regardless of any price stated in the PO.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items exactly match the PO details."
+ ],
+ "po_text": "Subject: Polos for staff\n\nHi there,\n\nSummit Credit Union PO SCU-7781. We need 25 Navy Performance Polos (PL-100), all size L.\nQuoted price was $13.00 per polo.\nPlease ship by 2027-01-15.\n\nBest,\nOwen Brandt\n",
+ "truth": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7781",
+  "ship_by": "2027-01-15",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 25,
+    "unit_price": 13.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Summit Credit Union"
+   },
+   "raw": null,
+   "result": "Selected \"Summit Credit Union\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "SCU-7781"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"SCU-7781\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2027-01-15"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2027-01-15\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "PL-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"PL-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "25"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"25\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "14.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"14.00\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Summit Credit Union",
+   "PO Number": "SCU-7781",
+   "Ship By": "2027-01-15",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "PL-100",
+    "Color": "Navy",
+    "Size": "L",
+    "Quantity": "25",
+    "Unit Price": "14.00"
+   }
+  ]
+ },
+ "error": null
+}

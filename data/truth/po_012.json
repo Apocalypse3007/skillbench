@@ -1,0 +1,15 @@
+{
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0931",
+  "ship_by": "2026-11-30",
+  "lines": [
+    {
+      "sku": "PN-200",
+      "color": "Silver",
+      "size": "N/A",
+      "qty": 300,
+      "unit_price": 1.75
+    }
+  ],
+  "notes": ""
+}

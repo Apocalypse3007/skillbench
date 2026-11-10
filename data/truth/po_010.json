@@ -1,0 +1,22 @@
+{
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2231",
+  "ship_by": "2026-12-10",
+  "lines": [
+    {
+      "sku": "CP-200",
+      "color": "Navy",
+      "size": "N/A",
+      "qty": 60,
+      "unit_price": 5.25
+    },
+    {
+      "sku": "TB-200",
+      "color": "Red",
+      "size": "N/A",
+      "qty": 60,
+      "unit_price": 3.2
+    }
+  ],
+  "notes": ""
+}

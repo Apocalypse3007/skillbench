@@ -1,0 +1,29 @@
+{
+  "customer": "Acme Corp",
+  "po_number": "PO-48250",
+  "ship_by": "2026-12-01",
+  "lines": [
+    {
+      "sku": "TS-100",
+      "color": "Navy",
+      "size": "M",
+      "qty": 15,
+      "unit_price": 3.8
+    },
+    {
+      "sku": "TS-100",
+      "color": "Navy",
+      "size": "L",
+      "qty": 15,
+      "unit_price": 3.8
+    },
+    {
+      "sku": "TS-100",
+      "color": "Navy",
+      "size": "XL",
+      "qty": 10,
+      "unit_price": 3.8
+    }
+  ],
+  "notes": ""
+}

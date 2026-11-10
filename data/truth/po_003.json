@@ -1,0 +1,15 @@
+{
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0915",
+  "ship_by": "2026-11-28",
+  "lines": [
+    {
+      "sku": "MG-100",
+      "color": "White",
+      "size": "N/A",
+      "qty": 48,
+      "unit_price": 3.5
+    }
+  ],
+  "notes": ""
+}

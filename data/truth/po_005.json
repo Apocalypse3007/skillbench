@@ -1,0 +1,15 @@
+{
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7781",
+  "ship_by": "2027-01-15",
+  "lines": [
+    {
+      "sku": "PL-100",
+      "color": "Navy",
+      "size": "L",
+      "qty": 25,
+      "unit_price": 13.0
+    }
+  ],
+  "notes": ""
+}

@@ -1,0 +1,301 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "008",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "Customer field in form is 'Lakeside Brewing Co' which matches the PO's customer 'Lakeside Brewing Co'.; PO number in form is 'LBC-0042' which matches the PO's number 'LBC-0042'.; Required Date in form is '2026-12-18' which matches the PO's ship date 'December 18, 2026'.; Line 1 in form: Units=24 (correct for 2 dozen), Item Code=MG-100 (correct), Size=XL (correct), Color=Black (correct), Price Each=3.75 (matches catalog price).; Line 2 in form: Units=12 (correct for 1 dozen), Item Code=HD-100 (correct), Size=XL (correct), Color=Maroon (correct), Price Each=18.00 (matches catalog price).",
+ "order": null,
+ "steps": 18,
+ "llm_calls": 21,
+ "seconds": 36.3,
+ "verifier_interventions": 3,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: taproom merch\n\nHi folks - Lakeside Brewing Co, PO LBC-0042.\n\nCan we get 2 dozen black ceramic mugs and a dozen maroon pullover hoodys in XL?\nShip by December 18, 2026 please.\n\nCheers,\nTom @ Lakeside\n",
+ "truth": {
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0042",
+  "ship_by": "2026-12-18",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 24,
+    "unit_price": 3.75
+   },
+   {
+    "sku": "HD-100",
+    "color": "Maroon",
+    "size": "XL",
+    "qty": 12,
+    "unit_price": 18.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Lakeside Brewing Co"
+   },
+   "raw": null,
+   "result": "Selected \"Lakeside Brewing Co\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "LBC-0042"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"LBC-0042\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-18"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-18\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "24"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"24\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "MG-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"MG-100\"."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e7 (\"Color\")."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.75"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"3.75\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "12"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"12\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"HD-100\"."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Maroon"
+   },
+   "raw": null,
+   "result": "Selected \"Maroon\" in e15 (\"Color\")."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"18.00\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer field in form is 'Lakeside Brewing Co' which matches the PO's customer 'Lakeside Brewing Co'.",
+     "PO number in form is 'LBC-0042' which matches the PO's number 'LBC-0042'.",
+     "Required Date in form is '2026-12-18' which matches the PO's ship date 'December 18, 2026'.",
+     "Line 1 in form: Units=24 (correct for 2 dozen), Item Code=MG-100 (correct), Size=XL (correct), Color=Black (correct), Price Each=3.75 (matches catalog price).",
+     "Line 2 in form: Units=12 (correct for 1 dozen), Item Code=HD-100 (correct), Size=XL (correct), Color=Maroon (correct), Price Each=18.00 (matches catalog price)."
+    ],
+    "po_lines": [
+     "MG-100 | Black | N/A | 24 | 3.75",
+     "HD-100 | Maroon | XL | 12 | 18.00"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer field in form is 'Lakeside Brewing Co' which matches the PO's customer 'Lakeside Brewing Co'.",
+     "PO number in form is 'LBC-0042' which matches the PO's number 'LBC-0042'.",
+     "Required Date in form is '2026-12-18' which matches the PO's ship date 'December 18, 2026'.",
+     "Line 1 in form: Units=24 (correct for 2 dozen), Item Code=MG-100 (correct), Size=XL (correct), Color=Black (correct), Price Each=3.75 (matches catalog price).",
+     "Line 2 in form: Units=12 (correct for 1 dozen), Item Code=HD-100 (correct), Size=XL (correct), Color=Maroon (correct), Price Each=18.00 (matches catalog price)."
+    ],
+    "po_lines": [
+     "MG-100 | Black | N/A | 24 | 3.75",
+     "HD-100 | Maroon | XL | 12 | 18.00"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer field in form is 'Lakeside Brewing Co' which matches the PO's customer 'Lakeside Brewing Co'.",
+     "PO number in form is 'LBC-0042' which matches the PO's number 'LBC-0042'.",
+     "Required Date in form is '2026-12-18' which matches the PO's ship date 'December 18, 2026'.",
+     "Line 1 in form: Units=24 (correct for 2 dozen), Item Code=MG-100 (correct), Size=XL (correct), Color=Black (correct), Price Each=3.75 (matches catalog price).",
+     "Line 2 in form: Units=12 (correct for 1 dozen), Item Code=HD-100 (correct), Size=XL (correct), Color=Maroon (correct), Price Each=18.00 (matches catalog price)."
+    ],
+    "po_lines": [
+     "MG-100 | Black | N/A | 24 | 3.75",
+     "HD-100 | Maroon | XL | 12 | 18.00"
+    ]
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "LBC-0042",
+   "Account": "Lakeside Brewing Co",
+   "Required Date": "2026-12-18",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "24",
+    "Item Code": "MG-100",
+    "Size": "XL",
+    "Color": "Black",
+    "Price Each": "3.75"
+   },
+   {
+    "Units": "12",
+    "Item Code": "HD-100",
+    "Size": "XL",
+    "Color": "Maroon",
+    "Price Each": "18.00"
+   }
+  ]
+ },
+ "error": null
+}

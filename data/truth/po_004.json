@@ -1,0 +1,22 @@
+{
+  "customer": "Northwind Events",
+  "po_number": "NWE-3301",
+  "ship_by": "2026-12-01",
+  "lines": [
+    {
+      "sku": "CP-100",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 30,
+      "unit_price": 7.5
+    },
+    {
+      "sku": "LY-100",
+      "color": "Red",
+      "size": "N/A",
+      "qty": 30,
+      "unit_price": 0.95
+    }
+  ],
+  "notes": ""
+}

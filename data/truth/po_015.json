@@ -1,0 +1,22 @@
+{
+  "customer": "Acme Corp",
+  "po_number": "PO-48301",
+  "ship_by": "2026-12-10",
+  "lines": [
+    {
+      "sku": "HD-100",
+      "color": "Black",
+      "size": "M",
+      "qty": 12,
+      "unit_price": 18.0
+    },
+    {
+      "sku": "HD-100",
+      "color": "Black",
+      "size": "L",
+      "qty": 12,
+      "unit_price": 18.0
+    }
+  ],
+  "notes": ""
+}

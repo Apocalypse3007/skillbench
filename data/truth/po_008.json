@@ -1,0 +1,22 @@
+{
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0042",
+  "ship_by": "2026-12-18",
+  "lines": [
+    {
+      "sku": "MG-100",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 24,
+      "unit_price": 3.75
+    },
+    {
+      "sku": "HD-100",
+      "color": "Maroon",
+      "size": "XL",
+      "qty": 12,
+      "unit_price": 18.0
+    }
+  ],
+  "notes": ""
+}

@@ -1,0 +1,31 @@
+{
+  "sample_po": "Hi, please send 20 navy classic tees size M to Acme Corp at $3.75 each, PO-1001, ship by Nov 30 2026. Thanks, Dana",
+  "injected_mistake": "Unit Price step: the demonstrator entered the catalog price (4.00) instead of the PO's stated price (3.75) and narrated it as a rule.",
+  "steps": [
+    {"action": "select", "target": "Customer", "value": "Acme Corp",
+     "why": "Pick the customer account the PO is from."},
+    {"action": "fill", "target": "PO Number", "value": "PO-1001",
+     "why": "Copy the PO number exactly as written."},
+    {"action": "fill", "target": "Ship By", "value": "2026-11-30",
+     "why": "Enter the ship-by date from the PO."},
+    {"action": "fill", "target": "SKU", "value": "TS-100",
+     "why": "Look up the product in the catalog and enter its SKU."},
+    {"action": "select", "target": "Color", "value": "Navy",
+     "why": "Pick the color the PO asks for."},
+    {"action": "select", "target": "Size", "value": "M",
+     "why": "Pick the size. Products without sizes (caps, mugs, pens, bags) use N/A."},
+    {"action": "fill", "target": "Quantity", "value": "20",
+     "why": "Enter the quantity for this product/color/size. Convert units like dozens to a number."},
+    {"action": "fill", "target": "Unit Price", "value": "4.00",
+     "why": "Always use the catalog price, even if the PO states a different price."},
+    {"action": "click", "target": "Add Line Item",
+     "why": "Add one row per product/color/size combination."},
+    {"action": "click", "target": "Submit Order",
+     "why": "Submit only when every line matches the PO."}
+  ],
+  "rules": [
+    "The PO is the source of truth for what the customer ordered.",
+    "Ignore quoted or forwarded older orders and email signatures.",
+    "If the product is not in the catalog, or quantity/customer is missing or unclear, or prices conflict, do not submit - escalate to a human."
+  ]
+}

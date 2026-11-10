@@ -1,0 +1,29 @@
+{
+  "customers": [
+    "Acme Corp",
+    "Blue Ridge Schools",
+    "Northwind Events",
+    "Summit Credit Union",
+    "Harbor City Marathon",
+    "Pinecrest Dental",
+    "Lakeside Brewing Co",
+    "Redline Robotics"
+  ],
+  "products": [
+    {"sku": "TS-100", "name": "Classic Cotton Tee", "colors": ["Navy", "Black", "White", "Red", "Heather Gray"], "sizes": ["S", "M", "L", "XL", "2XL"], "price": 4.00},
+    {"sku": "TS-200", "name": "Premium Ringspun Tee", "colors": ["Black", "White", "Royal Blue", "Heather Gray"], "sizes": ["XS", "S", "M", "L", "XL", "2XL"], "price": 6.50},
+    {"sku": "PL-100", "name": "Performance Polo", "colors": ["Navy", "Black", "White", "Maroon"], "sizes": ["S", "M", "L", "XL", "2XL"], "price": 14.00},
+    {"sku": "HD-100", "name": "Pullover Hoodie", "colors": ["Navy", "Black", "Heather Gray", "Maroon"], "sizes": ["S", "M", "L", "XL", "2XL"], "price": 18.00},
+    {"sku": "HD-200", "name": "Zip-Up Hoodie", "colors": ["Black", "Heather Gray", "Forest Green"], "sizes": ["S", "M", "L", "XL", "2XL"], "price": 24.00},
+    {"sku": "CP-100", "name": "Structured Baseball Cap", "colors": ["Navy", "Black", "Red", "White"], "sizes": ["N/A"], "price": 7.50},
+    {"sku": "CP-200", "name": "Knit Beanie", "colors": ["Black", "Navy", "Heather Gray", "Maroon"], "sizes": ["N/A"], "price": 5.25},
+    {"sku": "MG-100", "name": "Ceramic Mug 11oz", "colors": ["White", "Black"], "sizes": ["N/A"], "price": 3.75},
+    {"sku": "MG-200", "name": "Travel Tumbler 20oz", "colors": ["Silver", "Black", "Navy"], "sizes": ["N/A"], "price": 9.80},
+    {"sku": "PN-100", "name": "Ballpoint Pen", "colors": ["Black", "Royal Blue", "Red"], "sizes": ["N/A"], "price": 0.45},
+    {"sku": "PN-200", "name": "Metal Stylus Pen", "colors": ["Silver", "Black"], "sizes": ["N/A"], "price": 1.90},
+    {"sku": "TB-100", "name": "Cotton Tote Bag", "colors": ["Natural", "Black", "Navy"], "sizes": ["N/A"], "price": 2.80},
+    {"sku": "TB-200", "name": "Drawstring Backpack", "colors": ["Black", "Red", "Royal Blue", "Forest Green"], "sizes": ["N/A"], "price": 3.20},
+    {"sku": "NB-100", "name": "Spiral Notebook", "colors": ["Black", "Navy"], "sizes": ["N/A"], "price": 2.40},
+    {"sku": "LY-100", "name": "Woven Lanyard", "colors": ["Black", "Royal Blue", "Red"], "sizes": ["N/A"], "price": 0.95}
+  ]
+}

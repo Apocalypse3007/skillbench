@@ -1,0 +1,254 @@
+{
+ "config": "C",
+ "condition": "bad_demo",
+ "po": "012",
+ "form": "v1",
+ "demo": "bad",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "Unit price in form (1.90) matches catalog price, but PO states $1.75 ea. Please confirm the correct unit price.",
+ "order": null,
+ "steps": 15,
+ "llm_calls": 18,
+ "seconds": 20.1,
+ "verifier_interventions": 3,
+ "skill_flagged": [
+  {
+   "step": 8,
+   "problem": "The narration says to always use the catalog price, but the sample PO specifies $3.75 per item.",
+   "correction": "Use the price specified in the PO, not the catalog price."
+  }
+ ],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account the PO is from, matching the customer name from the PO.",
+  "Copy the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Pick the color the PO asks for, matching the color mentioned in the PO.",
+  "Pick the size as specified in the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price specified in the PO, not the catalog price, for the unit price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
+ ],
+ "po_text": "Subject: stylus pens\n\nHi, Pinecrest Dental again (PO PD-0931).\nWe'd like 3 boxes of 100 silver metal stylus pens - $1.75 ea as discussed.\nShip by Nov 30, 2026.\nPriya\n",
+ "truth": {
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0931",
+  "ship_by": "2026-11-30",
+  "lines": [
+   {
+    "sku": "PN-200",
+    "color": "Silver",
+    "size": "N/A",
+    "qty": 300,
+    "unit_price": 1.75
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Pinecrest Dental"
+   },
+   "raw": null,
+   "result": "Selected \"Pinecrest Dental\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "PD-0931"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"PD-0931\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-11-30"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-11-30\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "PN-200"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"PN-200\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Silver"
+   },
+   "raw": null,
+   "result": "Selected \"Silver\" in e5 (\"Color\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "300"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"300\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "1.75"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"1.75\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer is valid (Pinecrest Dental).",
+     "PO number matches (PD-0931).",
+     "Ship by date is valid (2026-11-30).",
+     "Line 1: SKU=PN-200 is valid.",
+     "Line 1: Color=Silver is valid.",
+     "Line 1: Size=N/A is valid.",
+     "Line 1: Quantity=300 is valid (converted from 3 boxes of 100).",
+     "Line 1: Unit Price=1.75 is valid (matches PO price)."
+    ],
+    "po_lines": [
+     "PN-200 | Silver | N/A | 300 | 1.75"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Unit price in form (1.75) is less than catalog price (1.90). Use catalog price."
+    ],
+    "po_lines": [
+     "PN-200 | Silver | N/A | 300 | 1.75"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "1.90"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"1.90\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Unit price in form (1.90) matches catalog price, but PO states $1.75 ea. Please confirm the correct unit price."
+    ],
+    "po_lines": [
+     "PN-200 | Silver | N/A | 300 | 1.90"
+    ]
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Pinecrest Dental",
+   "PO Number": "PD-0931",
+   "Ship By": "2026-11-30",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "PN-200",
+    "Color": "Silver",
+    "Size": "N/A",
+    "Quantity": "300",
+    "Unit Price": "1.90"
+   }
+  ]
+ },
+ "error": null
+}

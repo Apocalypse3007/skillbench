@@ -1,0 +1,29 @@
+{
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5520",
+  "ship_by": "2026-12-05",
+  "lines": [
+    {
+      "sku": "TS-200",
+      "color": "White",
+      "size": "S",
+      "qty": 10,
+      "unit_price": 6.5
+    },
+    {
+      "sku": "TS-200",
+      "color": "White",
+      "size": "M",
+      "qty": 20,
+      "unit_price": 6.5
+    },
+    {
+      "sku": "TS-200",
+      "color": "White",
+      "size": "L",
+      "qty": 20,
+      "unit_price": 6.5
+    }
+  ],
+  "notes": ""
+}

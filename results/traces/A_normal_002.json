@@ -1,0 +1,250 @@
+{
+ "config": "A",
+ "condition": "normal",
+ "po": "002",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2207",
+  "ship_by": "2026-12-12",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Royal Blue",
+    "size": "N/A",
+    "qty": 100,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "NB-100",
+    "color": "Navy",
+    "size": "N/A",
+    "qty": 50,
+    "unit_price": 2.4
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 15,
+ "llm_calls": 15,
+ "seconds": 11.0,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: PO BRS-2207\n\nHello,\n\nBlue Ridge Schools would like to order:\n\n1) PN-100 Ballpoint Pen, Royal Blue - qty 100\n2) NB-100 Spiral Notebook, Navy - qty 50\n\nPO #: BRS-2207\nShip by: 2026-12-12\n\nRegards,\nMarcus Lee, District Office\n",
+ "truth": {
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2207",
+  "ship_by": "2026-12-12",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Royal Blue",
+    "size": "N/A",
+    "qty": 100,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "NB-100",
+    "color": "Navy",
+    "size": "N/A",
+    "qty": 50,
+    "unit_price": 2.4
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Blue Ridge Schools"
+   },
+   "raw": null,
+   "result": "Selected \"Blue Ridge Schools\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "BRS-2207"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"BRS-2207\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-12"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-12\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "PN-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"PN-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Royal Blue"
+   },
+   "raw": null,
+   "result": "Selected \"Royal Blue\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "100"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"100\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "0.45"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"0.45\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "NB-100"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"NB-100\"."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e13 (\"Color\")."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "50"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"50\"."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "2.40"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"2.40\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Blue Ridge Schools",
+   "PO Number": "BRS-2207",
+   "Ship By": "2026-12-12",
+   "Notes": ""
+  },
+  "line_items": [
+   {
+    "SKU": "PN-100",
+    "Color": "Royal Blue",
+    "Size": "N/A",
+    "Quantity": "100",
+    "Unit Price": "0.45"
+   },
+   {
+    "SKU": "NB-100",
+    "Color": "Navy",
+    "Size": "N/A",
+    "Quantity": "50",
+    "Unit Price": "2.40"
+   }
+  ]
+ },
+ "error": null
+}

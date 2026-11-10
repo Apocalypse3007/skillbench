@@ -1,0 +1,29 @@
+{
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7802",
+  "ship_by": "2026-12-03",
+  "lines": [
+    {
+      "sku": "MG-200",
+      "color": "Navy",
+      "size": "N/A",
+      "qty": 75,
+      "unit_price": 9.8
+    },
+    {
+      "sku": "TS-200",
+      "color": "Heather Gray",
+      "size": "2XL",
+      "qty": 10,
+      "unit_price": 6.5
+    },
+    {
+      "sku": "TS-200",
+      "color": "Heather Gray",
+      "size": "XL",
+      "qty": 15,
+      "unit_price": 6.5
+    }
+  ],
+  "notes": ""
+}

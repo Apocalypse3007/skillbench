@@ -1,0 +1,259 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "003",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "agent",
+ "reason": "The form has multiple empty line items which are not needed. The order should only have one line item as specified in the PO.",
+ "order": null,
+ "steps": 16,
+ "llm_calls": 18,
+ "seconds": 20.6,
+ "verifier_interventions": 2,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Mug order - PD-0915\n\nHi,\n\nPinecrest Dental, PO PD-0915.\n48 White Ceramic Mugs 11oz (MG-100) at our agreed price of $3.50 each.\nShip by 2026-11-28.\n\nThank you!\nPriya Natarajan, Office Manager\n",
+ "truth": {
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0915",
+  "ship_by": "2026-11-28",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "White",
+    "size": "N/A",
+    "qty": 48,
+    "unit_price": 3.5
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Pinecrest Dental"
+   },
+   "raw": null,
+   "result": "Selected \"Pinecrest Dental\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "PD-0915"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"PD-0915\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-11-28"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-11-28\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "MG-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"MG-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "White"
+   },
+   "raw": null,
+   "result": "Selected \"White\" in e7 (\"Color\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "48"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"48\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.50"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"3.50\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer is valid (Pinecrest Dental).",
+     "PO number matches the form (PD-0915).",
+     "Required date matches the form (2026-11-28).",
+     "Line 1: Item Code (MG-100) matches the catalog.",
+     "Line 1: Color (White) matches the catalog.",
+     "Line 1: Size (N/A) matches the catalog.",
+     "Line 1: Quantity (48) is valid.",
+     "Line 1: Unit price ($3.50) is specified in the PO and differs from the catalog price ($3.75)."
+    ],
+    "po_lines": [
+     "MG-100 | White | N/A | 48 | 3.50"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "3.50"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"3.50\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 2: Units is blank",
+     "Line 2: Item Code is blank",
+     "Line 2: Size is blank",
+     "Line 2: Color is blank",
+     "Line 2 has blank fields for Units, Item Code, Size, and Color, which is unnecessary and should be removed.",
+     "Price Each in Line 2 is duplicated and not needed."
+    ],
+    "po_lines": [
+     "MG-100 | White | N/A | 48 | 3.50"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "escalate",
+    "reason": "The form has multiple empty line items which are not needed. The order should only have one line item as specified in the PO."
+   },
+   "raw": null,
+   "result": "escalated"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "PD-0915",
+   "Account": "Pinecrest Dental",
+   "Required Date": "2026-11-28",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "48",
+    "Item Code": "MG-100",
+    "Size": "N/A",
+    "Color": "White",
+    "Price Each": "3.50"
+   },
+   {
+    "Units": "(blank)",
+    "Item Code": "(blank)",
+    "Size": "(blank)",
+    "Color": "(blank)",
+    "Price Each": "3.50"
+   }
+  ]
+ },
+ "error": null
+}

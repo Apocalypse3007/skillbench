@@ -1,0 +1,14 @@
+Subject: New order PO-48213
+
+Hi team,
+
+Please enter the following for Acme Corp:
+
+PO Number: PO-48213
+Ship by: 2026-12-05
+
+- 20 x TS-100 Classic Cotton Tee, Navy, size M
+
+Thanks,
+Dana Whitfield
+Acme Corp Purchasing

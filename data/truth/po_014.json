@@ -1,0 +1,22 @@
+{
+  "customer": "Redline Robotics",
+  "po_number": "RR-1123",
+  "ship_by": "2026-12-15",
+  "lines": [
+    {
+      "sku": "LY-100",
+      "color": "Royal Blue",
+      "size": "N/A",
+      "qty": 150,
+      "unit_price": 0.95
+    },
+    {
+      "sku": "CP-100",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 40,
+      "unit_price": 7.0
+    }
+  ],
+  "notes": ""
+}

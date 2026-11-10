@@ -1,0 +1,301 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "002",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "Customer field matches the PO's customer (Blue Ridge Schools).; PO number matches the form's PO #: BRS-2207.; Required Date matches the form's Ship by date: 2026-12-12.; Line 1: Item Code=PN-100, Color=Royal Blue, Qty=100, Unit Price=0.45 matches the PO.; Line 2: Item Code=NB-100, Color=Navy, Qty=50, Unit Price=2.40 matches the PO.",
+ "order": null,
+ "steps": 18,
+ "llm_calls": 21,
+ "seconds": 30.6,
+ "verifier_interventions": 3,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: PO BRS-2207\n\nHello,\n\nBlue Ridge Schools would like to order:\n\n1) PN-100 Ballpoint Pen, Royal Blue - qty 100\n2) NB-100 Spiral Notebook, Navy - qty 50\n\nPO #: BRS-2207\nShip by: 2026-12-12\n\nRegards,\nMarcus Lee, District Office\n",
+ "truth": {
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2207",
+  "ship_by": "2026-12-12",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Royal Blue",
+    "size": "N/A",
+    "qty": 100,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "NB-100",
+    "color": "Navy",
+    "size": "N/A",
+    "qty": 50,
+    "unit_price": 2.4
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Blue Ridge Schools"
+   },
+   "raw": null,
+   "result": "Selected \"Blue Ridge Schools\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "BRS-2207"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"BRS-2207\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-12"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-12\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"100\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "PN-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"PN-100\"."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Royal Blue"
+   },
+   "raw": null,
+   "result": "Selected \"Royal Blue\" in e7 (\"Color\")."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "0.45"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"0.45\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "50"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"50\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "NB-100"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"NB-100\"."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e15 (\"Color\")."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "2.40"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"2.40\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer field matches the PO's customer (Blue Ridge Schools).",
+     "PO number matches the form's PO #: BRS-2207.",
+     "Required Date matches the form's Ship by date: 2026-12-12.",
+     "Line 1: Item Code=PN-100, Color=Royal Blue, Qty=100, Unit Price=0.45 matches the PO.",
+     "Line 2: Item Code=NB-100, Color=Navy, Qty=50, Unit Price=2.40 matches the PO."
+    ],
+    "po_lines": [
+     "PN-100 | Royal Blue | N/A | 100 | 0.45",
+     "NB-100 | Navy | N/A | 50 | 2.40"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer field matches the PO's customer (Blue Ridge Schools).",
+     "PO number matches the form's PO #: BRS-2207.",
+     "Required Date matches the form's Ship by date: 2026-12-12.",
+     "Line 1: Item Code=PN-100, Color=Royal Blue, Qty=100, Unit Price=0.45 matches the PO.",
+     "Line 2: Item Code=NB-100, Color=Navy, Qty=50, Unit Price=2.40 matches the PO."
+    ],
+    "po_lines": [
+     "PN-100 | Royal Blue | N/A | 100 | 0.45",
+     "NB-100 | Navy | N/A | 50 | 2.40"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer field matches the PO's customer (Blue Ridge Schools).",
+     "PO number matches the form's PO #: BRS-2207.",
+     "Required Date matches the form's Ship by date: 2026-12-12.",
+     "Line 1: Item Code=PN-100, Color=Royal Blue, Qty=100, Unit Price=0.45 matches the PO.",
+     "Line 2: Item Code=NB-100, Color=Navy, Qty=50, Unit Price=2.40 matches the PO."
+    ],
+    "po_lines": [
+     "PN-100 | Royal Blue | N/A | 100 | 0.45",
+     "NB-100 | Navy | N/A | 50 | 2.40"
+    ]
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "BRS-2207",
+   "Account": "Blue Ridge Schools",
+   "Required Date": "2026-12-12",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "100",
+    "Item Code": "PN-100",
+    "Size": "N/A",
+    "Color": "Royal Blue",
+    "Price Each": "0.45"
+   },
+   {
+    "Units": "50",
+    "Item Code": "NB-100",
+    "Size": "N/A",
+    "Color": "Navy",
+    "Price Each": "2.40"
+   }
+  ]
+ },
+ "error": null
+}

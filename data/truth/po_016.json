@@ -1,0 +1,15 @@
+{
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0057",
+  "ship_by": "2026-12-22",
+  "lines": [
+    {
+      "sku": "MG-100",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 36,
+      "unit_price": 3.6
+    }
+  ],
+  "notes": ""
+}
