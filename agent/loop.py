@@ -92,7 +92,7 @@ def run_episode(page, po_text, skill, use_verifier, shots_dir=None, on_step=None
                 break
 
         ok, msg = execute(page, obs, action)
-        rec["result"] = msg
+        rec["result"], rec["ok"] = msg, ok
         history.append(f"{step}. {json.dumps(action)} -> {'OK' if ok else 'ERROR'}: {msg}")
 
         if kind in ("submit", "click") and ok:

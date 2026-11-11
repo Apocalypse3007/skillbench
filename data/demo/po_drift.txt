@@ -1,0 +1,10 @@
+Subject: Northwind Events order NWE-3305
+
+Order for Northwind Events
+PO: NWE-3305
+Ship by: 2026-12-04
+
+Item 1: CP-100 Structured Baseball Cap, Black, 30 units
+Item 2: LY-100 Woven Lanyard, Red, 50 units
+
+-- Jamie

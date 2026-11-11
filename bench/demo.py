@@ -24,7 +24,8 @@ from agent.skill import compile_skill, skill_text
 from bench.score import HEADER, norm_line, score
 
 SCENES = [
-    {"title": "UI drift", "cond": "drift", "po": "004",
+    # Demo-only copy of po_004 with different quantities per line, so a missed line is easy to spot.
+    {"title": "UI drift", "cond": "drift", "po": "demo/po_drift",
      "why": "The agent learned its skill on the original form. Business software gets redesigned all the time."},
     {"title": "Flawed demo", "cond": "bad_demo", "po": "003",
      "why": "The person who recorded the demo made one mistake in the price step."},
@@ -120,9 +121,10 @@ def on_step(page):
         if a.get("action") == "escalate":
             log(page, f"{n}. Agent hands it to a human: {a.get('reason', '')}", "escalate")
         elif not v or v["ok"]:
+            failed = rec.get("ok") is False or rec.get("action") is None
             result = rec.get("result") or ""
-            bad = result.startswith(("No element", "Action failed", "Unknown")) or "rejected" in result
-            log(page, f"{n}. {result}", "error" if bad else "action")
+            prefix = "Action failed: " if failed and not result.startswith("Action failed") else ""
+            log(page, f"{n}. {prefix}{result}", "error" if failed else "action")
         if rec.get("result") == "escalated by verifier":
             log(page, f"{n}. Still wrong after 2 fixes - handed to a human", "escalate")
     return handler
@@ -167,6 +169,14 @@ def result_card(res, truth, outcome):
     return out
 
 
+def load_po(po):
+    """Benchmark POs are ids like "003"; demo-only POs live in data/demo/ ("demo/po_drift")."""
+    if po.startswith("demo/"):
+        base = config.DATA_DIR / po
+        return base.with_suffix(".txt").read_text(), json.loads(base.with_suffix(".json").read_text())
+    return (config.POS_DIR / f"po_{po}.txt").read_text(), json.loads((config.TRUTH_DIR / f"po_{po}.json").read_text())
+
+
 def price_step(compiled):
     return next((s for s in compiled["skill"] if "price" in s.lower()), "(no price step)")
 
@@ -208,8 +218,7 @@ def run(browser, scene, cfg_name, pause):
     cfg = config.CONFIGS[cfg_name]
     form, demo, _ = config.CONDITIONS[scene["cond"]]
     compiled = compile_skill(config.DEMOS[demo], skeptic=cfg["skeptic"])
-    po_text = (config.POS_DIR / f"po_{scene['po']}.txt").read_text()
-    truth = json.loads((config.TRUTH_DIR / f"po_{scene['po']}.json").read_text())
+    po_text, truth = load_po(scene["po"])
     mode, color = MODES[cfg_name]
 
     page = browser.new_page(viewport={"width": 1500, "height": 860})
@@ -234,7 +243,7 @@ def run(browser, scene, cfg_name, pause):
                    + ("Nothing checks the form before it is submitted." if cfg_name == "A" else
                       "Before anything is submitted, the verifier compares the form with the email."), 5, pause)
 
-    print(f"\n=== {scene['title']} / {mode} / po_{scene['po']}")
+    print(f"\n=== {scene['title']} / {mode} / {scene['po']}")
     res = loop.run_episode(page, po_text, skill_text(compiled), use_verifier=cfg["verify"], on_step=on_step(page))
     outcome = score(res["end"], res.get("order"), truth)["outcome"]
     print(f"  -> {res['end']} ({outcome}) in {res['steps']} steps, {res['seconds']}s")
