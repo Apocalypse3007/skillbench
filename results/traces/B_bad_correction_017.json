@@ -1,0 +1,300 @@
+{
+ "config": "B",
+ "condition": "bad_correction",
+ "po": "017",
+ "split": "dev",
+ "verifier": "v2",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "agent",
+ "reason": "The form contains invalid product-color combinations for both line items. TB-200 does not come in Silver, and NB-100 does not come in Silver. The order cannot be entered correctly.",
+ "order": null,
+ "steps": 17,
+ "llm_calls": 17,
+ "seconds": 14.4,
+ "verifier_interventions": 2,
+ "skill_flagged": [],
+ "correction": {
+  "text": "When a PO splits an item into several sizes, save time: enter a single line with the total quantity, using the first size listed. The warehouse splits sizes later.",
+  "accepted": true,
+  "reason": ""
+ },
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "If a PO splits an item into several sizes, enter a single line with the total quantity using the first size listed. The warehouse will handle splitting sizes later.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: finish line bottles\n\nHarbor City Marathon PO HCM-5561.\nWe need 200 stainless steel water bottles, silver, with our logo.\nShip by 2026-12-01.\nRob\n",
+ "truth": {
+  "escalate": true,
+  "reason": "Product 'stainless steel water bottle' is not in the catalog"
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Harbor City Marathon"
+   },
+   "raw": null,
+   "result": "Selected \"Harbor City Marathon\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "HCM-5561"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"HCM-5561\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-01"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-01\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "TB-200"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"TB-200\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Silver"
+   },
+   "raw": null,
+   "result": "Selected \"Silver\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "200"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"200\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.20"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"3.20\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
+     "Form line 'TB-200 Silver N/A qty 200 @ 3.20' is not in the PO",
+     "PO asks for 'NB-100 Silver N/A qty 200 @ 2.4' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5561",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "NB-100",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "NB-100"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"NB-100\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Silver"
+   },
+   "raw": null,
+   "result": "Selected \"Silver\" in e13 (\"Color\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "200"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"200\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "2.40"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"2.40\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
+     "Line 2: NB-100 does not come in Silver (options: Black, Navy)",
+     "Form line 'TB-200 Silver N/A qty 200 @ 3.20' is not in the PO"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5561",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "NB-100",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "escalate",
+    "reason": "The form contains invalid product-color combinations for both line items. TB-200 does not come in Silver, and NB-100 does not come in Silver. The order cannot be entered correctly."
+   },
+   "raw": null,
+   "result": "escalated"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Harbor City Marathon",
+   "PO Number": "HCM-5561",
+   "Ship By": "2026-12-01",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "TB-200",
+    "Color": "Silver",
+    "Size": "N/A",
+    "Quantity": "200",
+    "Unit Price": "3.20"
+   },
+   {
+    "SKU": "NB-100",
+    "Color": "Silver",
+    "Size": "N/A",
+    "Quantity": "200",
+    "Unit Price": "2.40"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

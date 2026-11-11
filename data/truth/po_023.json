@@ -1,0 +1,22 @@
+{
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7840",
+  "ship_by": "2027-01-04",
+  "lines": [
+    {
+      "sku": "PN-100",
+      "color": "Red",
+      "size": "N/A",
+      "qty": 72,
+      "unit_price": 0.45
+    },
+    {
+      "sku": "MG-200",
+      "color": "Silver",
+      "size": "N/A",
+      "qty": 36,
+      "unit_price": 9.5
+    }
+  ],
+  "notes": ""
+}

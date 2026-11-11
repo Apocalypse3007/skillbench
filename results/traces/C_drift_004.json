@@ -2,18 +2,41 @@
  "config": "C",
  "condition": "drift",
  "po": "004",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "Line 3: Units is blank; Line 3: Item Code is blank; Line 3: Size is blank; Line 3: Color is blank; Line 3 in the form has blank fields for Units, Item Code, Size, and Color, which is not valid as it does not represent a product line.",
- "order": null,
- "steps": 19,
- "llm_calls": 22,
- "seconds": 26.3,
- "verifier_interventions": 3,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Northwind Events",
+  "po_number": "NWE-3301",
+  "ship_by": "2026-12-01",
+  "lines": [
+   {
+    "sku": "CP-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 30,
+    "unit_price": 7.5
+   },
+   {
+    "sku": "LY-100",
+    "color": "Red",
+    "size": "N/A",
+    "qty": 30,
+    "unit_price": 0.95
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 18,
+ "llm_calls": 18,
+ "seconds": 15.1,
+ "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -164,21 +187,21 @@
    "step": 12,
    "action": {
     "action": "select",
-    "id": "e15",
-    "value": "Red"
-   },
-   "raw": null,
-   "result": "Selected \"Red\" in e15 (\"Color\")."
-  },
-  {
-   "step": 13,
-   "action": {
-    "action": "select",
     "id": "e14",
     "value": "N/A"
    },
    "raw": null,
    "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Red"
+   },
+   "raw": null,
+   "result": "Selected \"Red\" in e15 (\"Color\")."
   },
   {
    "step": 14,
@@ -202,13 +225,34 @@
     "escalate": false,
     "issues": [
      "Line 1: Price Each is blank",
-     "Price Each for CP-100 is blank in the form, but the catalog price is $7.50",
-     "Price Each for LY-100 is specified as $7.50 in the form, but the catalog price is $0.95"
+     "Line 2: unit price 7.50 is neither stated in the PO nor the catalog price (0.95)",
+     "Line CP-100 Black N/A: form has qty 30 @ (blank), PO says qty 30 @ 7.5",
+     "Line LY-100 Red N/A: form has qty 30 @ 7.50, PO says qty 30 @ 0.95"
     ],
-    "po_lines": [
-     "CP-100 | Black | N/A | 30 | 7.50",
-     "LY-100 | Red | N/A | 30 | 7.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3301",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 7.5
+      },
+      {
+       "sku": "LY-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 0.95
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -225,56 +269,50 @@
   {
    "step": 17,
    "action": {
-    "action": "submit",
-    "id": "e11"
+    "action": "fill",
+    "id": "e16",
+    "value": "0.95"
    },
    "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Price Each for LY-100 is incorrect. The catalog price for LY-100 is $0.95, not $7.50."
-    ],
-    "po_lines": [
-     "CP-100 | Black | N/A | 30 | 7.50",
-     "LY-100 | Red | N/A | 30 | 7.50"
-    ]
-   },
-   "result": "blocked by verifier"
+   "result": "Filled e16 (\"Price Each\") with \"0.95\"."
   },
   {
    "step": 18,
    "action": {
-    "action": "fill",
-    "id": "e21",
-    "value": "0.95"
-   },
-   "raw": null,
-   "result": "Filled e21 (\"Price Each\") with \"0.95\"."
-  },
-  {
-   "step": 19,
-   "action": {
     "action": "submit",
     "id": "e11"
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "Line 3: Units is blank",
-     "Line 3: Item Code is blank",
-     "Line 3: Size is blank",
-     "Line 3: Color is blank",
-     "Line 3 in the form has blank fields for Units, Item Code, Size, and Color, which is not valid as it does not represent a product line."
-    ],
-    "po_lines": [
-     "CP-100 | Black | N/A | 30 | 7.50",
-     "LY-100 | Red | N/A | 30 | 0.95"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3301",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 7.5
+      },
+      {
+       "sku": "LY-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 0.95
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "escalated by verifier"
+   "result": "Clicked e11 (\"Place Order\")."
   }
  ],
  "final_form": {
@@ -297,16 +335,20 @@
     "Item Code": "LY-100",
     "Size": "N/A",
     "Color": "Red",
-    "Price Each": "7.50"
-   },
-   {
-    "Units": "(blank)",
-    "Item Code": "(blank)",
-    "Size": "(blank)",
-    "Color": "(blank)",
     "Price Each": "0.95"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

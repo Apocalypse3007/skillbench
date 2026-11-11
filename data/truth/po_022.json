@@ -1,0 +1,36 @@
+{
+  "customer": "Redline Robotics",
+  "po_number": "RR-1150",
+  "ship_by": "2026-12-20",
+  "lines": [
+    {
+      "sku": "HD-100",
+      "color": "Black",
+      "size": "S",
+      "qty": 4,
+      "unit_price": 18.0
+    },
+    {
+      "sku": "HD-100",
+      "color": "Black",
+      "size": "M",
+      "qty": 6,
+      "unit_price": 18.0
+    },
+    {
+      "sku": "HD-100",
+      "color": "Black",
+      "size": "L",
+      "qty": 6,
+      "unit_price": 18.0
+    },
+    {
+      "sku": "HD-100",
+      "color": "Black",
+      "size": "2XL",
+      "qty": 2,
+      "unit_price": 18.0
+    }
+  ],
+  "notes": ""
+}

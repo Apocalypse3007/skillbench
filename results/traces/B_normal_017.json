@@ -2,18 +2,20 @@
  "config": "B",
  "condition": "normal",
  "po": "017",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The product TB-200 is not listed in the catalog. The order cannot be entered correctly without further clarification.",
+ "reason": "The form contains invalid product-color combinations (TB-200 in Silver and NB-100 in Silver) that are not supported by the catalog. These entries cannot be corrected without human intervention.",
  "order": null,
- "steps": 11,
- "llm_calls": 12,
- "seconds": 10.2,
- "verifier_interventions": 1,
+ "steps": 17,
+ "llm_calls": 18,
+ "seconds": 17.1,
+ "verifier_interventions": 2,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -132,21 +134,124 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Product TB-200 is not listed in the catalog"
+     "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
+     "Line 1: unit price 9.80 is neither stated in the PO nor the catalog price (3.20)",
+     "Form line 'TB-200 Silver N/A qty 200 @ 9.80' is not in the PO",
+     "PO asks for 'NB-100 Silver N/A qty 200 @ 2.4' but the form has no such line"
     ],
-    "po_lines": [
-     "TB-200 | Silver | N/A | 200 | 9.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5561",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "NB-100",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 11,
    "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "NB-100"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"NB-100\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Silver"
+   },
+   "raw": null,
+   "result": "Selected \"Silver\" in e13 (\"Color\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "200"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"200\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "2.40"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"2.40\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
+     "Line 1: unit price 9.80 is neither stated in the PO nor the catalog price (3.20)",
+     "Line 2: NB-100 does not come in Silver (options: Black, Navy)",
+     "Form line 'TB-200 Silver N/A qty 200 @ 9.80' is not in the PO"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5561",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "NB-100",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 17,
+   "action": {
     "action": "escalate",
-    "reason": "The product TB-200 is not listed in the catalog. The order cannot be entered correctly without further clarification."
+    "reason": "The form contains invalid product-color combinations (TB-200 in Silver and NB-100 in Silver) that are not supported by the catalog. These entries cannot be corrected without human intervention."
    },
    "raw": null,
    "result": "escalated"
@@ -166,8 +271,26 @@
     "Size": "N/A",
     "Quantity": "200",
     "Unit Price": "9.80"
+   },
+   {
+    "SKU": "NB-100",
+    "Color": "Silver",
+    "Size": "N/A",
+    "Quantity": "200",
+    "Unit Price": "2.40"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

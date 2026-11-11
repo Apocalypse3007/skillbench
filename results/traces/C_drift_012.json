@@ -2,18 +2,34 @@
  "config": "C",
  "condition": "drift",
  "po": "012",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "agent",
- "reason": "Multiple line items added erroneously. The order only requires one line item for PN-200, Silver, N/A, 300 units, $1.75 each. The form should not have additional rows.",
- "order": null,
- "steps": 15,
- "llm_calls": 17,
- "seconds": 19.0,
- "verifier_interventions": 2,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0931",
+  "ship_by": "2026-11-30",
+  "lines": [
+   {
+    "sku": "PN-200",
+    "color": "Silver",
+    "size": "N/A",
+    "qty": 300,
+    "unit_price": 1.75
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.9,
+ "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -142,77 +158,28 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "Customer 'Pinecrest Dental' is valid.",
-     "PO number 'PD-0931' is valid.",
-     "Required date '2026-11-30' is valid.",
-     "Line item matches the PO: PN-200, Silver, N/A, 300 units, $1.75 each."
-    ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.75"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0931",
+     "ship_by": "2026-11-30",
+     "lines": [
+      {
+       "sku": "PN-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 300,
+       "unit_price": 1.75
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 11,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Customer 'Pinecrest Dental' is valid.",
-     "PO number 'PD-0931' is valid.",
-     "Required date '2026-11-30' is valid.",
-     "Line item matches the PO: PN-200, Silver, N/A, 300 units, $1.75 each."
-    ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.75"
-    ]
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 12,
-   "action": {
-    "action": "click",
-    "id": "e10"
-   },
-   "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
-  },
-  {
-   "step": 13,
-   "action": {
-    "action": "click",
-    "id": "e10"
-   },
-   "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
-  },
-  {
-   "step": 14,
-   "action": {
-    "action": "click",
-    "id": "e10"
-   },
-   "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
-  },
-  {
-   "step": 15,
-   "action": {
-    "action": "escalate",
-    "reason": "Multiple line items added erroneously. The order only requires one line item for PN-200, Silver, N/A, 300 units, $1.75 each. The form should not have additional rows."
-   },
-   "raw": null,
-   "result": "escalated"
+   "result": "Clicked e11 (\"Place Order\")."
   }
  ],
  "final_form": {
@@ -230,7 +197,18 @@
     "Color": "Silver",
     "Price Each": "1.75"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

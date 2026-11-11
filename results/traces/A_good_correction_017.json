@@ -1,0 +1,187 @@
+{
+ "config": "A",
+ "condition": "good_correction",
+ "po": "017",
+ "split": "dev",
+ "verifier": null,
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "silent_failure",
+ "field_accuracy": null,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5561",
+  "ship_by": "2026-12-01",
+  "lines": [
+   {
+    "sku": "TB-200",
+    "color": "Silver",
+    "size": "N/A",
+    "qty": 200,
+    "unit_price": 3.2
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.7,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "correction": {
+  "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "accepted": true,
+  "reason": ""
+ },
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: finish line bottles\n\nHarbor City Marathon PO HCM-5561.\nWe need 200 stainless steel water bottles, silver, with our logo.\nShip by 2026-12-01.\nRob\n",
+ "truth": {
+  "escalate": true,
+  "reason": "Product 'stainless steel water bottle' is not in the catalog"
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Harbor City Marathon"
+   },
+   "raw": null,
+   "result": "Selected \"Harbor City Marathon\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "HCM-5561"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"HCM-5561\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-01"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-01\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "TB-200"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"TB-200\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Silver"
+   },
+   "raw": null,
+   "result": "Selected \"Silver\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "200"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"200\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.20"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"3.20\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Harbor City Marathon",
+   "PO Number": "HCM-5561",
+   "Ship By": "2026-12-01",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "TB-200",
+    "Color": "Silver",
+    "Size": "N/A",
+    "Quantity": "200",
+    "Unit Price": "3.20"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

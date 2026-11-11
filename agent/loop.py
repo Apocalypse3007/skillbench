@@ -14,15 +14,39 @@ HISTORY_WINDOW = 15  # most recent steps shown to the model
 SUBMIT_LABEL = re.compile(r"submit|place order", re.I)
 
 
-def run_episode(page, po_text, skill, use_verifier):
-    """Fill one PO. Returns a dict with end ("submitted"|"escalated"|"timeout"), order and a trace."""
+def _screenshot(page, shots_dir, step, el_id):
+    """Save the page after a step, with the element the agent acted on outlined. Returns the file name."""
+    if el_id:
+        page.evaluate("id => { const e = document.querySelector(`[data-agent-id='${id}']`);"
+                      " if (e) e.style.outline = '3px solid #eb6834'; }", el_id)
+    name = f"step{step:02d}.png"
+    page.screenshot(path=str(shots_dir / name), full_page=True)
+    if el_id:
+        page.evaluate("id => { const e = document.querySelector(`[data-agent-id='${id}']`);"
+                      " if (e) e.style.outline = ''; }", el_id)
+    return name
+
+
+def run_episode(page, po_text, skill, use_verifier, shots_dir=None):
+    """Fill one PO. Returns a dict with end ("submitted"|"escalated"|"timeout"), order and a trace.
+
+    shots_dir: if given, save a screenshot after every step (for the review dashboard).
+    """
+    if shots_dir:
+        shots_dir.mkdir(parents=True, exist_ok=True)
     calls0, t0 = STATS["calls"], time.time()
     catalog = prompts.catalog_text()
     history, steps = [], []
     fix_attempts = interventions = 0
     result = {"end": "timeout", "order": None, "escalated_by": None, "reason": None}
 
+    def shoot_previous():
+        if shots_dir and steps:
+            prev = steps[-1]
+            prev["screenshot"] = _screenshot(page, shots_dir, prev["step"], (prev["action"] or {}).get("id"))
+
     for step in range(1, config.MAX_STEPS + 1):
+        shoot_previous()
         obs = observe(page)
         user = prompts.AGENT_USER.format(
             skill=skill, catalog=catalog, po=po_text, obs=render(obs),
@@ -74,6 +98,7 @@ def run_episode(page, po_text, skill, use_verifier):
             if status:
                 history[-1] += f' Page says: "{status}"'
 
+    shoot_previous()
     result.update(
         steps=len(steps), llm_calls=STATS["calls"] - calls0, seconds=round(time.time() - t0, 1),
         verifier_interventions=interventions, trace=steps, final_form=form_state(observe(page)))

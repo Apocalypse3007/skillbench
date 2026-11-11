@@ -1,0 +1,201 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "027",
+ "split": "heldout",
+ "verifier": "v2",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "correct_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "agent",
+ "reason": "Size '3XL' not found in catalog. Catalog sizes for TS-100 are S, M, L, XL, 2XL.",
+ "order": null,
+ "steps": 11,
+ "llm_calls": 11,
+ "seconds": 9.1,
+ "verifier_interventions": 1,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: big & tall tees\n\nAcme Corp PO-48344. We need 30 Navy Classic Cotton Tees (TS-100) in size 3XL.\nShip by 2026-12-12.\nDana\n",
+ "truth": {
+  "escalate": true,
+  "reason": "Size 3XL is not available for TS-100"
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Acme Corp"
+   },
+   "raw": null,
+   "result": "Selected \"Acme Corp\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "PO-48344"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"PO-48344\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-12"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-12\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "30"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"30\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "TS-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"TS-100\"."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e7 (\"Color\")."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "4.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"4.00\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": true,
+    "issues": [
+     "Line 1: TS-100 does not come in size N/A (options: S, M, L, XL, 2XL)",
+     "PO needs a human: Size '3XL' not found in catalog. Catalog sizes for TS-100 are S, M, L, XL, 2XL."
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48344",
+     "ship_by": "2026-12-12",
+     "lines": [
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "3XL",
+       "qty": 30,
+       "unit_price": 4.0
+      }
+     ],
+     "escalate": true,
+     "escalate_reason": "Size '3XL' not found in catalog. Catalog sizes for TS-100 are S, M, L, XL, 2XL."
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "escalate",
+    "reason": "Size '3XL' not found in catalog. Catalog sizes for TS-100 are S, M, L, XL, 2XL."
+   },
+   "raw": null,
+   "result": "escalated"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "PO-48344",
+   "Account": "Acme Corp",
+   "Required Date": "2026-12-12",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "30",
+    "Item Code": "TS-100",
+    "Size": "N/A",
+    "Color": "Navy",
+    "Price Each": "4.00"
+   }
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
+ },
+ "error": null
+}

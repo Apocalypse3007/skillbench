@@ -1,0 +1,286 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "005",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "Line 2 has conflicting price Each: 13.00 vs 14.00; Line 2 has duplicate line item with same Item Code, Size, and Color",
+ "order": null,
+ "steps": 18,
+ "llm_calls": 21,
+ "seconds": 23.4,
+ "verifier_interventions": 3,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Polos for staff\n\nHi there,\n\nSummit Credit Union PO SCU-7781. We need 25 Navy Performance Polos (PL-100), all size L.\nQuoted price was $13.00 per polo.\nPlease ship by 2027-01-15.\n\nBest,\nOwen Brandt\n",
+ "truth": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7781",
+  "ship_by": "2027-01-15",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 25,
+    "unit_price": 13.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Summit Credit Union"
+   },
+   "raw": null,
+   "result": "Selected \"Summit Credit Union\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "SCU-7781"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"SCU-7781\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2027-01-15"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2027-01-15\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "25"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"25\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "PL-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"PL-100\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e7 (\"Color\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "13.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"13.00\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO states 'Quoted price was $13.00 per polo' but catalog price for PL-100 is $14.00. Use catalog price unless PO specifies a different price."
+    ],
+    "po_lines": [
+     "PL-100 | Navy | L | 25 | 13.00"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "14.00"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"14.00\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": true,
+    "issues": [
+     "Line 2: Units is blank",
+     "Line 2: Item Code is blank",
+     "Line 2: Size is blank",
+     "Line 2: Color is blank",
+     "Line 2 has blank fields for Units, Item Code, Size, and Color, which is unnecessary and should be removed.",
+     "Price Each in Line 2 is $14.00, which does not match the catalog price of $14.00 for PL-100. However, the PO specifies $13.00 per unit, which is a conflicting price."
+    ],
+    "po_lines": [
+     "PL-100 | Navy | L | 25 | 13.00"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "25"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"25\"."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "PL-100"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"PL-100\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e14",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "e14 is a select, not a text field."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e14 (\"Size\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e15 (\"Color\")."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": true,
+    "issues": [
+     "Line 2 has conflicting price Each: 13.00 vs 14.00",
+     "Line 2 has duplicate line item with same Item Code, Size, and Color"
+    ],
+    "po_lines": [
+     "PL-100 | Navy | L | 25 | 13.00"
+    ]
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "SCU-7781",
+   "Account": "Summit Credit Union",
+   "Required Date": "2027-01-15",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "25",
+    "Item Code": "PL-100",
+    "Size": "L",
+    "Color": "Navy",
+    "Price Each": "13.00"
+   },
+   {
+    "Units": "25",
+    "Item Code": "PL-100",
+    "Size": "L",
+    "Color": "Navy",
+    "Price Each": "14.00"
+   }
+  ]
+ },
+ "error": null
+}

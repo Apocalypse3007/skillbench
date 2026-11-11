@@ -2,6 +2,8 @@
  "config": "C",
  "condition": "normal",
  "po": "006",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
  "outcome": "correct",
@@ -25,8 +27,8 @@
   "notes": ""
  },
  "steps": 10,
- "llm_calls": 11,
- "seconds": 8.9,
+ "llm_calls": 10,
+ "seconds": 6.9,
  "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -159,9 +161,23 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "TB-100 | Natural | N/A | 40 | 2.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Redline Robotics",
+     "po_number": "RR-1100",
+     "ship_by": "2026-12-20",
+     "lines": [
+      {
+       "sku": "TB-100",
+       "color": "Natural",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 2.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -181,7 +197,18 @@
     "Quantity": "40",
     "Unit Price": "2.80"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

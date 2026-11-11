@@ -27,5 +27,37 @@ def compile_skill(demo_path, skeptic=False):
     return result
 
 
+def apply_correction(compiled, demo_path, correction, vet=False):
+    """Update a compiled skill from one human correction ("correct it once and the skill updates").
+
+    vet=False applies it blindly; vet=True first checks it against the demo and rules and may reject it.
+    Returns {"skill", "flagged", "correction": {"text", "accepted", "reason"}}; cached on disk.
+    """
+    current = skill_text(compiled)
+    key = hashlib.sha1(f"{config.MODEL}|{vet}|{current}|{correction}".encode()).hexdigest()[:12]
+    cache = config.SKILL_CACHE_DIR / f"corrected_{'vetted' if vet else 'blind'}_{key}.json"
+    if cache.exists():
+        return json.loads(cache.read_text())
+
+    if vet:
+        demo = json.loads(demo_path.read_text())
+        demo.pop("injected_mistake", None)
+        user = prompts.CORRECTION_VET.format(demo=prompts.demo_text(demo), skill=current, correction=correction)
+    else:
+        user = prompts.CORRECTION_APPLY.format(skill=current, correction=correction)
+    data, raw = chat_json(prompts.CORRECTION_SYSTEM, user)
+    if not data or not isinstance(data.get("skill"), list):
+        raise RuntimeError(f"Applying correction failed: {raw[:300]}")
+    accepted = bool(data.get("accepted", True))
+    result = {
+        # A rejected correction leaves the skill as it was, whatever the model echoed back.
+        "skill": [str(s) for s in data["skill"]] if accepted else compiled["skill"],
+        "flagged": compiled["flagged"],
+        "correction": {"text": correction, "accepted": accepted, "reason": str(data.get("reason", ""))},
+    }
+    cache.write_text(json.dumps(result, indent=2))
+    return result
+
+
 def skill_text(compiled):
     return "\n".join(f"{i}. {s}" for i, s in enumerate(compiled["skill"], 1))

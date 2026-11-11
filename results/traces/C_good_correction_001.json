@@ -1,0 +1,219 @@
+{
+ "config": "C",
+ "condition": "good_correction",
+ "po": "001",
+ "split": "dev",
+ "verifier": "v2",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48213",
+  "ship_by": "2026-12-05",
+  "lines": [
+   {
+    "sku": "TS-100",
+    "color": "Navy",
+    "size": "M",
+    "qty": 20,
+    "unit_price": 4
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 8.1,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "correction": {
+  "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "accepted": true,
+  "reason": "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+ },
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter one line per size and check that every listed size has been entered.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: New order PO-48213\n\nHi team,\n\nPlease enter the following for Acme Corp:\n\nPO Number: PO-48213\nShip by: 2026-12-05\n\n- 20 x TS-100 Classic Cotton Tee, Navy, size M\n\nThanks,\nDana Whitfield\nAcme Corp Purchasing\n",
+ "truth": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48213",
+  "ship_by": "2026-12-05",
+  "lines": [
+   {
+    "sku": "TS-100",
+    "color": "Navy",
+    "size": "M",
+    "qty": 20,
+    "unit_price": 4.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Acme Corp"
+   },
+   "raw": null,
+   "result": "Selected \"Acme Corp\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "PO-48213"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"PO-48213\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-05"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-05\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "TS-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"TS-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "20"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"20\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "4.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"4.00\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48213",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 20,
+       "unit_price": 4.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Acme Corp",
+   "PO Number": "PO-48213",
+   "Ship By": "2026-12-05",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "TS-100",
+    "Color": "Navy",
+    "Size": "M",
+    "Quantity": "20",
+    "Unit Price": "4.00"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

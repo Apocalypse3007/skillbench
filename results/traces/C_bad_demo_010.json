@@ -2,17 +2,40 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "010",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "agent",
- "reason": "The order contains line items that do not match the product codes in the catalog. The SKU for 'knit beenies' should be CP-200 and for 'drawstring bags' should be TB-200. However, the form indicates these SKUs are already filled. The issue might be with the product names in the PO not matching the catalog entries. A human must handle this to ensure accuracy.",
- "order": null,
- "steps": 18,
- "llm_calls": 19,
- "seconds": 20.7,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2231",
+  "ship_by": "2026-12-10",
+  "lines": [
+   {
+    "sku": "CP-200",
+    "color": "Navy",
+    "size": "N/A",
+    "qty": 60,
+    "unit_price": 5.25
+   },
+   {
+    "sku": "TB-200",
+    "color": "Red",
+    "size": "N/A",
+    "qty": 60,
+    "unit_price": 3.2
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 20,
+ "llm_calls": 20,
+ "seconds": 17.1,
  "verifier_interventions": 1,
  "skill_flagged": [
   {
@@ -225,26 +248,96 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Line 1: SKU=CP-200 matches the catalog, but the PO mentions 'knit beenies' which is not a valid product code. The correct product code is CP-200 (Knit Beanie).",
-     "Line 2: SKU=TB-200 matches the catalog, but the PO mentions 'drawstring bags' which is not a valid product code. The correct product code is TB-200 (Drawstring Backpack)."
+     "Line 1: CP-200 does not come in Red (options: Black, Navy, Heather Gray, Maroon)",
+     "Form line 'CP-200 Red N/A qty 60 @ 5.25' is not in the PO",
+     "PO asks for 'CP-200 Navy N/A qty 60 @ 5.25' but the form has no such line"
     ],
-    "po_lines": [
-     "CP-200 | Red | N/A | 60 | 5.25",
-     "TB-200 | Red | N/A | 60 | 3.20"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2231",
+     "ship_by": "2026-12-10",
+     "lines": [
+      {
+       "sku": "CP-200",
+       "color": "Navy",
+       "size": "N/A",
+       "qty": 60,
+       "unit_price": 5.25
+      },
+      {
+       "sku": "TB-200",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 60,
+       "unit_price": 3.2
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 18,
    "action": {
-    "action": "escalate",
-    "reason": "The order contains line items that do not match the product codes in the catalog. The SKU for 'knit beenies' should be CP-200 and for 'drawstring bags' should be TB-200. However, the form indicates these SKUs are already filled. The issue might be with the product names in the PO not matching the catalog entries. A human must handle this to ensure accuracy."
+    "action": "select",
+    "id": "e5",
+    "value": "Navy"
    },
    "raw": null,
-   "result": "escalated"
+   "result": "Selected \"Navy\" in e5 (\"Color\")."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Red"
+   },
+   "raw": null,
+   "result": "Selected \"Red\" in e13 (\"Color\")."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2231",
+     "ship_by": "2026-12-10",
+     "lines": [
+      {
+       "sku": "CP-200",
+       "color": "Navy",
+       "size": "N/A",
+       "qty": 60,
+       "unit_price": 5.25
+      },
+      {
+       "sku": "TB-200",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 60,
+       "unit_price": 3.2
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
   }
  ],
  "final_form": {
@@ -257,7 +350,7 @@
   "line_items": [
    {
     "SKU": "CP-200",
-    "Color": "Red",
+    "Color": "Navy",
     "Size": "N/A",
     "Quantity": "60",
     "Unit Price": "5.25"
@@ -269,7 +362,18 @@
     "Quantity": "60",
     "Unit Price": "3.20"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

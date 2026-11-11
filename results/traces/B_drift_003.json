@@ -2,18 +2,34 @@
  "config": "B",
  "condition": "drift",
  "po": "003",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "Customer is valid (Pinecrest Dental).; PO number matches (PD-0915).; Required date matches (2026-11-28).; Line item matches the PO: MG-100, White, N/A, 48 units, $3.50 each.",
- "order": null,
- "steps": 13,
- "llm_calls": 16,
- "seconds": 20.5,
- "verifier_interventions": 3,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0915",
+  "ship_by": "2026-11-28",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "White",
+    "size": "N/A",
+    "qty": 48,
+    "unit_price": 3.5
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.7,
+ "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -142,77 +158,28 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "Customer is valid (Pinecrest Dental).",
-     "PO number matches the form (PD-0915).",
-     "Required date matches the form (2026-11-28).",
-     "Line 1: Item Code (MG-100) matches the catalog.",
-     "Line 1: Color (White) matches the catalog.",
-     "Line 1: Size (N/A) matches the catalog.",
-     "Line 1: Quantity (48) is valid.",
-     "Line 1: Unit price ($3.50) is specified in the PO and differs from the catalog price ($3.75)."
-    ],
-    "po_lines": [
-     "MG-100 | White | N/A | 48 | 3.50"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0915",
+     "ship_by": "2026-11-28",
+     "lines": [
+      {
+       "sku": "MG-100",
+       "color": "White",
+       "size": "N/A",
+       "qty": 48,
+       "unit_price": 3.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 11,
-   "action": {
-    "action": "fill",
-    "id": "e8",
-    "value": "3.50"
-   },
-   "raw": null,
-   "result": "Filled e8 (\"Price Each\") with \"3.50\"."
-  },
-  {
-   "step": 12,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Customer is valid (Pinecrest Dental).",
-     "PO number matches (PD-0915).",
-     "Required date matches (2026-11-28).",
-     "Line item matches the PO: MG-100, White, N/A, 48 units, $3.50 each."
-    ],
-    "po_lines": [
-     "MG-100 | White | N/A | 48 | 3.50"
-    ]
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 13,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Customer is valid (Pinecrest Dental).",
-     "PO number matches (PD-0915).",
-     "Required date matches (2026-11-28).",
-     "Line item matches the PO: MG-100, White, N/A, 48 units, $3.50 each."
-    ],
-    "po_lines": [
-     "MG-100 | White | N/A | 48 | 3.50"
-    ]
-   },
-   "result": "escalated by verifier"
+   "result": "Clicked e11 (\"Place Order\")."
   }
  ],
  "final_form": {
@@ -230,7 +197,18 @@
     "Color": "White",
     "Price Each": "3.50"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

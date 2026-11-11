@@ -2,17 +2,19 @@
  "config": "C",
  "condition": "drift",
  "po": "018",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "verifier",
- "reason": "Customer is correctly listed as Blue Ridge Schools.",
+ "reason": "Line 3: duplicate of an earlier line (HD-100 Navy M); Line 4: duplicate of an earlier line (HD-100 Navy L); Form line 'HD-100 Navy M qty 2 @ 18.00' is not in the PO; Form line 'HD-100 Navy L qty 1 @ 18.00' is not in the PO",
  "order": null,
- "steps": 19,
- "llm_calls": 22,
- "seconds": 23.1,
+ "steps": 30,
+ "llm_calls": 30,
+ "seconds": 27.9,
  "verifier_interventions": 3,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -193,47 +195,98 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Customer is correctly listed as Blue Ridge Schools."
+     "Line HD-100 Navy M: form has qty 2 @ 18.00, PO says qty 1 @ 18.0",
+     "Line HD-100 Navy L: form has qty 2 @ 18.00, PO says qty 1 @ 18.0"
     ],
-    "po_lines": [
-     "HD-100 | Navy | M | 2 | 18.00",
-     "HD-100 | Navy | L | 2 | 18.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 17,
    "action": {
-    "action": "select",
-    "id": "e2",
-    "value": "Blue Ridge Schools"
+    "action": "fill",
+    "id": "e12",
+    "value": "1"
    },
    "raw": null,
-   "result": "Selected \"Blue Ridge Schools\" in e2 (\"Account\")."
+   "result": "Filled e12 (\"Units\") with \"1\"."
   },
   {
    "step": 18,
    "action": {
-    "action": "submit",
-    "id": "e11"
+    "action": "fill",
+    "id": "e17",
+    "value": "1"
    },
    "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Customer is correctly listed as Blue Ridge Schools."
-    ],
-    "po_lines": [
-     "HD-100 | Navy | M | 2 | 18.00",
-     "HD-100 | Navy | L | 2 | 18.00"
-    ]
-   },
-   "result": "blocked by verifier"
+   "result": "Filled e17 (\"Units\") with \"1\"."
   },
   {
    "step": 19,
+   "action": {
+    "action": "fill",
+    "id": "e18",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e18 (\"Item Code\") with \"HD-100\"."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e19 (\"Size\")."
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "select",
+    "id": "e20",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e20 (\"Color\")."
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Price Each\") with \"18.00\"."
+  },
+  {
+   "step": 23,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -243,12 +296,135 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Customer is correctly listed as Blue Ridge Schools."
+     "Line 3: duplicate of an earlier line (HD-100 Navy M)",
+     "Form line 'HD-100 Navy M qty 2 @ 18.00' is not in the PO"
     ],
-    "po_lines": [
-     "HD-100 | Navy | M | 2 | 18.00",
-     "HD-100 | Navy | L | 2 | 18.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 24,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 25,
+   "action": {
+    "action": "fill",
+    "id": "e22",
+    "value": "1"
+   },
+   "raw": null,
+   "result": "Filled e22 (\"Units\") with \"1\"."
+  },
+  {
+   "step": 26,
+   "action": {
+    "action": "fill",
+    "id": "e23",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e23 (\"Item Code\") with \"HD-100\"."
+  },
+  {
+   "step": 27,
+   "action": {
+    "action": "select",
+    "id": "e24",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e24 (\"Size\")."
+  },
+  {
+   "step": 28,
+   "action": {
+    "action": "select",
+    "id": "e25",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e25 (\"Color\")."
+  },
+  {
+   "step": 29,
+   "action": {
+    "action": "fill",
+    "id": "e26",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e26 (\"Price Each\") with \"18.00\"."
+  },
+  {
+   "step": 30,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 3: duplicate of an earlier line (HD-100 Navy M)",
+     "Line 4: duplicate of an earlier line (HD-100 Navy L)",
+     "Form line 'HD-100 Navy M qty 2 @ 18.00' is not in the PO",
+     "Form line 'HD-100 Navy L qty 1 @ 18.00' is not in the PO"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "escalated by verifier"
   }
@@ -269,13 +445,38 @@
     "Price Each": "18.00"
    },
    {
-    "Units": "2",
+    "Units": "1",
+    "Item Code": "HD-100",
+    "Size": "L",
+    "Color": "Navy",
+    "Price Each": "18.00"
+   },
+   {
+    "Units": "1",
+    "Item Code": "HD-100",
+    "Size": "M",
+    "Color": "Navy",
+    "Price Each": "18.00"
+   },
+   {
+    "Units": "1",
     "Item Code": "HD-100",
     "Size": "L",
     "Color": "Navy",
     "Price Each": "18.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

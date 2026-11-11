@@ -1,0 +1,192 @@
+{
+ "config": "A",
+ "condition": "bad_demo",
+ "po": "025",
+ "split": "heldout",
+ "verifier": null,
+ "form": "v1",
+ "demo": "bad",
+ "outcome": "silent_failure",
+ "field_accuracy": 0.875,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5590",
+  "ship_by": "2027-02-01",
+  "lines": [
+   {
+    "sku": "LY-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 300,
+    "unit_price": 0.95
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.2,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for the product/color/size combination, converting units as needed.",
+  "Use the catalog price for the unit price, regardless of any price stated in the PO.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items exactly match the PO details."
+ ],
+ "po_text": "Subject: Re: lanyards for 2027 race\n\nHi! Confirming the new order: PO HCM-5590, Harbor City Marathon.\n300 black woven lanyards at $0.90 each. Ship by 2027-02-01.\n\nRob Alvarez | Harbor City Marathon | PO Box 4471 | 555-0199\n\n> On Mar 3, 2026, Rob wrote:\n> Last year we got 250 red lanyards at $0.85 (PO HCM-4410). Can we do similar?\n",
+ "truth": {
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5590",
+  "ship_by": "2027-02-01",
+  "lines": [
+   {
+    "sku": "LY-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 300,
+    "unit_price": 0.9
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Harbor City Marathon"
+   },
+   "raw": null,
+   "result": "Selected \"Harbor City Marathon\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "HCM-5590"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"HCM-5590\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2027-02-01"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2027-02-01\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "LY-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"LY-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "300"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"300\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "0.95"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"0.95\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Harbor City Marathon",
+   "PO Number": "HCM-5590",
+   "Ship By": "2027-02-01",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "LY-100",
+    "Color": "Black",
+    "Size": "N/A",
+    "Quantity": "300",
+    "Unit Price": "0.95"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+  "good": {
+    "after_failure": "po_007 (size breakdown '10 S, 20 M, 20 L': the agent entered S and M but forgot L)",
+    "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting."
+  },
+  "bad": {
+    "after_failure": "po_007 (same failure; the correction itself is wrong)",
+    "text": "When a PO splits an item into several sizes, save time: enter a single line with the total quantity, using the first size listed. The warehouse splits sizes later.",
+    "injected_mistake": "Contradicts the demo narration 'Add one row per product/color/size combination'; produces one line with the summed quantity."
+  }
+}

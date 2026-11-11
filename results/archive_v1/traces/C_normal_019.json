@@ -1,0 +1,176 @@
+{
+ "config": "C",
+ "condition": "normal",
+ "po": "019",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "silent_failure",
+ "field_accuracy": null,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Northwind Events",
+  "po_number": "NWE-3360",
+  "ship_by": "2026-12-08",
+  "lines": [
+   {
+    "sku": "TS-100",
+    "color": "Black",
+    "size": "L",
+    "qty": 100,
+    "unit_price": 4
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 11,
+ "seconds": 8.9,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Northwind tees NWE-3360\n\nNorthwind Events, PO NWE-3360.\n100 Black Classic Cotton Tees, size L, $4.00 each.\nTotal for this order: $350.00.\nShip by 2026-12-08.\n",
+ "truth": {
+  "escalate": true,
+  "reason": "Conflicting prices: $4.00 each vs $350 total for 100 ($3.50 each)"
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Northwind Events"
+   },
+   "raw": null,
+   "result": "Selected \"Northwind Events\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "NWE-3360"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"NWE-3360\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-08"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-08\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "TS-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"TS-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "100"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"100\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "4.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"4.00\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "po_lines": [
+     "TS-100 | Black | L | 100 | 4.00"
+    ]
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Northwind Events",
+   "PO Number": "NWE-3360",
+   "Ship By": "2026-12-08",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "TS-100",
+    "Color": "Black",
+    "Size": "L",
+    "Quantity": "100",
+    "Unit Price": "4.00"
+   }
+  ]
+ },
+ "error": null
+}

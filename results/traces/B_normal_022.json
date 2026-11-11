@@ -1,0 +1,530 @@
+{
+ "config": "B",
+ "condition": "normal",
+ "po": "022",
+ "split": "heldout",
+ "verifier": "v2",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Redline Robotics",
+  "po_number": "RR-1150",
+  "ship_by": "2026-12-20",
+  "lines": [
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "S",
+    "qty": 4,
+    "unit_price": 18
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "M",
+    "qty": 6,
+    "unit_price": 18
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "L",
+    "qty": 6,
+    "unit_price": 18
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "2XL",
+    "qty": 2,
+    "unit_price": 18
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 29,
+ "llm_calls": 30,
+ "seconds": 31.6,
+ "verifier_interventions": 1,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: team hoodies\n\nLena from Redline Robotics. PO RR-1150.\nPullover hoodies in black for the build team: 4 small, 6 medium, 6 large, 2 XXL.\nNeed them shipped by Dec 20, 2026.\n",
+ "truth": {
+  "customer": "Redline Robotics",
+  "po_number": "RR-1150",
+  "ship_by": "2026-12-20",
+  "lines": [
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "S",
+    "qty": 4,
+    "unit_price": 18.0
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "M",
+    "qty": 6,
+    "unit_price": 18.0
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "L",
+    "qty": 6,
+    "unit_price": 18.0
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "2XL",
+    "qty": 2,
+    "unit_price": 18.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Redline Robotics"
+   },
+   "raw": null,
+   "result": "Selected \"Redline Robotics\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "RR-1150"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"RR-1150\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-20"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-20\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "select",
+    "id": "e4",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "e4 is not a select."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"HD-100\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e5 (\"Color\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "S"
+   },
+   "raw": null,
+   "result": "Selected \"S\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "4"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"4\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"18.00\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"HD-100\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e13 (\"Color\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "6"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"6\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"18.00\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"SKU\") with \"HD-100\"."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "select",
+    "id": "e18",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e18 (\"Color\")."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e19 (\"Size\")."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "fill",
+    "id": "e20",
+    "value": "6"
+   },
+   "raw": null,
+   "result": "Filled e20 (\"Quantity\") with \"6\"."
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Unit Price\") with \"18.00\"."
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO asks for 'HD-100 Black 2XL qty 2 @ 18.0' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Redline Robotics",
+     "po_number": "RR-1150",
+     "ship_by": "2026-12-20",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "S",
+       "qty": 4,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "M",
+       "qty": 6,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 6,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "2XL",
+       "qty": 2,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 23,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 24,
+   "action": {
+    "action": "fill",
+    "id": "e22",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e22 (\"SKU\") with \"HD-100\"."
+  },
+  {
+   "step": 25,
+   "action": {
+    "action": "select",
+    "id": "e23",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e23 (\"Color\")."
+  },
+  {
+   "step": 26,
+   "action": {
+    "action": "select",
+    "id": "e24",
+    "value": "2XL"
+   },
+   "raw": null,
+   "result": "Selected \"2XL\" in e24 (\"Size\")."
+  },
+  {
+   "step": 27,
+   "action": {
+    "action": "fill",
+    "id": "e25",
+    "value": "2"
+   },
+   "raw": null,
+   "result": "Filled e25 (\"Quantity\") with \"2\"."
+  },
+  {
+   "step": 28,
+   "action": {
+    "action": "fill",
+    "id": "e26",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e26 (\"Unit Price\") with \"18.00\"."
+  },
+  {
+   "step": 29,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Redline Robotics",
+     "po_number": "RR-1150",
+     "ship_by": "2026-12-20",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "S",
+       "qty": 4,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "M",
+       "qty": 6,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 6,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "2XL",
+       "qty": 2,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Redline Robotics",
+   "PO Number": "RR-1150",
+   "Ship By": "2026-12-20",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "HD-100",
+    "Color": "Black",
+    "Size": "S",
+    "Quantity": "4",
+    "Unit Price": "18.00"
+   },
+   {
+    "SKU": "HD-100",
+    "Color": "Black",
+    "Size": "M",
+    "Quantity": "6",
+    "Unit Price": "18.00"
+   },
+   {
+    "SKU": "HD-100",
+    "Color": "Black",
+    "Size": "L",
+    "Quantity": "6",
+    "Unit Price": "18.00"
+   },
+   {
+    "SKU": "HD-100",
+    "Color": "Black",
+    "Size": "2XL",
+    "Quantity": "2",
+    "Unit Price": "18.00"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

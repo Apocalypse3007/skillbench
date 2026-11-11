@@ -1,0 +1,445 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "024",
+ "split": "heldout",
+ "verifier": "v2",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2262",
+  "ship_by": "2027-01-22",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Maroon",
+    "size": "M",
+    "qty": 12,
+    "unit_price": 12.75
+   },
+   {
+    "sku": "PL-100",
+    "color": "Maroon",
+    "size": "L",
+    "qty": 9,
+    "unit_price": 12.75
+   },
+   {
+    "sku": "PL-100",
+    "color": "Maroon",
+    "size": "XL",
+    "qty": 5,
+    "unit_price": 12.75
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 24,
+ "llm_calls": 24,
+ "seconds": 22.0,
+ "verifier_interventions": 1,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: staff polos BRS-2262\n\nBlue Ridge Schools would like maroon performance polos for staff.\nSizes: M - 12, L - 9, XL - 5\nPrice agreed: $12.75/ea\nPO BRS-2262, needed by 01/22/2027.\nMarcus\n",
+ "truth": {
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2262",
+  "ship_by": "2027-01-22",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Maroon",
+    "size": "M",
+    "qty": 12,
+    "unit_price": 12.75
+   },
+   {
+    "sku": "PL-100",
+    "color": "Maroon",
+    "size": "L",
+    "qty": 9,
+    "unit_price": 12.75
+   },
+   {
+    "sku": "PL-100",
+    "color": "Maroon",
+    "size": "XL",
+    "qty": 5,
+    "unit_price": 12.75
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Blue Ridge Schools"
+   },
+   "raw": null,
+   "result": "Selected \"Blue Ridge Schools\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "BRS-2262"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"BRS-2262\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-11-10"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-11-10\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "12"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"12\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "PL-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"PL-100\"."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Maroon"
+   },
+   "raw": null,
+   "result": "Selected \"Maroon\" in e7 (\"Color\")."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "12.75"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"12.75\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "9"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"9\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "PL-100"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"PL-100\"."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Maroon"
+   },
+   "raw": null,
+   "result": "Selected \"Maroon\" in e15 (\"Color\")."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "12.75"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"12.75\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "5"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"Units\") with \"5\"."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "fill",
+    "id": "e18",
+    "value": "PL-100"
+   },
+   "raw": null,
+   "result": "Filled e18 (\"Item Code\") with \"PL-100\"."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e19 (\"Size\")."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "select",
+    "id": "e20",
+    "value": "Maroon"
+   },
+   "raw": null,
+   "result": "Selected \"Maroon\" in e20 (\"Color\")."
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "12.75"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Price Each\") with \"12.75\"."
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "ship by: form has '2026-11-10', PO says '2027-01-22'"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2262",
+     "ship_by": "2027-01-22",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Maroon",
+       "size": "M",
+       "qty": 12,
+       "unit_price": 12.75
+      },
+      {
+       "sku": "PL-100",
+       "color": "Maroon",
+       "size": "L",
+       "qty": 9,
+       "unit_price": 12.75
+      },
+      {
+       "sku": "PL-100",
+       "color": "Maroon",
+       "size": "XL",
+       "qty": 5,
+       "unit_price": 12.75
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 23,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2027-01-22"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2027-01-22\"."
+  },
+  {
+   "step": 24,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2262",
+     "ship_by": "2027-01-22",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Maroon",
+       "size": "M",
+       "qty": 12,
+       "unit_price": 12.75
+      },
+      {
+       "sku": "PL-100",
+       "color": "Maroon",
+       "size": "L",
+       "qty": 9,
+       "unit_price": 12.75
+      },
+      {
+       "sku": "PL-100",
+       "color": "Maroon",
+       "size": "XL",
+       "qty": 5,
+       "unit_price": 12.75
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Place Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "BRS-2262",
+   "Account": "Blue Ridge Schools",
+   "Required Date": "2027-01-22",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "12",
+    "Item Code": "PL-100",
+    "Size": "M",
+    "Color": "Maroon",
+    "Price Each": "12.75"
+   },
+   {
+    "Units": "9",
+    "Item Code": "PL-100",
+    "Size": "L",
+    "Color": "Maroon",
+    "Price Each": "12.75"
+   },
+   {
+    "Units": "5",
+    "Item Code": "PL-100",
+    "Size": "XL",
+    "Color": "Maroon",
+    "Price Each": "12.75"
+   }
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
+ },
+ "error": null
+}

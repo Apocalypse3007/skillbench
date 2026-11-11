@@ -1,0 +1,368 @@
+{
+ "config": "B",
+ "condition": "drift",
+ "po": "013",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "PO line 1: Quantity is 75, which matches the form's 75 units.; PO line 2: Quantity is 10, which matches the form's 10 units.; PO line 3: Quantity is 15, which matches the form's 15 units.; PO line 2: Size is 2XL, which matches the form's 2XL size.; PO line 3: Size is XL, which matches the form's XL size.; PO line 2: Color is Heather Gray, which matches the form's Heather Gray color.; PO line 3: Color is Heather Gray, which matches the form's Heather Gray color.; PO line 2: Unit price is 6.50, which matches the form's 6.50 price each.; PO line 3: Unit price is 6.50, which matches the form's 6.50 price each.; PO line 1: Unit price is 9.80, which matches the form's 9.80 price each.",
+ "order": null,
+ "steps": 23,
+ "llm_calls": 26,
+ "seconds": 36.6,
+ "verifier_interventions": 3,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: branch giveaway order\n\nSummit Credit Union, PO SCU-7802.\n- 75 pcs of the 20oz travel tumblers, navy\n- heather grey premium tees: 2xl x 10, xl x 15\nShip by Dec 3rd, 2026.\nOwen\n",
+ "truth": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7802",
+  "ship_by": "2026-12-03",
+  "lines": [
+   {
+    "sku": "MG-200",
+    "color": "Navy",
+    "size": "N/A",
+    "qty": 75,
+    "unit_price": 9.8
+   },
+   {
+    "sku": "TS-200",
+    "color": "Heather Gray",
+    "size": "2XL",
+    "qty": 10,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "Heather Gray",
+    "size": "XL",
+    "qty": 15,
+    "unit_price": 6.5
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Summit Credit Union"
+   },
+   "raw": null,
+   "result": "Selected \"Summit Credit Union\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "SCU-7802"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"SCU-7802\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-03"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-03\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "75"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"75\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "MG-200"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"MG-200\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e7 (\"Color\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "9.80"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"9.80\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "10"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"10\"."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "TS-200"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"TS-200\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "2XL"
+   },
+   "raw": null,
+   "result": "Selected \"2XL\" in e14 (\"Size\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Heather Gray"
+   },
+   "raw": null,
+   "result": "Selected \"Heather Gray\" in e15 (\"Color\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "6.50"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"6.50\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": true,
+    "issues": [
+     "Missing line for XL Heather Gray TS-200 in the form (PO specifies 15 units)",
+     "Line 2 in the form has 'Size=2XL' but the PO specifies '2xl x 10, xl x 15' which should be two separate lines"
+    ],
+    "po_lines": [
+     "MG-200 | Navy | N/A | 75 | 9.80",
+     "TS-200 | Heather Gray | 2XL | 10 | 6.50",
+     "TS-200 | Heather Gray | XL | 15 | 6.50"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "15"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"Units\") with \"15\"."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "fill",
+    "id": "e18",
+    "value": "TS-200"
+   },
+   "raw": null,
+   "result": "Filled e18 (\"Item Code\") with \"TS-200\"."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e19 (\"Size\")."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "select",
+    "id": "e20",
+    "value": "Heather Gray"
+   },
+   "raw": null,
+   "result": "Selected \"Heather Gray\" in e20 (\"Color\")."
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 3: Price Each is blank",
+     "Line 3: Price Each is blank, but the PO specifies a price for TS-200 Heather Gray. Please fill in the price.",
+     "Line 3: Units=15, but the PO says 'heather grey premium tees: 2xl x 10, xl x 15' which matches the quantity for XL."
+    ],
+    "po_lines": [
+     "MG-200 | Navy | N/A | 75 | 9.80",
+     "TS-200 | Heather Gray | 2XL | 10 | 6.50",
+     "TS-200 | Heather Gray | XL | 15 | 6.50"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "6.50"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Price Each\") with \"6.50\"."
+  },
+  {
+   "step": 23,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO line 1: Quantity is 75, which matches the form's 75 units.",
+     "PO line 2: Quantity is 10, which matches the form's 10 units.",
+     "PO line 3: Quantity is 15, which matches the form's 15 units.",
+     "PO line 2: Size is 2XL, which matches the form's 2XL size.",
+     "PO line 3: Size is XL, which matches the form's XL size.",
+     "PO line 2: Color is Heather Gray, which matches the form's Heather Gray color.",
+     "PO line 3: Color is Heather Gray, which matches the form's Heather Gray color.",
+     "PO line 2: Unit price is 6.50, which matches the form's 6.50 price each.",
+     "PO line 3: Unit price is 6.50, which matches the form's 6.50 price each.",
+     "PO line 1: Unit price is 9.80, which matches the form's 9.80 price each."
+    ],
+    "po_lines": [
+     "MG-200 | Navy | N/A | 75 | 9.80",
+     "TS-200 | Heather Gray | 2XL | 10 | 6.50",
+     "TS-200 | Heather Gray | XL | 15 | 6.50"
+    ]
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "SCU-7802",
+   "Account": "Summit Credit Union",
+   "Required Date": "2026-12-03",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "75",
+    "Item Code": "MG-200",
+    "Size": "N/A",
+    "Color": "Navy",
+    "Price Each": "9.80"
+   },
+   {
+    "Units": "10",
+    "Item Code": "TS-200",
+    "Size": "2XL",
+    "Color": "Heather Gray",
+    "Price Each": "6.50"
+   },
+   {
+    "Units": "15",
+    "Item Code": "TS-200",
+    "Size": "XL",
+    "Color": "Heather Gray",
+    "Price Each": "6.50"
+   }
+  ]
+ },
+ "error": null
+}

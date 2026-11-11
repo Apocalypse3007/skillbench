@@ -2,53 +2,20 @@
  "config": "C",
  "condition": "normal",
  "po": "011",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
- "outcome": "silent_failure",
- "field_accuracy": 0.913,
- "end": "submitted",
+ "outcome": "timeout_error",
+ "field_accuracy": null,
+ "end": "timeout",
  "escalated_by": null,
  "reason": null,
- "order": {
-  "customer": "Northwind Events",
-  "po_number": "NWE-3345",
-  "ship_by": "2027-01-08",
-  "lines": [
-   {
-    "sku": "HD-200",
-    "color": "Forest Green",
-    "size": "N/A",
-    "qty": 5,
-    "unit_price": 24
-   },
-   {
-    "sku": "HD-200",
-    "color": "Forest Green",
-    "size": "S",
-    "qty": 8,
-    "unit_price": 24
-   },
-   {
-    "sku": "HD-200",
-    "color": "Forest Green",
-    "size": "L",
-    "qty": 8,
-    "unit_price": 24
-   },
-   {
-    "sku": "HD-200",
-    "color": "Forest Green",
-    "size": "XL",
-    "qty": 4,
-    "unit_price": 24
-   }
-  ],
-  "notes": ""
- },
- "steps": 28,
- "llm_calls": 29,
- "seconds": 29.1,
- "verifier_interventions": 0,
+ "order": null,
+ "steps": 30,
+ "llm_calls": 30,
+ "seconds": 26.4,
+ "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -375,17 +342,74 @@
    },
    "raw": null,
    "verdict": {
-    "ok": true,
+    "ok": false,
     "escalate": false,
-    "issues": [],
-    "po_lines": [
-     "HD-200 | Forest Green | N/A | 5 | 24.00",
-     "HD-200 | Forest Green | S | 8 | 24.00",
-     "HD-200 | Forest Green | L | 8 | 24.00",
-     "HD-200 | Forest Green | XL | 4 | 24.00"
-    ]
+    "issues": [
+     "Line 1: HD-200 does not come in size N/A (options: S, M, L, XL, 2XL)",
+     "Form line 'HD-200 Forest Green N/A qty 5 @ 24.00' is not in the PO",
+     "Line HD-200 Forest Green S: form has qty 8 @ 24.00, PO says qty 5 @ 24.0",
+     "PO asks for 'HD-200 Forest Green M qty 8 @ 24.0' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3345",
+     "ship_by": "2027-01-08",
+     "lines": [
+      {
+       "sku": "HD-200",
+       "color": "Forest Green",
+       "size": "S",
+       "qty": 5,
+       "unit_price": 24.0
+      },
+      {
+       "sku": "HD-200",
+       "color": "Forest Green",
+       "size": "M",
+       "qty": 8,
+       "unit_price": 24.0
+      },
+      {
+       "sku": "HD-200",
+       "color": "Forest Green",
+       "size": "L",
+       "qty": 8,
+       "unit_price": 24.0
+      },
+      {
+       "sku": "HD-200",
+       "color": "Forest Green",
+       "size": "XL",
+       "qty": 4,
+       "unit_price": 24.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 29,
+   "action": {
+    "action": "fill",
+    "id": "e27",
+    "value": "HD-200"
+   },
+   "raw": null,
+   "result": "Filled e27 (\"SKU\") with \"HD-200\"."
+  },
+  {
+   "step": 30,
+   "action": {
+    "action": "select",
+    "id": "e28",
+    "value": "Forest Green"
+   },
+   "raw": null,
+   "result": "Selected \"Forest Green\" in e28 (\"Color\")."
   }
  ],
  "final_form": {
@@ -423,8 +447,26 @@
     "Size": "XL",
     "Quantity": "4",
     "Unit Price": "24.00"
+   },
+   {
+    "SKU": "HD-200",
+    "Color": "Forest Green",
+    "Size": "(blank)",
+    "Quantity": "(blank)",
+    "Unit Price": "(blank)"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

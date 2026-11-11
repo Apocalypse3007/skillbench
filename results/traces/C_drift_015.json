@@ -2,18 +2,41 @@
  "config": "C",
  "condition": "drift",
  "po": "015",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).; Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).; Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).; Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).; Line 1: Color (Black) matches the PO (Black).; Line 1: Size (M) matches the PO (M).; Line 1: Quantity (12) matches the PO (12).; Line 1: Unit price (18.00) matches the catalog price (18.00).; Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).; Line 2: Color (Black) matches the PO (Black).; Line 2: Size (L) matches the PO (L).; Line 2: Quantity (12) matches the PO (12).; Line 2: Unit price (18.00) matches the catalog price (18.00).",
- "order": null,
- "steps": 18,
- "llm_calls": 21,
- "seconds": 43.7,
- "verifier_interventions": 3,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48301",
+  "ship_by": "2026-12-10",
+  "lines": [
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "M",
+    "qty": 12,
+    "unit_price": 18
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "L",
+    "qty": 12,
+    "unit_price": 18
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 16,
+ "llm_calls": 16,
+ "seconds": 15.1,
+ "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -208,93 +231,35 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).",
-     "Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).",
-     "Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).",
-     "Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).",
-     "Line 1: Color (Black) matches the PO (Black).",
-     "Line 1: Size (M) matches the PO (M).",
-     "Line 1: Quantity (12) matches the PO (12).",
-     "Line 1: Unit price (18.00) matches the catalog price (18.00).",
-     "Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).",
-     "Line 2: Color (Black) matches the PO (Black).",
-     "Line 2: Size (L) matches the PO (L).",
-     "Line 2: Quantity (12) matches the PO (12).",
-     "Line 2: Unit price (18.00) matches the catalog price (18.00)."
-    ],
-    "po_lines": [
-     "HD-100 | Black | M | 12 | 18.00",
-     "HD-100 | Black | L | 12 | 18.00"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48301",
+     "ship_by": "2026-12-10",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "M",
+       "qty": 12,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 12,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 17,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).",
-     "Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).",
-     "Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).",
-     "Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).",
-     "Line 1: Color (Black) matches the PO (Black).",
-     "Line 1: Size (M) matches the PO (M).",
-     "Line 1: Quantity (12) matches the PO (12).",
-     "Line 1: Unit price (18.00) matches the catalog price (18.00).",
-     "Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).",
-     "Line 2: Color (Black) matches the PO (Black).",
-     "Line 2: Size (L) matches the PO (L).",
-     "Line 2: Quantity (12) matches the PO (12).",
-     "Line 2: Unit price (18.00) matches the catalog price (18.00)."
-    ],
-    "po_lines": [
-     "HD-100 | Black | M | 12 | 18.00",
-     "HD-100 | Black | L | 12 | 18.00"
-    ]
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 18,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).",
-     "Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).",
-     "Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).",
-     "Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).",
-     "Line 1: Color (Black) matches the PO (Black).",
-     "Line 1: Size (M) matches the PO (M).",
-     "Line 1: Quantity (12) matches the PO (12).",
-     "Line 1: Unit price (18.00) matches the catalog price (18.00).",
-     "Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).",
-     "Line 2: Color (Black) matches the PO (Black).",
-     "Line 2: Size (L) matches the PO (L).",
-     "Line 2: Quantity (12) matches the PO (12).",
-     "Line 2: Unit price (18.00) matches the catalog price (18.00)."
-    ],
-    "po_lines": [
-     "HD-100 | Black | M | 12 | 18.00",
-     "HD-100 | Black | L | 12 | 18.00"
-    ]
-   },
-   "result": "escalated by verifier"
+   "result": "Clicked e11 (\"Place Order\")."
   }
  ],
  "final_form": {
@@ -319,7 +284,18 @@
     "Color": "Black",
     "Price Each": "18.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

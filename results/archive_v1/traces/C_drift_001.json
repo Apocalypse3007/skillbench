@@ -1,0 +1,187 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "001",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48213",
+  "ship_by": "2026-12-05",
+  "lines": [
+   {
+    "sku": "TS-100",
+    "color": "Navy",
+    "size": "M",
+    "qty": 20,
+    "unit_price": 4
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 11,
+ "seconds": 9.1,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: New order PO-48213\n\nHi team,\n\nPlease enter the following for Acme Corp:\n\nPO Number: PO-48213\nShip by: 2026-12-05\n\n- 20 x TS-100 Classic Cotton Tee, Navy, size M\n\nThanks,\nDana Whitfield\nAcme Corp Purchasing\n",
+ "truth": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48213",
+  "ship_by": "2026-12-05",
+  "lines": [
+   {
+    "sku": "TS-100",
+    "color": "Navy",
+    "size": "M",
+    "qty": 20,
+    "unit_price": 4.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Acme Corp"
+   },
+   "raw": null,
+   "result": "Selected \"Acme Corp\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "PO-48213"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"PO-48213\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-05"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-05\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "20"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"20\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "TS-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"TS-100\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e7 (\"Color\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "4.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"4.00\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "po_lines": [
+     "TS-100 | Navy | M | 20 | 4.00"
+    ]
+   },
+   "result": "Clicked e11 (\"Place Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "PO-48213",
+   "Account": "Acme Corp",
+   "Required Date": "2026-12-05",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "20",
+    "Item Code": "TS-100",
+    "Size": "M",
+    "Color": "Navy",
+    "Price Each": "4.00"
+   }
+  ]
+ },
+ "error": null
+}

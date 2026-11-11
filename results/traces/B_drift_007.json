@@ -2,18 +2,48 @@
  "config": "B",
  "condition": "drift",
  "po": "007",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "Customer 'Harbor City Marathon' is valid according to the catalog.",
- "order": null,
- "steps": 23,
- "llm_calls": 26,
- "seconds": 27.6,
- "verifier_interventions": 3,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5520",
+  "ship_by": "2026-12-05",
+  "lines": [
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "S",
+    "qty": 10,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "M",
+    "qty": 20,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "L",
+    "qty": 20,
+    "unit_price": 6.5
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 22,
+ "llm_calls": 22,
+ "seconds": 17.6,
+ "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -209,13 +239,39 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Missing line for L size in the form"
+     "PO asks for 'TS-200 White L qty 20 @ 6.5' but the form has no such line"
     ],
-    "po_lines": [
-     "TS-200 | White | S | 10 | 6.50",
-     "TS-200 | White | M | 20 | 6.50",
-     "TS-200 | White | L | 20 | 6.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5520",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "S",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "M",
+       "qty": 20,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "L",
+       "qty": 20,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -286,39 +342,42 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "Customer 'Harbor City Marathon' is valid according to the catalog."
-    ],
-    "po_lines": [
-     "TS-200 | White | S | 10 | 6.50",
-     "TS-200 | White | M | 20 | 6.50",
-     "TS-200 | White | L | 20 | 6.50"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5520",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "S",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "M",
+       "qty": 20,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "L",
+       "qty": 20,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 23,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Customer 'Harbor City Marathon' is valid according to the catalog."
-    ],
-    "po_lines": [
-     "TS-200 | White | S | 10 | 6.50",
-     "TS-200 | White | M | 20 | 6.50",
-     "TS-200 | White | L | 20 | 6.50"
-    ]
-   },
-   "result": "escalated by verifier"
+   "result": "Clicked e11 (\"Place Order\")."
   }
  ],
  "final_form": {
@@ -350,7 +409,18 @@
     "Color": "White",
     "Price Each": "6.50"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

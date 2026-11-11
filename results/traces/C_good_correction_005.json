@@ -1,0 +1,219 @@
+{
+ "config": "C",
+ "condition": "good_correction",
+ "po": "005",
+ "split": "dev",
+ "verifier": "v2",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7781",
+  "ship_by": "2027-01-15",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 25,
+    "unit_price": 13
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.5,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "correction": {
+  "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "accepted": true,
+  "reason": "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+ },
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter one line per size and check that every listed size has been entered.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Polos for staff\n\nHi there,\n\nSummit Credit Union PO SCU-7781. We need 25 Navy Performance Polos (PL-100), all size L.\nQuoted price was $13.00 per polo.\nPlease ship by 2027-01-15.\n\nBest,\nOwen Brandt\n",
+ "truth": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7781",
+  "ship_by": "2027-01-15",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 25,
+    "unit_price": 13.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Summit Credit Union"
+   },
+   "raw": null,
+   "result": "Selected \"Summit Credit Union\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "SCU-7781"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"SCU-7781\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2027-01-15"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2027-01-15\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "PL-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"PL-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "25"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"25\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "13.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"13.00\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7781",
+     "ship_by": "2027-01-15",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 25,
+       "unit_price": 13.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Summit Credit Union",
+   "PO Number": "SCU-7781",
+   "Ship By": "2027-01-15",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "PL-100",
+    "Color": "Navy",
+    "Size": "L",
+    "Quantity": "25",
+    "Unit Price": "13.00"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

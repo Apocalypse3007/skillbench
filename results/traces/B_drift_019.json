@@ -2,6 +2,8 @@
  "config": "B",
  "condition": "drift",
  "po": "019",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
  "outcome": "silent_failure",
@@ -24,10 +26,10 @@
   ],
   "notes": ""
  },
- "steps": 11,
- "llm_calls": 13,
- "seconds": 12.1,
- "verifier_interventions": 1,
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 8.6,
+ "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -145,31 +147,26 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "PO states 'Classic Cotton Tees' but the form uses 'TS-100 Classic Cotton Tee' which is correct."
-    ],
-    "po_lines": [
-     "TS-100 | Black | L | 100 | 4.00"
-    ]
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 11,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "TS-100 | Black | L | 100 | 4.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3360",
+     "ship_by": "2026-12-08",
+     "lines": [
+      {
+       "sku": "TS-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 100,
+       "unit_price": 4.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Place Order\")."
   }
@@ -189,7 +186,18 @@
     "Color": "Black",
     "Price Each": "4.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

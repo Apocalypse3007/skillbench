@@ -2,6 +2,8 @@
  "config": "B",
  "condition": "bad_demo",
  "po": "018",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "silent_failure",
@@ -18,23 +20,23 @@
     "sku": "HD-100",
     "color": "Navy",
     "size": "M",
-    "qty": 100,
+    "qty": 1,
     "unit_price": 18
    },
    {
     "sku": "HD-100",
     "color": "Navy",
     "size": "L",
-    "qty": 100,
+    "qty": 1,
     "unit_price": 18
    }
   ],
   "notes": ""
  },
- "steps": 15,
- "llm_calls": 16,
- "seconds": 13.9,
- "verifier_interventions": 0,
+ "steps": 19,
+ "llm_calls": 19,
+ "seconds": 14.6,
+ "verifier_interventions": 2,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -202,13 +204,134 @@
    },
    "raw": null,
    "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line HD-100 Navy M: form has qty 100 @ 18.00, PO says qty 1 @ 18.0",
+     "Line HD-100 Navy L: form has qty 100 @ 18.00, PO says qty 1 @ 18.0"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "1"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"1\"."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line HD-100 Navy L: form has qty 100 @ 18.00, PO says qty 1 @ 18.0"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "1"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"1\"."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "HD-100 | Navy | M | 100 | 18.00",
-     "HD-100 | Navy | L | 100 | 18.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -225,17 +348,28 @@
     "SKU": "HD-100",
     "Color": "Navy",
     "Size": "M",
-    "Quantity": "100",
+    "Quantity": "1",
     "Unit Price": "18.00"
    },
    {
     "SKU": "HD-100",
     "Color": "Navy",
     "Size": "L",
-    "Quantity": "100",
+    "Quantity": "1",
     "Unit Price": "18.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

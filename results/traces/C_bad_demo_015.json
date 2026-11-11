@@ -2,18 +2,41 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "015",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "agent",
- "reason": "The order has already been submitted and is blocked by a reviewer. The form appears to be correctly filled with the PO number PO-48301, matching the PO in the email. There is no indication of an error that requires human intervention.",
- "order": null,
- "steps": 16,
- "llm_calls": 17,
- "seconds": 16.0,
- "verifier_interventions": 1,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48301",
+  "ship_by": "2026-12-10",
+  "lines": [
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "M",
+    "qty": 12,
+    "unit_price": 18
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "L",
+    "qty": 12,
+    "unit_price": 18
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 15,
+ "llm_calls": 15,
+ "seconds": 12.1,
+ "verifier_interventions": 0,
  "skill_flagged": [
   {
    "step": 8,
@@ -205,26 +228,35 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "PO number in form (PO-48301) matches the PO number in the email."
-    ],
-    "po_lines": [
-     "HD-100 | Black | M | 12 | 18.00",
-     "HD-100 | Black | L | 12 | 18.00"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48301",
+     "ship_by": "2026-12-10",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "M",
+       "qty": 12,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 12,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 16,
-   "action": {
-    "action": "escalate",
-    "reason": "The order has already been submitted and is blocked by a reviewer. The form appears to be correctly filled with the PO number PO-48301, matching the PO in the email. There is no indication of an error that requires human intervention."
-   },
-   "raw": null,
-   "result": "escalated"
+   "result": "Clicked e11 (\"Submit Order\")."
   }
  ],
  "final_form": {
@@ -249,7 +281,18 @@
     "Quantity": "12",
     "Unit Price": "18.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

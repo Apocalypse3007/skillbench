@@ -2,17 +2,19 @@
  "config": "B",
  "condition": "bad_demo",
  "po": "020",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The customer 'Greenfield Public Library' is not listed in the available options for the customer account selection. The form cannot be completed correctly without this information.",
+ "reason": "The customer name 'Greenfield Public Library' is not listed in the available options for the customer account selection. The form cannot be corrected without human intervention.",
  "order": null,
  "steps": 16,
- "llm_calls": 18,
- "seconds": 19.4,
+ "llm_calls": 16,
+ "seconds": 11.8,
  "verifier_interventions": 2,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -144,12 +146,25 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Customer: Redline Robotics (PO says: Greenfield Public Library)",
-     "Line 1: SKU=TB-100 (PO says: TB-100), Color=Natural (PO says: Natural), Size=N/A (PO says: N/A), Quantity=40 (PO says: 40), Unit Price=2.80 (PO says: 2.80)"
+     "customer: form has 'Redline Robotics', PO says 'Greenfield Public Library'"
     ],
-    "po_lines": [
-     "TB-100 | Natural | N/A | 40 | 2.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Greenfield Public Library",
+     "po_number": "GPL-0019",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TB-100",
+       "color": "Natural",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 2.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -184,14 +199,25 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Customer: Redline Robotics does not match the PO's customer: Greenfield Public Library",
-     "PO Number: GPL-0019 is valid",
-     "Ship By: 2026-12-05 matches the PO's ship date",
-     "Line 1: SKU=TB-100; Color=Natural; Size=N/A; Quantity=40; Unit Price=2.80 matches the PO's line item"
+     "customer: form has 'Redline Robotics', PO says 'Greenfield Public Library'"
     ],
-    "po_lines": [
-     "TB-100 | Natural | N/A | 40 | 2.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Greenfield Public Library",
+     "po_number": "GPL-0019",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TB-100",
+       "color": "Natural",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 2.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -209,7 +235,7 @@
    "step": 16,
    "action": {
     "action": "escalate",
-    "reason": "The customer 'Greenfield Public Library' is not listed in the available options for the customer account selection. The form cannot be completed correctly without this information."
+    "reason": "The customer name 'Greenfield Public Library' is not listed in the available options for the customer account selection. The form cannot be corrected without human intervention."
    },
    "raw": null,
    "result": "escalated"
@@ -230,7 +256,18 @@
     "Quantity": "40",
     "Unit Price": "2.80"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

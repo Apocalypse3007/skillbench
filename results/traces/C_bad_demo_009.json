@@ -2,6 +2,8 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "009",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "correct",
@@ -38,10 +40,10 @@
   ],
   "notes": ""
  },
- "steps": 21,
- "llm_calls": 22,
- "seconds": 19.8,
- "verifier_interventions": 0,
+ "steps": 25,
+ "llm_calls": 25,
+ "seconds": 23.2,
+ "verifier_interventions": 1,
  "skill_flagged": [
   {
    "step": 8,
@@ -126,6 +128,15 @@
   {
    "step": 4,
    "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 5,
+   "action": {
     "action": "fill",
     "id": "e4",
     "value": "TS-100"
@@ -134,7 +145,7 @@
    "result": "Filled e4 (\"SKU\") with \"TS-100\"."
   },
   {
-   "step": 5,
+   "step": 6,
    "action": {
     "action": "select",
     "id": "e5",
@@ -144,7 +155,7 @@
    "result": "Selected \"Navy\" in e5 (\"Color\")."
   },
   {
-   "step": 6,
+   "step": 7,
    "action": {
     "action": "select",
     "id": "e6",
@@ -154,7 +165,7 @@
    "result": "Selected \"M\" in e6 (\"Size\")."
   },
   {
-   "step": 7,
+   "step": 8,
    "action": {
     "action": "fill",
     "id": "e7",
@@ -164,7 +175,7 @@
    "result": "Filled e7 (\"Quantity\") with \"15\"."
   },
   {
-   "step": 8,
+   "step": 9,
    "action": {
     "action": "fill",
     "id": "e8",
@@ -174,7 +185,7 @@
    "result": "Filled e8 (\"Unit Price\") with \"3.80\"."
   },
   {
-   "step": 9,
+   "step": 10,
    "action": {
     "action": "click",
     "id": "e9"
@@ -183,7 +194,73 @@
    "result": "Clicked e9 (\"Add Line Item\")."
   },
   {
-   "step": 10,
+   "step": 11,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO asks for 'TS-100 Navy L qty 15 @ 3.8' but the form has no such line",
+     "PO asks for 'TS-100 Navy XL qty 10 @ 3.8' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48250",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 15,
+       "unit_price": 3.8
+      },
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 15,
+       "unit_price": 3.8
+      },
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "XL",
+       "qty": 10,
+       "unit_price": 3.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 14,
    "action": {
     "action": "fill",
     "id": "e12",
@@ -193,7 +270,7 @@
    "result": "Filled e12 (\"SKU\") with \"TS-100\"."
   },
   {
-   "step": 11,
+   "step": 15,
    "action": {
     "action": "select",
     "id": "e13",
@@ -203,7 +280,7 @@
    "result": "Selected \"Navy\" in e13 (\"Color\")."
   },
   {
-   "step": 12,
+   "step": 16,
    "action": {
     "action": "select",
     "id": "e14",
@@ -213,7 +290,7 @@
    "result": "Selected \"L\" in e14 (\"Size\")."
   },
   {
-   "step": 13,
+   "step": 17,
    "action": {
     "action": "fill",
     "id": "e15",
@@ -223,7 +300,7 @@
    "result": "Filled e15 (\"Quantity\") with \"15\"."
   },
   {
-   "step": 14,
+   "step": 18,
    "action": {
     "action": "fill",
     "id": "e16",
@@ -233,7 +310,7 @@
    "result": "Filled e16 (\"Unit Price\") with \"3.80\"."
   },
   {
-   "step": 15,
+   "step": 19,
    "action": {
     "action": "click",
     "id": "e9"
@@ -242,7 +319,7 @@
    "result": "Clicked e9 (\"Add Line Item\")."
   },
   {
-   "step": 16,
+   "step": 20,
    "action": {
     "action": "fill",
     "id": "e17",
@@ -252,7 +329,7 @@
    "result": "Filled e17 (\"SKU\") with \"TS-100\"."
   },
   {
-   "step": 17,
+   "step": 21,
    "action": {
     "action": "select",
     "id": "e18",
@@ -262,7 +339,7 @@
    "result": "Selected \"Navy\" in e18 (\"Color\")."
   },
   {
-   "step": 18,
+   "step": 22,
    "action": {
     "action": "select",
     "id": "e19",
@@ -272,7 +349,7 @@
    "result": "Selected \"XL\" in e19 (\"Size\")."
   },
   {
-   "step": 19,
+   "step": 23,
    "action": {
     "action": "fill",
     "id": "e20",
@@ -282,7 +359,7 @@
    "result": "Filled e20 (\"Quantity\") with \"10\"."
   },
   {
-   "step": 20,
+   "step": 24,
    "action": {
     "action": "fill",
     "id": "e21",
@@ -292,7 +369,7 @@
    "result": "Filled e21 (\"Unit Price\") with \"3.80\"."
   },
   {
-   "step": 21,
+   "step": 25,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -302,11 +379,37 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "TS-100 | Navy | M | 15 | 3.80",
-     "TS-100 | Navy | L | 15 | 3.80",
-     "TS-100 | Navy | XL | 10 | 3.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48250",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 15,
+       "unit_price": 3.8
+      },
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 15,
+       "unit_price": 3.8
+      },
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "XL",
+       "qty": 10,
+       "unit_price": 3.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -340,7 +443,18 @@
     "Quantity": "10",
     "Unit Price": "3.80"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

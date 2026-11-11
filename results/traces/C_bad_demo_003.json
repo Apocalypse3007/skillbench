@@ -2,6 +2,8 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "003",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "correct",
@@ -25,8 +27,8 @@
   "notes": ""
  },
  "steps": 11,
- "llm_calls": 12,
- "seconds": 10.3,
+ "llm_calls": 11,
+ "seconds": 8.5,
  "verifier_interventions": 0,
  "skill_flagged": [
   {
@@ -175,9 +177,23 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "MG-100 | White | N/A | 48 | 3.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0915",
+     "ship_by": "2026-11-28",
+     "lines": [
+      {
+       "sku": "MG-100",
+       "color": "White",
+       "size": "N/A",
+       "qty": 48,
+       "unit_price": 3.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -197,7 +213,18 @@
     "Quantity": "48",
     "Unit Price": "3.50"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

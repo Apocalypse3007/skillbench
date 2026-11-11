@@ -2,17 +2,19 @@
  "config": "B",
  "condition": "bad_demo",
  "po": "012",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "false_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "verifier",
- "reason": "Line 2: SKU is blank; Line 2: Color is blank; Line 2: Size is blank; Line 2: Quantity is blank; Line 2 has blank SKU, color, size, and quantity, which is unnecessary and should be removed.",
+ "reason": "Line 2: duplicate of an earlier line (PN-200 Silver N/A); Line PN-200 Silver N/A: form has qty 300 @ 1.90, PO says qty 300 @ 1.75; Form line 'PN-200 Silver N/A qty 300 @ 1.90' is not in the PO",
  "order": null,
- "steps": 16,
- "llm_calls": 19,
- "seconds": 18.9,
+ "steps": 18,
+ "llm_calls": 18,
+ "seconds": 14.8,
  "verifier_interventions": 3,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -145,11 +147,25 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Unit price in form (1.90) does not match the PO's stated price (1.75). Use the catalog price of 1.90."
+     "Line PN-200 Silver N/A: form has qty 300 @ 1.90, PO says qty 300 @ 1.75"
     ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.90"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0931",
+     "ship_by": "2026-11-30",
+     "lines": [
+      {
+       "sku": "PN-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 300,
+       "unit_price": 1.75
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -178,43 +194,81 @@
      "Line 2: Color is blank",
      "Line 2: Size is blank",
      "Line 2: Quantity is blank",
-     "Line 2 has blank SKU, color, size, and quantity, which is unnecessary and should be removed."
+     "Line PN-200 Silver N/A: form has qty 300 @ 1.90, PO says qty 300 @ 1.75",
+     "Form line '(blank) (blank) (blank) qty (blank) @ 1.90' is not in the PO"
     ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.90"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0931",
+     "ship_by": "2026-11-30",
+     "lines": [
+      {
+       "sku": "PN-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 300,
+       "unit_price": 1.75
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 13,
    "action": {
-    "action": "click",
-    "id": "e9"
+    "action": "fill",
+    "id": "e12",
+    "value": "PN-200"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Filled e12 (\"SKU\") with \"PN-200\"."
   },
   {
    "step": 14,
    "action": {
-    "action": "click",
-    "id": "e9"
+    "action": "fill",
+    "id": "e13",
+    "value": "Silver"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "e13 is a select, not a text field."
   },
   {
    "step": 15,
    "action": {
-    "action": "click",
-    "id": "e9"
+    "action": "select",
+    "id": "e13",
+    "value": "Silver"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Selected \"Silver\" in e13 (\"Color\")."
   },
   {
    "step": 16,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "300"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"300\"."
+  },
+  {
+   "step": 18,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -224,15 +278,27 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Line 2: SKU is blank",
-     "Line 2: Color is blank",
-     "Line 2: Size is blank",
-     "Line 2: Quantity is blank",
-     "Line 2 has blank SKU, color, size, and quantity, which is unnecessary and should be removed."
+     "Line 2: duplicate of an earlier line (PN-200 Silver N/A)",
+     "Line PN-200 Silver N/A: form has qty 300 @ 1.90, PO says qty 300 @ 1.75",
+     "Form line 'PN-200 Silver N/A qty 300 @ 1.90' is not in the PO"
     ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.90"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0931",
+     "ship_by": "2026-11-30",
+     "lines": [
+      {
+       "sku": "PN-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 300,
+       "unit_price": 1.75
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "escalated by verifier"
   }
@@ -253,13 +319,24 @@
     "Unit Price": "1.90"
    },
    {
-    "SKU": "(blank)",
-    "Color": "(blank)",
-    "Size": "(blank)",
-    "Quantity": "(blank)",
+    "SKU": "PN-200",
+    "Color": "Silver",
+    "Size": "N/A",
+    "Quantity": "300",
     "Unit Price": "1.90"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

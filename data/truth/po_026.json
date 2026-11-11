@@ -1,0 +1,22 @@
+{
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0071",
+  "ship_by": "2026-12-30",
+  "lines": [
+    {
+      "sku": "TB-100",
+      "color": "Natural",
+      "size": "N/A",
+      "qty": 20,
+      "unit_price": 2.8
+    },
+    {
+      "sku": "CP-200",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 20,
+      "unit_price": 5.25
+    }
+  ],
+  "notes": ""
+}

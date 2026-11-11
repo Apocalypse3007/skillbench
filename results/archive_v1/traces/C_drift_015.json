@@ -1,0 +1,325 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "015",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).; Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).; Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).; Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).; Line 1: Color (Black) matches the PO (Black).; Line 1: Size (M) matches the PO (M).; Line 1: Quantity (12) matches the PO (12).; Line 1: Unit price (18.00) matches the catalog price (18.00).; Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).; Line 2: Color (Black) matches the PO (Black).; Line 2: Size (L) matches the PO (L).; Line 2: Quantity (12) matches the PO (12).; Line 2: Unit price (18.00) matches the catalog price (18.00).",
+ "order": null,
+ "steps": 18,
+ "llm_calls": 21,
+ "seconds": 43.7,
+ "verifier_interventions": 3,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: RE: hoodie order\n\nHi,\n\nPlease go ahead with the new one: PO-48301 for Acme Corp.\n24 Black Pullover Hoodies - 12 in M and 12 in L. Ship by 2026-12-10.\n\nThanks,\nDana Whitfield\nAcme Corp Purchasing | 555-0142 | 1200 Industrial Way, Suite 4\n\n-----Original Message-----\nFrom: Dana Whitfield\nSent: October 2, 2026\nSubject: mug order\n\nPO-47990: 100 White Ceramic Mugs (MG-100), ship by 2026-10-20.\n",
+ "truth": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48301",
+  "ship_by": "2026-12-10",
+  "lines": [
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "M",
+    "qty": 12,
+    "unit_price": 18.0
+   },
+   {
+    "sku": "HD-100",
+    "color": "Black",
+    "size": "L",
+    "qty": 12,
+    "unit_price": 18.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Acme Corp"
+   },
+   "raw": null,
+   "result": "Selected \"Acme Corp\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "PO-48301"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"PO-48301\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-10"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-10\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "12"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"12\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"HD-100\"."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e7 (\"Color\")."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"18.00\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "12"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"12\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"HD-100\"."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e15 (\"Color\")."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"18.00\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).",
+     "Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).",
+     "Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).",
+     "Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).",
+     "Line 1: Color (Black) matches the PO (Black).",
+     "Line 1: Size (M) matches the PO (M).",
+     "Line 1: Quantity (12) matches the PO (12).",
+     "Line 1: Unit price (18.00) matches the catalog price (18.00).",
+     "Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).",
+     "Line 2: Color (Black) matches the PO (Black).",
+     "Line 2: Size (L) matches the PO (L).",
+     "Line 2: Quantity (12) matches the PO (12).",
+     "Line 2: Unit price (18.00) matches the catalog price (18.00)."
+    ],
+    "po_lines": [
+     "HD-100 | Black | M | 12 | 18.00",
+     "HD-100 | Black | L | 12 | 18.00"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).",
+     "Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).",
+     "Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).",
+     "Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).",
+     "Line 1: Color (Black) matches the PO (Black).",
+     "Line 1: Size (M) matches the PO (M).",
+     "Line 1: Quantity (12) matches the PO (12).",
+     "Line 1: Unit price (18.00) matches the catalog price (18.00).",
+     "Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).",
+     "Line 2: Color (Black) matches the PO (Black).",
+     "Line 2: Size (L) matches the PO (L).",
+     "Line 2: Quantity (12) matches the PO (12).",
+     "Line 2: Unit price (18.00) matches the catalog price (18.00)."
+    ],
+    "po_lines": [
+     "HD-100 | Black | M | 12 | 18.00",
+     "HD-100 | Black | L | 12 | 18.00"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO number in form (PO-48301) matches the PO number in the PO (PO-48301).",
+     "Customer in form (Acme Corp) matches the customer in the PO (Acme Corp).",
+     "Required Date in form (2026-12-10) matches the ship by date in the PO (2026-12-10).",
+     "Line 1: Item Code (HD-100) matches the PO (Pullover Hoodie).",
+     "Line 1: Color (Black) matches the PO (Black).",
+     "Line 1: Size (M) matches the PO (M).",
+     "Line 1: Quantity (12) matches the PO (12).",
+     "Line 1: Unit price (18.00) matches the catalog price (18.00).",
+     "Line 2: Item Code (HD-100) matches the PO (Pullover Hoodie).",
+     "Line 2: Color (Black) matches the PO (Black).",
+     "Line 2: Size (L) matches the PO (L).",
+     "Line 2: Quantity (12) matches the PO (12).",
+     "Line 2: Unit price (18.00) matches the catalog price (18.00)."
+    ],
+    "po_lines": [
+     "HD-100 | Black | M | 12 | 18.00",
+     "HD-100 | Black | L | 12 | 18.00"
+    ]
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "PO-48301",
+   "Account": "Acme Corp",
+   "Required Date": "2026-12-10",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "12",
+    "Item Code": "HD-100",
+    "Size": "M",
+    "Color": "Black",
+    "Price Each": "18.00"
+   },
+   {
+    "Units": "12",
+    "Item Code": "HD-100",
+    "Size": "L",
+    "Color": "Black",
+    "Price Each": "18.00"
+   }
+  ]
+ },
+ "error": null
+}

@@ -1,0 +1,219 @@
+{
+ "config": "C",
+ "condition": "good_correction",
+ "po": "016",
+ "split": "dev",
+ "verifier": "v2",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0057",
+  "ship_by": "2026-12-22",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 36,
+    "unit_price": 3.6
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.8,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "correction": {
+  "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "accepted": true,
+  "reason": "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+ },
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter one line per size and check that every listed size has been entered.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Fwd: mugs reorder\n\nSame mugs as before but black this time. New PO LBC-0057, Lakeside Brewing Co.\n36 black MG-100 mugs, price $3.60 each. Ship by 2026-12-22.\n\nTom\nLakeside Brewing Co | Order desk ext 4415 | Ref acct #88-210\n\n---------- Forwarded message ---------\nSubject: mugs\nPO LBC-0031 - 48 White MG-100 mugs at $3.40, ship by 2026-09-01\n",
+ "truth": {
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0057",
+  "ship_by": "2026-12-22",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 36,
+    "unit_price": 3.6
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Lakeside Brewing Co"
+   },
+   "raw": null,
+   "result": "Selected \"Lakeside Brewing Co\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "LBC-0057"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"LBC-0057\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-22"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-22\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "MG-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"MG-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "36"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"36\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.60"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"3.60\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Lakeside Brewing Co",
+     "po_number": "LBC-0057",
+     "ship_by": "2026-12-22",
+     "lines": [
+      {
+       "sku": "MG-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 36,
+       "unit_price": 3.6
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Lakeside Brewing Co",
+   "PO Number": "LBC-0057",
+   "Ship By": "2026-12-22",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "MG-100",
+    "Color": "Black",
+    "Size": "N/A",
+    "Quantity": "36",
+    "Unit Price": "3.60"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

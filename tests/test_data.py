@@ -10,10 +10,12 @@ def load_truths():
     return {p.stem: json.loads(p.read_text()) for p in sorted(config.TRUTH_DIR.glob("po_*.json"))}
 
 
-def test_every_po_has_truth():
+def test_every_po_has_truth_and_a_split():
     pos = {p.stem for p in config.POS_DIR.glob("po_*.txt")}
-    assert len(pos) == 20
     assert pos == set(load_truths())
+    split_ids = config.SPLITS["dev"] + config.SPLITS["heldout"]
+    assert len(split_ids) == len(set(split_ids))
+    assert pos == {f"po_{i}" for i in split_ids}
 
 
 def test_truth_schema_and_catalog():
@@ -33,8 +35,10 @@ def test_truth_schema_and_catalog():
             assert line["unit_price"] > 0, (name, line)
 
 
-def test_four_escalations():
-    assert sum(1 for t in load_truths().values() if t.get("escalate")) == 4
+def test_escalation_counts():
+    truths = load_truths()
+    for split, n in (("dev", 4), ("heldout", 2)):
+        assert sum(1 for i in config.SPLITS[split] if truths[f"po_{i}"].get("escalate")) == n
 
 
 def test_bad_demo_differs_in_exactly_one_step():

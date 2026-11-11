@@ -2,6 +2,8 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "014",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "correct",
@@ -32,8 +34,8 @@
   "notes": ""
  },
  "steps": 16,
- "llm_calls": 17,
- "seconds": 15.2,
+ "llm_calls": 16,
+ "seconds": 13.6,
  "verifier_interventions": 0,
  "skill_flagged": [
   {
@@ -238,10 +240,30 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "LY-100 | Royal Blue | N/A | 150 | 0.95",
-     "CP-100 | Black | N/A | 40 | 7.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Redline Robotics",
+     "po_number": "RR-1123",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "LY-100",
+       "color": "Royal Blue",
+       "size": "N/A",
+       "qty": 150,
+       "unit_price": 0.95
+      },
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 7.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -268,7 +290,18 @@
     "Quantity": "40",
     "Unit Price": "7.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

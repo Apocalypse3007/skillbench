@@ -1,0 +1,269 @@
+{
+ "config": "A",
+ "condition": "good_correction",
+ "po": "023",
+ "split": "heldout",
+ "verifier": null,
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7840",
+  "ship_by": "2027-01-04",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Red",
+    "size": "N/A",
+    "qty": 72,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "MG-200",
+    "color": "Silver",
+    "size": "N/A",
+    "qty": 36,
+    "unit_price": 9.5
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 15,
+ "llm_calls": 15,
+ "seconds": 12.0,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "correction": {
+  "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "accepted": true,
+  "reason": ""
+ },
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Q1 branch supplies\n\nSummit Credit Union - PO SCU-7840\n\nhalf a gross of red ballpoint pens\n3 dozen silver travel tumblers ($9.50 each per our quote)\n\nship by the 4th of January, 2027\nOwen\n",
+ "truth": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7840",
+  "ship_by": "2027-01-04",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Red",
+    "size": "N/A",
+    "qty": 72,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "MG-200",
+    "color": "Silver",
+    "size": "N/A",
+    "qty": 36,
+    "unit_price": 9.5
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Summit Credit Union"
+   },
+   "raw": null,
+   "result": "Selected \"Summit Credit Union\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "SCU-7840"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"SCU-7840\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2027-01-04"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2027-01-04\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "PN-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"PN-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Red"
+   },
+   "raw": null,
+   "result": "Selected \"Red\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "72"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"72\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "0.45"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"0.45\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "MG-200"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"MG-200\"."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Silver"
+   },
+   "raw": null,
+   "result": "Selected \"Silver\" in e13 (\"Color\")."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "36"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"36\"."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "9.50"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"9.50\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Summit Credit Union",
+   "PO Number": "SCU-7840",
+   "Ship By": "2027-01-04",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "PN-100",
+    "Color": "Red",
+    "Size": "N/A",
+    "Quantity": "72",
+    "Unit Price": "0.45"
+   },
+   {
+    "SKU": "MG-200",
+    "Color": "Silver",
+    "Size": "N/A",
+    "Quantity": "36",
+    "Unit Price": "9.50"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

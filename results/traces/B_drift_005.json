@@ -2,18 +2,34 @@
  "config": "B",
  "condition": "drift",
  "po": "005",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "Line 2 has conflicting price Each: 13.00 vs 14.00; Line 2 has duplicate line item with same Item Code, Size, and Color",
- "order": null,
- "steps": 18,
- "llm_calls": 21,
- "seconds": 23.0,
- "verifier_interventions": 3,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7781",
+  "ship_by": "2027-01-15",
+  "lines": [
+   {
+    "sku": "PL-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 25,
+    "unit_price": 13
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.7,
+ "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -142,120 +158,28 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "PO states 'Quoted price was $13.00 per polo' but catalog price for PL-100 is $14.00. Use catalog price unless PO specifies a different price."
-    ],
-    "po_lines": [
-     "PL-100 | Navy | L | 25 | 13.00"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7781",
+     "ship_by": "2027-01-15",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 25,
+       "unit_price": 13.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 11,
-   "action": {
-    "action": "fill",
-    "id": "e16",
-    "value": "14.00"
-   },
-   "raw": null,
-   "result": "Filled e16 (\"Price Each\") with \"14.00\"."
-  },
-  {
-   "step": 12,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": true,
-    "issues": [
-     "Line 2: Units is blank",
-     "Line 2: Item Code is blank",
-     "Line 2: Size is blank",
-     "Line 2: Color is blank",
-     "Line 2 has blank fields for Units, Item Code, Size, and Color, which is unnecessary and should be removed.",
-     "Price Each in Line 2 is $14.00, which does not match the catalog price of $14.00 for PL-100. However, the PO specifies $13.00 per unit, which is a conflicting price."
-    ],
-    "po_lines": [
-     "PL-100 | Navy | L | 25 | 13.00"
-    ]
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 13,
-   "action": {
-    "action": "fill",
-    "id": "e12",
-    "value": "25"
-   },
-   "raw": null,
-   "result": "Filled e12 (\"Units\") with \"25\"."
-  },
-  {
-   "step": 14,
-   "action": {
-    "action": "fill",
-    "id": "e13",
-    "value": "PL-100"
-   },
-   "raw": null,
-   "result": "Filled e13 (\"Item Code\") with \"PL-100\"."
-  },
-  {
-   "step": 15,
-   "action": {
-    "action": "fill",
-    "id": "e14",
-    "value": "L"
-   },
-   "raw": null,
-   "result": "e14 is a select, not a text field."
-  },
-  {
-   "step": 16,
-   "action": {
-    "action": "select",
-    "id": "e14",
-    "value": "L"
-   },
-   "raw": null,
-   "result": "Selected \"L\" in e14 (\"Size\")."
-  },
-  {
-   "step": 17,
-   "action": {
-    "action": "select",
-    "id": "e15",
-    "value": "Navy"
-   },
-   "raw": null,
-   "result": "Selected \"Navy\" in e15 (\"Color\")."
-  },
-  {
-   "step": 18,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": true,
-    "issues": [
-     "Line 2 has conflicting price Each: 13.00 vs 14.00",
-     "Line 2 has duplicate line item with same Item Code, Size, and Color"
-    ],
-    "po_lines": [
-     "PL-100 | Navy | L | 25 | 13.00"
-    ]
-   },
-   "result": "escalated by verifier"
+   "result": "Clicked e11 (\"Place Order\")."
   }
  ],
  "final_form": {
@@ -272,15 +196,19 @@
     "Size": "L",
     "Color": "Navy",
     "Price Each": "13.00"
-   },
-   {
-    "Units": "25",
-    "Item Code": "PL-100",
-    "Size": "L",
-    "Color": "Navy",
-    "Price Each": "14.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

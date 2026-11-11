@@ -2,6 +2,8 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "019",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "silent_failure",
@@ -25,8 +27,8 @@
   "notes": ""
  },
  "steps": 10,
- "llm_calls": 11,
- "seconds": 8.9,
+ "llm_calls": 10,
+ "seconds": 7.5,
  "verifier_interventions": 0,
  "skill_flagged": [
   {
@@ -154,9 +156,23 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "TS-100 | Black | L | 100 | 4.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3360",
+     "ship_by": "2026-12-08",
+     "lines": [
+      {
+       "sku": "TS-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 100,
+       "unit_price": 4.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -176,7 +192,18 @@
     "Quantity": "100",
     "Unit Price": "4.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

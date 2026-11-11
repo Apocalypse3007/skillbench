@@ -1,0 +1,256 @@
+{
+ "config": "A",
+ "condition": "drift",
+ "po": "004",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "silent_failure",
+ "field_accuracy": 0.923,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Northwind Events",
+  "po_number": "NWE-3301",
+  "ship_by": "2026-12-01",
+  "lines": [
+   {
+    "sku": "CP-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 30,
+    "unit_price": 7.5
+   },
+   {
+    "sku": "LY-100",
+    "color": "Red",
+    "size": "N/A",
+    "qty": null,
+    "unit_price": 0.95
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 15,
+ "llm_calls": 15,
+ "seconds": 11.7,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Northwind Events order NWE-3301\n\nOrder for Northwind Events\nPO: NWE-3301\nShip by: 2026-12-01\n\nItem 1: CP-100 Structured Baseball Cap, Black, 30 units\nItem 2: LY-100 Woven Lanyard, Red, 30 units\n\n-- Jamie\n",
+ "truth": {
+  "customer": "Northwind Events",
+  "po_number": "NWE-3301",
+  "ship_by": "2026-12-01",
+  "lines": [
+   {
+    "sku": "CP-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 30,
+    "unit_price": 7.5
+   },
+   {
+    "sku": "LY-100",
+    "color": "Red",
+    "size": "N/A",
+    "qty": 30,
+    "unit_price": 0.95
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Northwind Events"
+   },
+   "raw": null,
+   "result": "Selected \"Northwind Events\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "NWE-3301"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"NWE-3301\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-01"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-01\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "CP-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"CP-100\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e7 (\"Color\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "30"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"30\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "7.50"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"7.50\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "LY-100"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"LY-100\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Red"
+   },
+   "raw": null,
+   "result": "Selected \"Red\" in e15 (\"Color\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "0.95"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"0.95\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "result": "Clicked e11 (\"Place Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "NWE-3301",
+   "Account": "Northwind Events",
+   "Required Date": "2026-12-01",
+   "Order Comments": ""
+  },
+  "line_items": [
+   {
+    "Units": "30",
+    "Item Code": "CP-100",
+    "Size": "N/A",
+    "Color": "Black",
+    "Price Each": "7.50"
+   },
+   {
+    "Units": "",
+    "Item Code": "LY-100",
+    "Size": "N/A",
+    "Color": "Red",
+    "Price Each": "0.95"
+   },
+   {
+    "Units": "",
+    "Item Code": "",
+    "Size": "",
+    "Color": "",
+    "Price Each": ""
+   }
+  ]
+ },
+ "error": null
+}

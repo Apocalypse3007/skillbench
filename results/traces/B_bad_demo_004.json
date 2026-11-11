@@ -2,6 +2,8 @@
  "config": "B",
  "condition": "bad_demo",
  "po": "004",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "correct",
@@ -31,9 +33,9 @@
   ],
   "notes": ""
  },
- "steps": 16,
- "llm_calls": 17,
- "seconds": 15.9,
+ "steps": 15,
+ "llm_calls": 15,
+ "seconds": 13.9,
  "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -106,15 +108,6 @@
   {
    "step": 4,
    "action": {
-    "action": "click",
-    "id": "e9"
-   },
-   "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
-  },
-  {
-   "step": 5,
-   "action": {
     "action": "fill",
     "id": "e4",
     "value": "CP-100"
@@ -123,7 +116,7 @@
    "result": "Filled e4 (\"SKU\") with \"CP-100\"."
   },
   {
-   "step": 6,
+   "step": 5,
    "action": {
     "action": "select",
     "id": "e5",
@@ -133,7 +126,7 @@
    "result": "Selected \"Black\" in e5 (\"Color\")."
   },
   {
-   "step": 7,
+   "step": 6,
    "action": {
     "action": "select",
     "id": "e6",
@@ -143,7 +136,7 @@
    "result": "Selected \"N/A\" in e6 (\"Size\")."
   },
   {
-   "step": 8,
+   "step": 7,
    "action": {
     "action": "fill",
     "id": "e7",
@@ -153,7 +146,7 @@
    "result": "Filled e7 (\"Quantity\") with \"30\"."
   },
   {
-   "step": 9,
+   "step": 8,
    "action": {
     "action": "fill",
     "id": "e8",
@@ -163,7 +156,7 @@
    "result": "Filled e8 (\"Unit Price\") with \"7.50\"."
   },
   {
-   "step": 10,
+   "step": 9,
    "action": {
     "action": "click",
     "id": "e9"
@@ -172,7 +165,7 @@
    "result": "Clicked e9 (\"Add Line Item\")."
   },
   {
-   "step": 11,
+   "step": 10,
    "action": {
     "action": "fill",
     "id": "e12",
@@ -182,7 +175,7 @@
    "result": "Filled e12 (\"SKU\") with \"LY-100\"."
   },
   {
-   "step": 12,
+   "step": 11,
    "action": {
     "action": "select",
     "id": "e13",
@@ -192,7 +185,7 @@
    "result": "Selected \"Red\" in e13 (\"Color\")."
   },
   {
-   "step": 13,
+   "step": 12,
    "action": {
     "action": "select",
     "id": "e14",
@@ -202,7 +195,7 @@
    "result": "Selected \"N/A\" in e14 (\"Size\")."
   },
   {
-   "step": 14,
+   "step": 13,
    "action": {
     "action": "fill",
     "id": "e15",
@@ -212,7 +205,7 @@
    "result": "Filled e15 (\"Quantity\") with \"30\"."
   },
   {
-   "step": 15,
+   "step": 14,
    "action": {
     "action": "fill",
     "id": "e16",
@@ -222,7 +215,7 @@
    "result": "Filled e16 (\"Unit Price\") with \"0.95\"."
   },
   {
-   "step": 16,
+   "step": 15,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -232,10 +225,30 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "CP-100 | Black | N/A | 30 | 7.50",
-     "LY-100 | Red | N/A | 30 | 0.95"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3301",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 7.5
+      },
+      {
+       "sku": "LY-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 0.95
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -262,7 +275,18 @@
     "Quantity": "30",
     "Unit Price": "0.95"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

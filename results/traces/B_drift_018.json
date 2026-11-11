@@ -2,18 +2,41 @@
  "config": "B",
  "condition": "drift",
  "po": "018",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "correct_escalation",
+ "outcome": "silent_failure",
  "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "Customer is correctly listed as Blue Ridge Schools.",
- "order": null,
- "steps": 19,
- "llm_calls": 22,
- "seconds": 21.8,
- "verifier_interventions": 3,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2240",
+  "ship_by": "2026-12-15",
+  "lines": [
+   {
+    "sku": "HD-100",
+    "color": "Navy",
+    "size": "M",
+    "qty": 1,
+    "unit_price": 18
+   },
+   {
+    "sku": "HD-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 1,
+    "unit_price": 18
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 15,
+ "llm_calls": 15,
+ "seconds": 12.6,
+ "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -181,77 +204,35 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "Customer is correctly specified as Blue Ridge Schools."
-    ],
-    "po_lines": [
-     "HD-100 | Navy | M | 1 | 18.00",
-     "HD-100 | Navy | L | 1 | 18.00"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 16,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Customer is correctly listed as Blue Ridge Schools."
-    ],
-    "po_lines": [
-     "HD-100 | Navy | M | 1 | 18.00",
-     "HD-100 | Navy | L | 1 | 18.00"
-    ]
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 17,
-   "action": {
-    "action": "fill",
-    "id": "e2",
-    "value": "Blue Ridge Schools"
-   },
-   "raw": null,
-   "result": "e2 is a select, not a text field."
-  },
-  {
-   "step": 18,
-   "action": {
-    "action": "select",
-    "id": "e2",
-    "value": "Blue Ridge Schools"
-   },
-   "raw": null,
-   "result": "Selected \"Blue Ridge Schools\" in e2 (\"Account\")."
-  },
-  {
-   "step": 19,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Customer is correctly listed as Blue Ridge Schools."
-    ],
-    "po_lines": [
-     "HD-100 | Navy | M | 1 | 18.00",
-     "HD-100 | Navy | L | 1 | 18.00"
-    ]
-   },
-   "result": "escalated by verifier"
+   "result": "Clicked e11 (\"Place Order\")."
   }
  ],
  "final_form": {
@@ -276,7 +257,18 @@
     "Color": "Navy",
     "Price Each": "18.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

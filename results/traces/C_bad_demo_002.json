@@ -2,6 +2,8 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "002",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "correct",
@@ -32,8 +34,8 @@
   "notes": ""
  },
  "steps": 15,
- "llm_calls": 16,
- "seconds": 14.7,
+ "llm_calls": 15,
+ "seconds": 12.0,
  "verifier_interventions": 0,
  "skill_flagged": [
   {
@@ -229,10 +231,30 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "PN-100 | Royal Blue | N/A | 100 | 0.45",
-     "NB-100 | Navy | N/A | 50 | 2.40"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2207",
+     "ship_by": "2026-12-12",
+     "lines": [
+      {
+       "sku": "PN-100",
+       "color": "Royal Blue",
+       "size": "N/A",
+       "qty": 100,
+       "unit_price": 0.45
+      },
+      {
+       "sku": "NB-100",
+       "color": "Navy",
+       "size": "N/A",
+       "qty": 50,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -259,7 +281,18 @@
     "Quantity": "50",
     "Unit Price": "2.40"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

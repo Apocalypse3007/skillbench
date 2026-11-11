@@ -2,17 +2,19 @@
  "config": "C",
  "condition": "normal",
  "po": "017",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The SKU 'ST-999' is not listed in the catalog. The product cannot be entered correctly.",
+ "reason": "The form line 'TB-200 Silver N/A qty 200 @ 3.20' is not valid as TB-200 does not come in Silver. The correct product for Silver is NB-100 Spiral Notebook.",
  "order": null,
- "steps": 11,
+ "steps": 12,
  "llm_calls": 12,
- "seconds": 10.2,
+ "seconds": 9.6,
  "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -67,15 +69,24 @@
   {
    "step": 4,
    "action": {
-    "action": "fill",
-    "id": "e4",
-    "value": "ST-999"
+    "action": "click",
+    "id": "e9"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"ST-999\"."
+   "result": "Clicked e9 (\"Add Line Item\")."
   },
   {
    "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "TB-200"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"TB-200\"."
+  },
+  {
+   "step": 6,
    "action": {
     "action": "select",
     "id": "e5",
@@ -85,7 +96,7 @@
    "result": "Selected \"Silver\" in e5 (\"Color\")."
   },
   {
-   "step": 6,
+   "step": 7,
    "action": {
     "action": "select",
     "id": "e6",
@@ -95,7 +106,7 @@
    "result": "Selected \"N/A\" in e6 (\"Size\")."
   },
   {
-   "step": 7,
+   "step": 8,
    "action": {
     "action": "fill",
     "id": "e7",
@@ -105,17 +116,17 @@
    "result": "Filled e7 (\"Quantity\") with \"200\"."
   },
   {
-   "step": 8,
+   "step": 9,
    "action": {
     "action": "fill",
     "id": "e8",
-    "value": "9.80"
+    "value": "3.20"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"9.80\"."
+   "result": "Filled e8 (\"Unit Price\") with \"3.20\"."
   },
   {
-   "step": 9,
+   "step": 10,
    "action": {
     "action": "click",
     "id": "e9"
@@ -124,7 +135,7 @@
    "result": "Clicked e9 (\"Add Line Item\")."
   },
   {
-   "step": 10,
+   "step": 11,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -132,21 +143,37 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Product ST-999 is not listed in the catalog."
+     "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
+     "Form line 'TB-200 Silver N/A qty 200 @ 3.20' is not in the PO",
+     "PO asks for 'NB-100 Silver N/A qty 200 @ 2.4' but the form has no such line"
     ],
-    "po_lines": [
-     "ST-999 | Silver | N/A | 200 | 9.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5561",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "NB-100",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
-   "step": 11,
+   "step": 12,
    "action": {
     "action": "escalate",
-    "reason": "The SKU 'ST-999' is not listed in the catalog. The product cannot be entered correctly."
+    "reason": "The form line 'TB-200 Silver N/A qty 200 @ 3.20' is not valid as TB-200 does not come in Silver. The correct product for Silver is NB-100 Spiral Notebook."
    },
    "raw": null,
    "result": "escalated"
@@ -161,13 +188,24 @@
   },
   "line_items": [
    {
-    "SKU": "ST-999",
+    "SKU": "TB-200",
     "Color": "Silver",
     "Size": "N/A",
     "Quantity": "200",
-    "Unit Price": "9.80"
+    "Unit Price": "3.20"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

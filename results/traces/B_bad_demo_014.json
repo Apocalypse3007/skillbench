@@ -2,38 +2,19 @@
  "config": "B",
  "condition": "bad_demo",
  "po": "014",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
- "outcome": "correct",
- "field_accuracy": 1.0,
- "end": "submitted",
- "escalated_by": null,
- "reason": null,
- "order": {
-  "customer": "Redline Robotics",
-  "po_number": "RR-1123",
-  "ship_by": "2026-12-15",
-  "lines": [
-   {
-    "sku": "LY-100",
-    "color": "Royal Blue",
-    "size": "N/A",
-    "qty": 150,
-    "unit_price": 0.95
-   },
-   {
-    "sku": "CP-100",
-    "color": "Black",
-    "size": "N/A",
-    "qty": 40,
-    "unit_price": 7
-   }
-  ],
-  "notes": ""
- },
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "agent",
+ "reason": "The unit price for CP-100 Black N/A is incorrectly set to 7.50, but the PO specifies a price of 7.00. The catalog price for CP-100 is 7.50, so the PO's price is incorrect. The order cannot be entered correctly as per the rules.",
+ "order": null,
  "steps": 17,
- "llm_calls": 19,
- "seconds": 19.1,
+ "llm_calls": 17,
+ "seconds": 14.5,
  "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -223,12 +204,32 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Unit price for CP-100 in the form is $7.50, but the PO specifies $7.00. Please update the unit price to match the PO."
+     "Line CP-100 Black N/A: form has qty 40 @ 7.50, PO says qty 40 @ 7.0"
     ],
-    "po_lines": [
-     "LY-100 | Royal Blue | N/A | 150 | 0.95",
-     "CP-100 | Black | N/A | 40 | 7.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Redline Robotics",
+     "po_number": "RR-1123",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "LY-100",
+       "color": "Royal Blue",
+       "size": "N/A",
+       "qty": 150,
+       "unit_price": 0.95
+      },
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 7.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -237,28 +238,19 @@
    "action": {
     "action": "fill",
     "id": "e16",
-    "value": "7.00"
+    "value": "7.50"
    },
    "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"7.00\"."
+   "result": "Filled e16 (\"Unit Price\") with \"7.50\"."
   },
   {
    "step": 17,
    "action": {
-    "action": "submit",
-    "id": "e11"
+    "action": "escalate",
+    "reason": "The unit price for CP-100 Black N/A is incorrectly set to 7.50, but the PO specifies a price of 7.00. The catalog price for CP-100 is 7.50, so the PO's price is incorrect. The order cannot be entered correctly as per the rules."
    },
    "raw": null,
-   "verdict": {
-    "ok": true,
-    "escalate": false,
-    "issues": [],
-    "po_lines": [
-     "LY-100 | Royal Blue | N/A | 150 | 0.95",
-     "CP-100 | Black | N/A | 40 | 7.00"
-    ]
-   },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "escalated"
   }
  ],
  "final_form": {
@@ -281,9 +273,20 @@
     "Color": "Black",
     "Size": "N/A",
     "Quantity": "40",
-    "Unit Price": "7.00"
+    "Unit Price": "7.50"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

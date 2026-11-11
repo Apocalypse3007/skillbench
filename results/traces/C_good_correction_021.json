@@ -1,0 +1,297 @@
+{
+ "config": "C",
+ "condition": "good_correction",
+ "po": "021",
+ "split": "heldout",
+ "verifier": "v2",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0950",
+  "ship_by": "2027-01-10",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 200,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "NB-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 100,
+    "unit_price": 2.4
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 15,
+ "llm_calls": 15,
+ "seconds": 11.7,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "correction": {
+  "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
+  "accepted": true,
+  "reason": "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+ },
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter one line per size and check that every listed size has been entered.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Order PD-0950\n\nHello,\n\nPinecrest Dental, PO PD-0950, ship by 2027-01-10.\n\n- PN-100 Ballpoint Pen, Black: 200\n- NB-100 Spiral Notebook, Black: 100\n\nThanks,\nPriya Natarajan\n",
+ "truth": {
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0950",
+  "ship_by": "2027-01-10",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 200,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "NB-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 100,
+    "unit_price": 2.4
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Pinecrest Dental"
+   },
+   "raw": null,
+   "result": "Selected \"Pinecrest Dental\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "PD-0950"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"PD-0950\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2027-01-10"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2027-01-10\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "PN-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"PN-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "200"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"200\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "0.45"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"0.45\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "NB-100"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"NB-100\"."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e13 (\"Color\")."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "100"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"100\"."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "2.40"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"2.40\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0950",
+     "ship_by": "2027-01-10",
+     "lines": [
+      {
+       "sku": "PN-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 0.45
+      },
+      {
+       "sku": "NB-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 100,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Pinecrest Dental",
+   "PO Number": "PD-0950",
+   "Ship By": "2027-01-10",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "PN-100",
+    "Color": "Black",
+    "Size": "N/A",
+    "Quantity": "200",
+    "Unit Price": "0.45"
+   },
+   {
+    "SKU": "NB-100",
+    "Color": "Black",
+    "Size": "N/A",
+    "Quantity": "100",
+    "Unit Price": "2.40"
+   }
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
+ },
+ "error": null
+}

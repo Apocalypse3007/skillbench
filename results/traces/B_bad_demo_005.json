@@ -2,18 +2,20 @@
  "config": "B",
  "condition": "bad_demo",
  "po": "005",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "false_escalation",
  "field_accuracy": null,
  "end": "escalated",
- "escalated_by": "agent",
- "reason": "The form has multiple line items with blank fields, and the unit price in line 1 is already correctly set to the catalog price. The order cannot be submitted correctly without removing the unnecessary line items.",
+ "escalated_by": "verifier",
+ "reason": "Line 2: duplicate of an earlier line (PL-100 Navy L); Line PL-100 Navy L: form has qty 25 @ 14.00, PO says qty 25 @ 13.0; Form line 'PL-100 Navy L qty 25 @ 14.00' is not in the PO",
  "order": null,
- "steps": 15,
- "llm_calls": 17,
- "seconds": 16.3,
- "verifier_interventions": 2,
+ "steps": 18,
+ "llm_calls": 18,
+ "seconds": 15.4,
+ "verifier_interventions": 3,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -145,11 +147,25 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Unit price in form (14.00) does not match quoted price in PO ($13.00)"
+     "Line PL-100 Navy L: form has qty 25 @ 14.00, PO says qty 25 @ 13.0"
     ],
-    "po_lines": [
-     "PL-100 | Navy | L | 25 | 14.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7781",
+     "ship_by": "2027-01-15",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 25,
+       "unit_price": 13.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -178,40 +194,113 @@
      "Line 2: Color is blank",
      "Line 2: Size is blank",
      "Line 2: Quantity is blank",
-     "Line 2 has blank fields for SKU, Color, Size, and Quantity, which is unnecessary and should be removed."
+     "Line PL-100 Navy L: form has qty 25 @ 14.00, PO says qty 25 @ 13.0",
+     "Form line '(blank) (blank) (blank) qty (blank) @ 14.00' is not in the PO"
     ],
-    "po_lines": [
-     "PL-100 | Navy | L | 25 | 14.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7781",
+     "ship_by": "2027-01-15",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 25,
+       "unit_price": 13.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 13,
    "action": {
-    "action": "click",
-    "id": "e9"
+    "action": "fill",
+    "id": "e12",
+    "value": "PL-100"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Filled e12 (\"SKU\") with \"PL-100\"."
   },
   {
    "step": 14,
    "action": {
-    "action": "click",
-    "id": "e9"
+    "action": "fill",
+    "id": "e13",
+    "value": "Navy"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "e13 is a select, not a text field."
   },
   {
    "step": 15,
    "action": {
-    "action": "escalate",
-    "reason": "The form has multiple line items with blank fields, and the unit price in line 1 is already correctly set to the catalog price. The order cannot be submitted correctly without removing the unnecessary line items."
+    "action": "select",
+    "id": "e13",
+    "value": "Navy"
    },
    "raw": null,
-   "result": "escalated"
+   "result": "Selected \"Navy\" in e13 (\"Color\")."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e14 (\"Size\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "25"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"25\"."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 2: duplicate of an earlier line (PL-100 Navy L)",
+     "Line PL-100 Navy L: form has qty 25 @ 14.00, PO says qty 25 @ 13.0",
+     "Form line 'PL-100 Navy L qty 25 @ 14.00' is not in the PO"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7781",
+     "ship_by": "2027-01-15",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 25,
+       "unit_price": 13.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "escalated by verifier"
   }
  ],
  "final_form": {
@@ -230,13 +319,24 @@
     "Unit Price": "14.00"
    },
    {
-    "SKU": "(blank)",
-    "Color": "(blank)",
-    "Size": "(blank)",
-    "Quantity": "(blank)",
+    "SKU": "PL-100",
+    "Color": "Navy",
+    "Size": "L",
+    "Quantity": "25",
     "Unit Price": "14.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

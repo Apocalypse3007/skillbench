@@ -2,17 +2,19 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "017",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "Product WB-100 is not listed in the catalog. The order cannot be entered correctly without the correct SKU.",
+ "reason": "The SKU 'WB-100' is not found in the catalog. The correct SKU for the product mentioned in the PO is not available.",
  "order": null,
  "steps": 11,
- "llm_calls": 12,
- "seconds": 10.5,
+ "llm_calls": 11,
+ "seconds": 8.8,
  "verifier_interventions": 1,
  "skill_flagged": [
   {
@@ -138,13 +140,29 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Product WB-100 is not listed in the catalog"
+     "Line 1: product code 'WB-100' is not in the catalog",
+     "Form line 'WB-100 Silver N/A qty 200 @ 15.00' is not in the PO",
+     "PO asks for 'NB-100 Silver N/A qty 200 @ 2.4' but the form has no such line"
     ],
-    "po_lines": [
-     "WB-100 | Silver | N/A | 200 | 15.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5561",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "NB-100",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -152,7 +170,7 @@
    "step": 11,
    "action": {
     "action": "escalate",
-    "reason": "Product WB-100 is not listed in the catalog. The order cannot be entered correctly without the correct SKU."
+    "reason": "The SKU 'WB-100' is not found in the catalog. The correct SKU for the product mentioned in the PO is not available."
    },
    "raw": null,
    "result": "escalated"
@@ -173,7 +191,18 @@
     "Quantity": "200",
     "Unit Price": "15.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

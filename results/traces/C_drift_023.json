@@ -1,0 +1,441 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "023",
+ "split": "heldout",
+ "verifier": "v2",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "Line 1: PN-200 does not come in Red (options: Silver, Black); Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90); ship by: form has '2026-11-04', PO says '2027-01-04'; Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO",
+ "order": null,
+ "steps": 24,
+ "llm_calls": 24,
+ "seconds": 22.4,
+ "verifier_interventions": 3,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Q1 branch supplies\n\nSummit Credit Union - PO SCU-7840\n\nhalf a gross of red ballpoint pens\n3 dozen silver travel tumblers ($9.50 each per our quote)\n\nship by the 4th of January, 2027\nOwen\n",
+ "truth": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7840",
+  "ship_by": "2027-01-04",
+  "lines": [
+   {
+    "sku": "PN-100",
+    "color": "Red",
+    "size": "N/A",
+    "qty": 72,
+    "unit_price": 0.45
+   },
+   {
+    "sku": "MG-200",
+    "color": "Silver",
+    "size": "N/A",
+    "qty": 36,
+    "unit_price": 9.5
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Summit Credit Union"
+   },
+   "raw": null,
+   "result": "Selected \"Summit Credit Union\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "SCU-7840"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"SCU-7840\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-11-04"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-11-04\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "24"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"24\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "PN-200"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"PN-200\"."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Red"
+   },
+   "raw": null,
+   "result": "Selected \"Red\" in e7 (\"Color\")."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "0.45"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"0.45\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "36"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"36\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "MG-200"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"MG-200\"."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Silver"
+   },
+   "raw": null,
+   "result": "Selected \"Silver\" in e15 (\"Color\")."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "9.50"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"9.50\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 1: PN-200 does not come in Red (options: Silver, Black)",
+     "Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90)",
+     "ship by: form has '2026-11-04', PO says '2027-01-04'",
+     "Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO",
+     "PO asks for 'PN-100 Red N/A qty 72 @ 0.45' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7840",
+     "ship_by": "2027-01-04",
+     "lines": [
+      {
+       "sku": "PN-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 72,
+       "unit_price": 0.45
+      },
+      {
+       "sku": "MG-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 36,
+       "unit_price": 9.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e18",
+    "value": "PN-100"
+   },
+   "raw": null,
+   "result": "Filled e18 (\"Item Code\") with \"PN-100\"."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "select",
+    "id": "e20",
+    "value": "Red"
+   },
+   "raw": null,
+   "result": "Selected \"Red\" in e20 (\"Color\")."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "fill",
+    "id": "e19",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "e19 is a select, not a text field."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e19 (\"Size\")."
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "0.45"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Price Each\") with \"0.45\"."
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 3: Units is blank",
+     "Line 1: PN-200 does not come in Red (options: Silver, Black)",
+     "Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90)",
+     "ship by: form has '2026-11-04', PO says '2027-01-04'",
+     "Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO",
+     "Line PN-100 Red N/A: form has qty (blank) @ 0.45, PO says qty 72 @ 0.45"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7840",
+     "ship_by": "2027-01-04",
+     "lines": [
+      {
+       "sku": "PN-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 72,
+       "unit_price": 0.45
+      },
+      {
+       "sku": "MG-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 36,
+       "unit_price": 9.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 23,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "72"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"Units\") with \"72\"."
+  },
+  {
+   "step": 24,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 1: PN-200 does not come in Red (options: Silver, Black)",
+     "Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90)",
+     "ship by: form has '2026-11-04', PO says '2027-01-04'",
+     "Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7840",
+     "ship_by": "2027-01-04",
+     "lines": [
+      {
+       "sku": "PN-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 72,
+       "unit_price": 0.45
+      },
+      {
+       "sku": "MG-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 36,
+       "unit_price": 9.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "SCU-7840",
+   "Account": "Summit Credit Union",
+   "Required Date": "2026-11-04",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "24",
+    "Item Code": "PN-200",
+    "Size": "N/A",
+    "Color": "Red",
+    "Price Each": "0.45"
+   },
+   {
+    "Units": "36",
+    "Item Code": "MG-200",
+    "Size": "N/A",
+    "Color": "Silver",
+    "Price Each": "9.50"
+   },
+   {
+    "Units": "72",
+    "Item Code": "PN-100",
+    "Size": "N/A",
+    "Color": "Red",
+    "Price Each": "0.45"
+   }
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
+ },
+ "error": null
+}

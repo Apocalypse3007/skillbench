@@ -2,6 +2,8 @@
  "config": "B",
  "condition": "drift",
  "po": "004",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
  "outcome": "correct",
@@ -32,8 +34,8 @@
   "notes": ""
  },
  "steps": 17,
- "llm_calls": 19,
- "seconds": 18.6,
+ "llm_calls": 17,
+ "seconds": 14.0,
  "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -223,13 +225,32 @@
     "escalate": false,
     "issues": [
      "Line 2: Units is blank",
-     "Line 2: Units is blank, but the PO specifies 30 units",
-     "Line 2: Price Each is 0.95, which matches the catalog price for LY-100 Red"
+     "Line LY-100 Red N/A: form has qty (blank) @ 0.95, PO says qty 30 @ 0.95"
     ],
-    "po_lines": [
-     "CP-100 | Black | N/A | 30 | 7.50",
-     "LY-100 | Red | N/A | 30 | 0.95"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3301",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 7.5
+      },
+      {
+       "sku": "LY-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 0.95
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -254,10 +275,30 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "CP-100 | Black | N/A | 30 | 7.50",
-     "LY-100 | Red | N/A | 30 | 0.95"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Northwind Events",
+     "po_number": "NWE-3301",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 7.5
+      },
+      {
+       "sku": "LY-100",
+       "color": "Red",
+       "size": "N/A",
+       "qty": 30,
+       "unit_price": 0.95
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Place Order\")."
   }
@@ -284,7 +325,18 @@
     "Color": "Red",
     "Price Each": "0.95"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

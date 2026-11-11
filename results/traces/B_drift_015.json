@@ -2,18 +2,20 @@
  "config": "B",
  "condition": "drift",
  "po": "015",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "false_escalation",
+ "outcome": "timeout_error",
  "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "PO number in form (PO-48301) matches the PO number in the PO.; Customer in form (Acme Corp) matches the customer in the PO.; Required Date in form (2026-12-10) matches the ship date in the PO.; Line 1: Item Code (HD-100) matches the PO.; Line 1: Color (Black) matches the PO.; Line 1: Size (M) matches the PO.; Line 1: Quantity (12) matches the PO.; Line 1: Unit price (18.00) matches the catalog price.; Line 2: Item Code (MG-100) matches the PO.; Line 2: Color (White) matches the PO.; Line 2: Size (N/A) matches the PO.; Line 2: Quantity (12) matches the PO.; Line 2: Unit price (3.75) matches the catalog price.; Line 3: Item Code (HD-100) matches the PO.; Line 3: Color (Black) matches the PO.; Line 3: Size (L) matches the PO.; Line 3: Quantity (12) matches the PO.; Line 3: Unit price (18.00) matches the catalog price.",
+ "end": "timeout",
+ "escalated_by": null,
+ "reason": null,
  "order": null,
- "steps": 24,
- "llm_calls": 27,
- "seconds": 45.7,
- "verifier_interventions": 3,
+ "steps": 30,
+ "llm_calls": 30,
+ "seconds": 29.9,
+ "verifier_interventions": 2,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -209,17 +211,35 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Missing line for HD-100 Black L (PO specifies 12 in L)",
-     "Form line 2 has 12 units for MG-100, but PO specifies 100 units",
-     "Form line 2 has Price Each=3.75, which matches catalog price but does not match PO's implied price (not specified)"
+     "Form line 'MG-100 White N/A qty 12 @ 3.75' is not in the PO",
+     "PO asks for 'HD-100 Black L qty 12 @ 18.0' but the form has no such line"
     ],
-    "po_lines": [
-     "HD-100 | Black | M | 12 | 18.00",
-     "HD-100 | Black | L | 12 | 18.00",
-     "MG-100 | White | N/A | 100 | 3.75"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48301",
+     "ship_by": "2026-12-10",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "M",
+       "qty": 12,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 12,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -293,70 +313,101 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "PO number in form (PO-48301) matches the PO number in the PO.",
-     "Customer in form (Acme Corp) matches the customer in the PO.",
-     "Required Date in form (2026-12-10) matches the ship by date in the PO.",
-     "Line 1: Item Code (HD-100) matches the PO.",
-     "Line 1: Color (Black) matches the PO.",
-     "Line 1: Size (M) matches the PO.",
-     "Line 1: Quantity (12) matches the PO.",
-     "Line 1: Unit price (18.00) matches the catalog price.",
-     "Line 2: Item Code (MG-100) matches the PO.",
-     "Line 2: Color (White) matches the PO.",
-     "Line 2: Size (N/A) matches the PO.",
-     "Line 2: Quantity (12) matches the PO.",
-     "Line 2: Unit price (3.75) matches the catalog price.",
-     "Line 3: Item Code (HD-100) matches the PO.",
-     "Line 3: Color (Black) matches the PO.",
-     "Line 3: Size (L) matches the PO.",
-     "Line 3: Quantity (12) matches the PO.",
-     "Line 3: Unit price (18.00) matches the catalog price."
+     "Form line 'MG-100 White N/A qty 12 @ 3.75' is not in the PO"
     ],
-    "po_lines": [
-     "HD-100 | Black | M | 12 | 18.00",
-     "HD-100 | Black | L | 12 | 18.00",
-     "MG-100 | White | N/A | 12 | 3.75"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48301",
+     "ship_by": "2026-12-10",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "M",
+       "qty": 12,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 12,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 24,
    "action": {
-    "action": "submit",
-    "id": "e11"
+    "action": "click",
+    "id": "e10"
    },
    "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "PO number in form (PO-48301) matches the PO number in the PO.",
-     "Customer in form (Acme Corp) matches the customer in the PO.",
-     "Required Date in form (2026-12-10) matches the ship date in the PO.",
-     "Line 1: Item Code (HD-100) matches the PO.",
-     "Line 1: Color (Black) matches the PO.",
-     "Line 1: Size (M) matches the PO.",
-     "Line 1: Quantity (12) matches the PO.",
-     "Line 1: Unit price (18.00) matches the catalog price.",
-     "Line 2: Item Code (MG-100) matches the PO.",
-     "Line 2: Color (White) matches the PO.",
-     "Line 2: Size (N/A) matches the PO.",
-     "Line 2: Quantity (12) matches the PO.",
-     "Line 2: Unit price (3.75) matches the catalog price.",
-     "Line 3: Item Code (HD-100) matches the PO.",
-     "Line 3: Color (Black) matches the PO.",
-     "Line 3: Size (L) matches the PO.",
-     "Line 3: Quantity (12) matches the PO.",
-     "Line 3: Unit price (18.00) matches the catalog price."
-    ],
-    "po_lines": [
-     "HD-100 | Black | M | 12 | 18.00",
-     "HD-100 | Black | L | 12 | 18.00",
-     "MG-100 | White | N/A | 12 | 3.75"
-    ]
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 25,
+   "action": {
+    "action": "click",
+    "id": "e10"
    },
-   "result": "escalated by verifier"
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 26,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 27,
+   "action": {
+    "action": "fill",
+    "id": "e22",
+    "value": "12"
+   },
+   "raw": null,
+   "result": "Filled e22 (\"Units\") with \"12\"."
+  },
+  {
+   "step": 28,
+   "action": {
+    "action": "fill",
+    "id": "e23",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e23 (\"Item Code\") with \"HD-100\"."
+  },
+  {
+   "step": 29,
+   "action": {
+    "action": "select",
+    "id": "e24",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e24 (\"Size\")."
+  },
+  {
+   "step": 30,
+   "action": {
+    "action": "select",
+    "id": "e25",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e25 (\"Color\")."
   }
  ],
  "final_form": {
@@ -387,8 +438,26 @@
     "Size": "L",
     "Color": "Black",
     "Price Each": "18.00"
+   },
+   {
+    "Units": "12",
+    "Item Code": "HD-100",
+    "Size": "N/A",
+    "Color": "Black",
+    "Price Each": "(blank)"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

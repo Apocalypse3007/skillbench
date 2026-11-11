@@ -1,0 +1,372 @@
+{
+ "config": "C",
+ "condition": "drift",
+ "po": "009",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "PO number matches the form's PO #: PO-48250; Customer matches the form's account: Acme Corp; Required date matches the form's required date: 2026-12-01; No issues found in the line items",
+ "order": null,
+ "steps": 24,
+ "llm_calls": 27,
+ "seconds": 32.4,
+ "verifier_interventions": 3,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Select the color as specified in the PO.",
+  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
+  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
+  "Enter the unit price from the PO. If no price is given, use the catalog price.",
+  "Add a line item for each product/color/size combination specified in the PO.",
+  "Submit the order only after verifying that all line items match the PO exactly."
+ ],
+ "po_text": "Subject: re: tees for the sales kickoff\n\nDana from Acme again. PO-48250 for navy classic tees:\n15 M, 15 L, 10 XL. We negotiated $3.80 each on this one.\nNeeds to ship by the 1st of December 2026.\n",
+ "truth": {
+  "customer": "Acme Corp",
+  "po_number": "PO-48250",
+  "ship_by": "2026-12-01",
+  "lines": [
+   {
+    "sku": "TS-100",
+    "color": "Navy",
+    "size": "M",
+    "qty": 15,
+    "unit_price": 3.8
+   },
+   {
+    "sku": "TS-100",
+    "color": "Navy",
+    "size": "L",
+    "qty": 15,
+    "unit_price": 3.8
+   },
+   {
+    "sku": "TS-100",
+    "color": "Navy",
+    "size": "XL",
+    "qty": 10,
+    "unit_price": 3.8
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Acme Corp"
+   },
+   "raw": null,
+   "result": "Selected \"Acme Corp\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "PO-48250"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"PO-48250\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-01"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-01\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "15"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"15\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "TS-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"TS-100\"."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e7 (\"Color\")."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.80"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"3.80\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "15"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"Units\") with \"15\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "fill",
+    "id": "e13",
+    "value": "TS-100"
+   },
+   "raw": null,
+   "result": "Filled e13 (\"Item Code\") with \"TS-100\"."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e15",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e15 (\"Color\")."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "3.80"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Price Each\") with \"3.80\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "10"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"Units\") with \"10\"."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "fill",
+    "id": "e18",
+    "value": "TS-100"
+   },
+   "raw": null,
+   "result": "Filled e18 (\"Item Code\") with \"TS-100\"."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e19 (\"Size\")."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "select",
+    "id": "e20",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e20 (\"Color\")."
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 3: Price Each is blank",
+     "Line 3: Price Each is blank, but the PO specifies $3.80 each"
+    ],
+    "po_lines": [
+     "TS-100 | Navy | M | 15 | 3.80",
+     "TS-100 | Navy | L | 15 | 3.80",
+     "TS-100 | Navy | XL | 10 | 3.80"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "3.80"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Price Each\") with \"3.80\"."
+  },
+  {
+   "step": 23,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO number matches the form's PO #: PO-48250",
+     "Customer matches the form's account: Acme Corp",
+     "Required date matches the form's date: 2026-12-01",
+     "No issues found in the line items"
+    ],
+    "po_lines": [
+     "TS-100 | Navy | M | 15 | 3.80",
+     "TS-100 | Navy | L | 15 | 3.80",
+     "TS-100 | Navy | XL | 10 | 3.80"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 24,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO number matches the form's PO #: PO-48250",
+     "Customer matches the form's account: Acme Corp",
+     "Required date matches the form's required date: 2026-12-01",
+     "No issues found in the line items"
+    ],
+    "po_lines": [
+     "TS-100 | Navy | M | 15 | 3.80",
+     "TS-100 | Navy | L | 15 | 3.80",
+     "TS-100 | Navy | XL | 10 | 3.80"
+    ]
+   },
+   "result": "escalated by verifier"
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "PO-48250",
+   "Account": "Acme Corp",
+   "Required Date": "2026-12-01",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "15",
+    "Item Code": "TS-100",
+    "Size": "M",
+    "Color": "Navy",
+    "Price Each": "3.80"
+   },
+   {
+    "Units": "15",
+    "Item Code": "TS-100",
+    "Size": "L",
+    "Color": "Navy",
+    "Price Each": "3.80"
+   },
+   {
+    "Units": "10",
+    "Item Code": "TS-100",
+    "Size": "XL",
+    "Color": "Navy",
+    "Price Each": "3.80"
+   }
+  ]
+ },
+ "error": null
+}

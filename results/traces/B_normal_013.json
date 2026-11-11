@@ -2,17 +2,19 @@
  "config": "B",
  "condition": "normal",
  "po": "013",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
  "outcome": "false_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "verifier",
- "reason": "Missing line for 2XL Heather Gray TS-200 (PO specifies 2XL x 15); Line 2 in form has incorrect size (XL vs. 2XL)",
+ "reason": "Line TS-200 Heather Gray XL: form has qty 10 @ 6.50, PO says qty 15 @ 6.5; PO asks for 'TS-200 Heather Gray 2XL qty 10 @ 6.5' but the form has no such line",
  "order": null,
  "steps": 20,
- "llm_calls": 23,
- "seconds": 26.9,
+ "llm_calls": 21,
+ "seconds": 21.4,
  "verifier_interventions": 3,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -209,34 +211,62 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Line 2 in the form has an incorrect quantity: the PO specifies 2XL x 10 and XL x 15, totaling 25 units, but the form shows 25 units for 2XL only."
+     "Line TS-200 Heather Gray 2XL: form has qty 25 @ 6.50, PO says qty 10 @ 6.5",
+     "PO asks for 'TS-200 Heather Gray XL qty 15 @ 6.5' but the form has no such line"
     ],
-    "po_lines": [
-     "MG-200 | Navy | N/A | 75 | 9.80",
-     "TS-200 | Heather Gray | 2XL | 25 | 6.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7802",
+     "ship_by": "2026-12-03",
+     "lines": [
+      {
+       "sku": "MG-200",
+       "color": "Navy",
+       "size": "N/A",
+       "qty": 75,
+       "unit_price": 9.8
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "2XL",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "XL",
+       "qty": 15,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 16,
    "action": {
-    "action": "select",
-    "id": "e14",
-    "value": "XL"
+    "action": "fill",
+    "id": "e15",
+    "value": "10"
    },
    "raw": null,
-   "result": "Selected \"XL\" in e14 (\"Size\")."
+   "result": "Filled e15 (\"Quantity\") with \"10\"."
   },
   {
    "step": 17,
    "action": {
     "action": "fill",
     "id": "e15",
-    "value": "15"
+    "value": "10"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"15\"."
+   "result": "Filled e15 (\"Quantity\") with \"10\"."
   },
   {
    "step": 18,
@@ -247,26 +277,53 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Line 2 in the form has a quantity of 15 for XL, but the PO specifies 2XL x 10 and XL x 15. The form is missing the 2XL quantity."
+     "PO asks for 'TS-200 Heather Gray XL qty 15 @ 6.5' but the form has no such line"
     ],
-    "po_lines": [
-     "MG-200 | Navy | N/A | 75 | 9.80",
-     "TS-200 | Heather Gray | XL | 15 | 6.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7802",
+     "ship_by": "2026-12-03",
+     "lines": [
+      {
+       "sku": "MG-200",
+       "color": "Navy",
+       "size": "N/A",
+       "qty": 75,
+       "unit_price": 9.8
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "2XL",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "XL",
+       "qty": 15,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 19,
    "action": {
-    "action": "fill",
-    "id": "e15",
-    "value": "10"
+    "action": "select",
+    "id": "e14",
+    "value": "XL"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"10\"."
+   "result": "Selected \"XL\" in e14 (\"Size\")."
   },
   {
    "step": 20,
@@ -279,14 +336,40 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Missing line for 2XL Heather Gray TS-200 (PO specifies 2XL x 15)",
-     "Line 2 in form has incorrect size (XL vs. 2XL)"
+     "Line TS-200 Heather Gray XL: form has qty 10 @ 6.50, PO says qty 15 @ 6.5",
+     "PO asks for 'TS-200 Heather Gray 2XL qty 10 @ 6.5' but the form has no such line"
     ],
-    "po_lines": [
-     "MG-200 | Navy | N/A | 75 | 9.80",
-     "TS-200 | Heather Gray | XL | 10 | 6.50",
-     "TS-200 | Heather Gray | 2XL | 15 | 6.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7802",
+     "ship_by": "2026-12-03",
+     "lines": [
+      {
+       "sku": "MG-200",
+       "color": "Navy",
+       "size": "N/A",
+       "qty": 75,
+       "unit_price": 9.8
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "2XL",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "XL",
+       "qty": 15,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "escalated by verifier"
   }
@@ -313,7 +396,18 @@
     "Quantity": "10",
     "Unit Price": "6.50"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

@@ -1,0 +1,179 @@
+{
+ "config": "A",
+ "condition": "drift",
+ "po": "016",
+ "form": "v2",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0057",
+  "ship_by": "2026-12-22",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 36,
+    "unit_price": 3.6
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 10,
+ "llm_calls": 10,
+ "seconds": 7.6,
+ "verifier_interventions": 0,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: Fwd: mugs reorder\n\nSame mugs as before but black this time. New PO LBC-0057, Lakeside Brewing Co.\n36 black MG-100 mugs, price $3.60 each. Ship by 2026-12-22.\n\nTom\nLakeside Brewing Co | Order desk ext 4415 | Ref acct #88-210\n\n---------- Forwarded message ---------\nSubject: mugs\nPO LBC-0031 - 48 White MG-100 mugs at $3.40, ship by 2026-09-01\n",
+ "truth": {
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0057",
+  "ship_by": "2026-12-22",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 36,
+    "unit_price": 3.6
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Lakeside Brewing Co"
+   },
+   "raw": null,
+   "result": "Selected \"Lakeside Brewing Co\" in e2 (\"Account\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "LBC-0057"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"LBC-0057\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-22"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-22\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e5",
+    "value": "MG-100"
+   },
+   "raw": null,
+   "result": "Filled e5 (\"Item Code\") with \"MG-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e7",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e7 (\"Color\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "36"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"Units\") with \"36\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.60"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Price Each\") with \"3.60\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e10"
+   },
+   "raw": null,
+   "result": "Clicked e10 (\"+ New Row\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "result": "Clicked e11 (\"Place Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer PO #": "LBC-0057",
+   "Account": "Lakeside Brewing Co",
+   "Required Date": "2026-12-22",
+   "Order Comments": "(blank)"
+  },
+  "line_items": [
+   {
+    "Units": "36",
+    "Item Code": "MG-100",
+    "Size": "N/A",
+    "Color": "Black",
+    "Price Each": "3.60"
+   }
+  ]
+ },
+ "error": null
+}

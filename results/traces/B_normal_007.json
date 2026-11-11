@@ -2,6 +2,8 @@
  "config": "B",
  "condition": "normal",
  "po": "007",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
  "outcome": "correct",
@@ -39,8 +41,8 @@
   "notes": ""
  },
  "steps": 23,
- "llm_calls": 25,
- "seconds": 24.5,
+ "llm_calls": 24,
+ "seconds": 24.3,
  "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -247,13 +249,39 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Missing line for L size in form (expected 20 units)"
+     "PO asks for 'TS-200 White L qty 20 @ 6.5' but the form has no such line"
     ],
-    "po_lines": [
-     "TS-200 | White | S | 10 | 6.50",
-     "TS-200 | White | M | 20 | 6.50",
-     "TS-200 | White | L | 20 | 6.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5520",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "S",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "M",
+       "qty": 20,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "L",
+       "qty": 20,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -327,11 +355,37 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "TS-200 | White | S | 10 | 6.50",
-     "TS-200 | White | M | 20 | 6.50",
-     "TS-200 | White | L | 20 | 6.50"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5520",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "S",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "M",
+       "qty": 20,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "White",
+       "size": "L",
+       "qty": 20,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -365,7 +419,18 @@
     "Quantity": "20",
     "Unit Price": "6.50"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

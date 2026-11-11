@@ -2,18 +2,20 @@
  "config": "C",
  "condition": "drift",
  "po": "020",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The customer account 'Harbor City Marathon' is not in the known customer accounts list, and the PO number 'GPL-0019' is not found in the catalog. The order cannot be entered correctly without human intervention.",
+ "reason": "The customer name 'Greenfield Public Library' is not listed in the available account options. The form cannot be corrected without human intervention.",
  "order": null,
- "steps": 12,
- "llm_calls": 13,
- "seconds": 13.7,
- "verifier_interventions": 1,
+ "steps": 16,
+ "llm_calls": 16,
+ "seconds": 12.1,
+ "verifier_interventions": 2,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -142,22 +144,98 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Customer: Harbor City Marathon is not a known customer account",
-     "PO number: GPL-0019 is not in the catalog (PO number not found)"
+     "customer: form has 'Harbor City Marathon', PO says 'Greenfield Public Library'"
     ],
-    "po_lines": [
-     "TB-100 | Natural | N/A | 40 | 2.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Greenfield Public Library",
+     "po_number": "GPL-0019",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TB-100",
+       "color": "Natural",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 2.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 12,
    "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Greenfield Public Library"
+   },
+   "raw": null,
+   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics']."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Harbor City Marathon"
+   },
+   "raw": null,
+   "result": "Selected \"Harbor City Marathon\" in e2 (\"Account\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "customer: form has 'Harbor City Marathon', PO says 'Greenfield Public Library'"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Greenfield Public Library",
+     "po_number": "GPL-0019",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TB-100",
+       "color": "Natural",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 2.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "select",
+    "id": "e2",
+    "value": "Greenfield Public Library"
+   },
+   "raw": null,
+   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics']."
+  },
+  {
+   "step": 16,
+   "action": {
     "action": "escalate",
-    "reason": "The customer account 'Harbor City Marathon' is not in the known customer accounts list, and the PO number 'GPL-0019' is not found in the catalog. The order cannot be entered correctly without human intervention."
+    "reason": "The customer name 'Greenfield Public Library' is not listed in the available account options. The form cannot be corrected without human intervention."
    },
    "raw": null,
    "result": "escalated"
@@ -178,7 +256,18 @@
     "Color": "Natural",
     "Price Each": "2.80"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

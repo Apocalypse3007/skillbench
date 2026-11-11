@@ -1,0 +1,371 @@
+{
+ "config": "B",
+ "condition": "normal",
+ "po": "007",
+ "form": "v1",
+ "demo": "clean",
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5520",
+  "ship_by": "2026-12-05",
+  "lines": [
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "S",
+    "qty": 10,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "M",
+    "qty": 20,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "L",
+    "qty": 20,
+    "unit_price": 6.5
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 23,
+ "llm_calls": 25,
+ "seconds": 24.5,
+ "verifier_interventions": 1,
+ "skill_flagged": [],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account based on the PO's customer name.",
+  "Enter the PO number exactly as written in the PO header.",
+  "Input the ship-by date from the PO in the format YYYY-MM-DD.",
+  "Look up the product in the catalog and enter its corresponding SKU.",
+  "Select the color specified in the PO from the available options.",
+  "Choose the size mentioned in the PO; use N/A for products that do not require a size.",
+  "Enter the quantity for this product/color/size combination, converting units as needed.",
+  "Input the unit price from the PO; if not provided, use the catalog price.",
+  "Add a line item for each unique product/color/size combination specified in the PO.",
+  "Submit the order only after verifying all line items match the PO exactly."
+ ],
+ "po_text": "Subject: marathon volunteer shirts\n\nhey! harbor city marathon here. we need 50 of the premium ringspun tees in white\nfor volunteers: 10 S, 20 M, 20 L. our PO is HCM-5520. need them to ship by Dec 5th 2026.\nthx - Rob\n",
+ "truth": {
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5520",
+  "ship_by": "2026-12-05",
+  "lines": [
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "S",
+    "qty": 10,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "M",
+    "qty": 20,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "White",
+    "size": "L",
+    "qty": 20,
+    "unit_price": 6.5
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Harbor City Marathon"
+   },
+   "raw": null,
+   "result": "Selected \"Harbor City Marathon\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "HCM-5520"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"HCM-5520\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-05"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-05\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "select",
+    "id": "e4",
+    "value": "TS-200"
+   },
+   "raw": null,
+   "result": "e4 is not a select."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "TS-200"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"TS-200\"."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "White"
+   },
+   "raw": null,
+   "result": "Selected \"White\" in e5 (\"Color\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "S"
+   },
+   "raw": null,
+   "result": "Selected \"S\" in e6 (\"Size\")."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "10"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"10\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "6.50"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"6.50\"."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "TS-200"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"TS-200\"."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "White"
+   },
+   "raw": null,
+   "result": "Selected \"White\" in e13 (\"Color\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e14 (\"Size\")."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "20"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"20\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "6.50"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"6.50\"."
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Missing line for L size in form (expected 20 units)"
+    ],
+    "po_lines": [
+     "TS-200 | White | S | 10 | 6.50",
+     "TS-200 | White | M | 20 | 6.50",
+     "TS-200 | White | L | 20 | 6.50"
+    ]
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "TS-200"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"SKU\") with \"TS-200\"."
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e18",
+    "value": "White"
+   },
+   "raw": null,
+   "result": "Selected \"White\" in e18 (\"Color\")."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e19 (\"Size\")."
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "fill",
+    "id": "e20",
+    "value": "20"
+   },
+   "raw": null,
+   "result": "Filled e20 (\"Quantity\") with \"20\"."
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "6.50"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Unit Price\") with \"6.50\"."
+  },
+  {
+   "step": 23,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "po_lines": [
+     "TS-200 | White | S | 10 | 6.50",
+     "TS-200 | White | M | 20 | 6.50",
+     "TS-200 | White | L | 20 | 6.50"
+    ]
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Harbor City Marathon",
+   "PO Number": "HCM-5520",
+   "Ship By": "2026-12-05",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "TS-200",
+    "Color": "White",
+    "Size": "S",
+    "Quantity": "10",
+    "Unit Price": "6.50"
+   },
+   {
+    "SKU": "TS-200",
+    "Color": "White",
+    "Size": "M",
+    "Quantity": "20",
+    "Unit Price": "6.50"
+   },
+   {
+    "SKU": "TS-200",
+    "Color": "White",
+    "Size": "L",
+    "Quantity": "20",
+    "Unit Price": "6.50"
+   }
+  ]
+ },
+ "error": null
+}

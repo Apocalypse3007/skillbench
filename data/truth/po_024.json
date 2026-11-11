@@ -1,0 +1,29 @@
+{
+  "customer": "Blue Ridge Schools",
+  "po_number": "BRS-2262",
+  "ship_by": "2027-01-22",
+  "lines": [
+    {
+      "sku": "PL-100",
+      "color": "Maroon",
+      "size": "M",
+      "qty": 12,
+      "unit_price": 12.75
+    },
+    {
+      "sku": "PL-100",
+      "color": "Maroon",
+      "size": "L",
+      "qty": 9,
+      "unit_price": 12.75
+    },
+    {
+      "sku": "PL-100",
+      "color": "Maroon",
+      "size": "XL",
+      "qty": 5,
+      "unit_price": 12.75
+    }
+  ],
+  "notes": ""
+}

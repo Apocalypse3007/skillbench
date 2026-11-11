@@ -48,6 +48,38 @@ Return JSON: {{"flagged": [{{"step": <number>, "problem": "...", "correction": "
 Use an empty "flagged" list if every step is fine."""
 
 
+# ---------------- learning from a human correction ----------------
+
+CORRECTION_SYSTEM = """You maintain a reusable order-entry SKILL learned from a recorded demonstration.
+A human operator has given a correction after a run went wrong. Update the skill so the correction is
+followed from now on: change or add steps as needed and keep everything else. Keep steps UI-independent."""
+
+CORRECTION_APPLY = """CURRENT SKILL:
+{skill}
+
+HUMAN CORRECTION:
+"{correction}"
+
+Return JSON: {{"skill": ["step 1 text", "step 2 text", ...]}}"""
+
+CORRECTION_VET = """ORIGINAL DEMONSTRATION:
+{demo}
+
+CURRENT SKILL:
+{skill}
+
+HUMAN CORRECTION:
+"{correction}"
+
+Corrections are given by busy humans and can be wrong. Before applying it, check the correction against
+the demonstration's steps and narration, its stated rules, and the principle that the PO is the source of
+truth for what the customer ordered. If the correction would make submitted orders differ from what the PO
+asks for, or contradicts the demonstrated process, reject it: keep the skill unchanged and explain why so
+the operator can confirm. Otherwise apply it.
+
+Return JSON: {{"accepted": true|false, "reason": "...", "skill": ["step 1 text", ...]}}"""
+
+
 # ---------------- agent step ----------------
 
 AGENT_SYSTEM = f"""You are an order-entry agent operating a back-office web form for a promotional-products
@@ -91,23 +123,39 @@ Next action (JSON):"""
 
 # ---------------- verifier ----------------
 
-VERIFY_SYSTEM = f"""You are a careful order-entry reviewer. Before an order is submitted you compare the filled
-form against the purchase order (PO). The PO is the source of truth; the catalog lists valid products,
-colors, sizes, customers and default prices. Today is {TODAY}.
-Work in this order:
-1. po_lines: every line the PO asks for, as "code | color | size | qty | unit price". One line per
-   product/color/size combination; convert units (a dozen = 12); unit price = the price stated in the PO,
-   or the catalog price if the PO states none.
-2. issues: compare po_lines with the form's line items exactly as shown (field labels may differ from
-   the PO's wording; "(blank)" means empty). Report every difference: customer, PO number, date, a missing
-   or extra line, or any field that differs or is blank. Notes/comments do not matter.
-3. ok = true only if there are no issues.
-If the PO itself is ambiguous or cannot be fulfilled (unknown product or customer, missing quantity,
-conflicting prices), the order must not be submitted: add the reason to issues and set escalate=true.
-Return JSON: {{"po_lines": [...], "issues": ["specific problem and fix", ...],
-"escalate": true|false, "ok": true|false}}"""
+FIELDMAP_SYSTEM = """You map the labels of an order-entry form to standard order fields.
+Return JSON mapping each standard field to exactly one label copied verbatim from the lists given:
+{"customer": ..., "po_number": ..., "ship_by": ..., "sku": ..., "color": ..., "size": ..., "qty": ..., "unit_price": ...}
+customer/po_number/ship_by come from the header labels; the rest from the line-item labels.
+Each label is followed by its input type in parentheses; do not include the type in your answer.
+customer = the customer account (usually a select), po_number = the customer's PO number/reference,
+ship_by = ship/required date, sku = product/item code, qty = quantity/units, unit_price = price per unit."""
 
-VERIFY_USER = """CATALOG:
+FIELDMAP_USER = """Header labels: {header}
+Line-item labels: {row}
+Mapping (JSON):"""
+
+# The verifier's model only READS the PO; code compares its reading with the form.
+EXTRACT_SYSTEM = f"""You read a purchase order (PO) email from a promotional-products customer and write down
+exactly which order it asks for, using the catalog. Today is {TODAY}.
+
+Rules:
+- customer: the matching known account name, spelled exactly as in the catalog list.
+- po_number: exactly as written in the PO. ship_by: YYYY-MM-DD.
+- One line per product/color/size combination. Use catalog codes, colors and sizes exactly as listed
+  ("grey" -> "Heather Gray", "XXL" -> "2XL"); products without sizes use "N/A".
+- Quantities are numbers: "a dozen" = 12, "half a gross" = 72, "3 boxes of 100" = 300.
+- unit_price: the price the PO states for that item; only if it states none, the catalog price.
+- Customers write informally (typos, product names instead of codes). That is normal; map them.
+- Ignore email signatures and quoted/forwarded older orders.
+- escalate = true only if the order cannot be entered correctly: product, color or size not in the
+  catalog, a missing quantity or product, an unknown customer, or conflicting prices.
+
+Return JSON: {{"customer": "...", "po_number": "...", "ship_by": "YYYY-MM-DD",
+"lines": [{{"sku": "...", "color": "...", "size": "...", "qty": 0, "unit_price": 0.0}}],
+"escalate": false, "escalate_reason": ""}}"""
+
+EXTRACT_USER = """CATALOG:
 {catalog}
 
 PURCHASE ORDER:
@@ -115,7 +163,4 @@ PURCHASE ORDER:
 {po}
 \"\"\"
 
-FORM AS FILLED (labels as shown on the page):
-{form}
-
-Verdict (JSON):"""
+Order (JSON):"""

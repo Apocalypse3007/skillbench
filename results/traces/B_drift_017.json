@@ -2,17 +2,19 @@
  "config": "B",
  "condition": "drift",
  "po": "017",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v2",
  "demo": "clean",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The product code TB-200 is not listed in the catalog for customer Harbor City Marathon. The order cannot be entered correctly without further clarification.",
+ "reason": "The product TB-200 does not come in Silver according to the catalog. The correct product for Silver is NB-100. The form line needs to be corrected to reflect the correct product and price.",
  "order": null,
  "steps": 11,
- "llm_calls": 12,
- "seconds": 11.1,
+ "llm_calls": 11,
+ "seconds": 9.4,
  "verifier_interventions": 1,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -132,13 +134,29 @@
    "raw": null,
    "verdict": {
     "ok": false,
-    "escalate": true,
+    "escalate": false,
     "issues": [
-     "Unknown product code TB-200 for customer Harbor City Marathon. The catalog does not list TB-200 as a valid product."
+     "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
+     "Form line 'TB-200 Silver N/A qty 200 @ 3.20' is not in the PO",
+     "PO asks for 'NB-100 Silver N/A qty 200 @ 2.4' but the form has no such line"
     ],
-    "po_lines": [
-     "TB-200 | Silver | N/A | 200 | 3.20"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Harbor City Marathon",
+     "po_number": "HCM-5561",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "NB-100",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 200,
+       "unit_price": 2.4
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
@@ -146,7 +164,7 @@
    "step": 11,
    "action": {
     "action": "escalate",
-    "reason": "The product code TB-200 is not listed in the catalog for customer Harbor City Marathon. The order cannot be entered correctly without further clarification."
+    "reason": "The product TB-200 does not come in Silver according to the catalog. The correct product for Silver is NB-100. The form line needs to be corrected to reflect the correct product and price."
    },
    "raw": null,
    "result": "escalated"
@@ -167,7 +185,18 @@
     "Color": "Silver",
     "Price Each": "3.20"
    }
-  ]
+  ],
+  "types": {
+   "Customer PO #": "text",
+   "Account": "select",
+   "Required Date": "date",
+   "Units": "number",
+   "Item Code": "text",
+   "Size": "select",
+   "Color": "select",
+   "Price Each": "number",
+   "Order Comments": "textarea"
+  }
  },
  "error": null
 }

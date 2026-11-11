@@ -1,0 +1,22 @@
+{
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0950",
+  "ship_by": "2027-01-10",
+  "lines": [
+    {
+      "sku": "PN-100",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 200,
+      "unit_price": 0.45
+    },
+    {
+      "sku": "NB-100",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 100,
+      "unit_price": 2.4
+    }
+  ],
+  "notes": ""
+}

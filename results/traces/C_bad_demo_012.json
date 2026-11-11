@@ -2,18 +2,34 @@
  "config": "C",
  "condition": "bad_demo",
  "po": "012",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "bad",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "Unit price in form (1.90) matches catalog price, but PO states $1.75 ea. Please confirm the correct unit price.",
- "order": null,
- "steps": 15,
- "llm_calls": 18,
- "seconds": 20.1,
- "verifier_interventions": 3,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Pinecrest Dental",
+  "po_number": "PD-0931",
+  "ship_by": "2026-11-30",
+  "lines": [
+   {
+    "sku": "PN-200",
+    "color": "Silver",
+    "size": "N/A",
+    "qty": 300,
+    "unit_price": 1.75
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 11,
+ "llm_calls": 11,
+ "seconds": 8.5,
+ "verifier_interventions": 0,
  "skill_flagged": [
   {
    "step": 8,
@@ -157,80 +173,28 @@
    },
    "raw": null,
    "verdict": {
-    "ok": false,
+    "ok": true,
     "escalate": false,
-    "issues": [
-     "Customer is valid (Pinecrest Dental).",
-     "PO number matches (PD-0931).",
-     "Ship by date is valid (2026-11-30).",
-     "Line 1: SKU=PN-200 is valid.",
-     "Line 1: Color=Silver is valid.",
-     "Line 1: Size=N/A is valid.",
-     "Line 1: Quantity=300 is valid (converted from 3 boxes of 100).",
-     "Line 1: Unit Price=1.75 is valid (matches PO price)."
-    ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.75"
-    ]
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Pinecrest Dental",
+     "po_number": "PD-0931",
+     "ship_by": "2026-11-30",
+     "lines": [
+      {
+       "sku": "PN-200",
+       "color": "Silver",
+       "size": "N/A",
+       "qty": 300,
+       "unit_price": 1.75
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 12,
-   "action": {
-    "action": "click",
-    "id": "e9"
-   },
-   "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
-  },
-  {
-   "step": 13,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Unit price in form (1.75) is less than catalog price (1.90). Use catalog price."
-    ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.75"
-    ]
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 14,
-   "action": {
-    "action": "fill",
-    "id": "e8",
-    "value": "1.90"
-   },
-   "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"1.90\"."
-  },
-  {
-   "step": 15,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Unit price in form (1.90) matches catalog price, but PO states $1.75 ea. Please confirm the correct unit price."
-    ],
-    "po_lines": [
-     "PN-200 | Silver | N/A | 300 | 1.90"
-    ]
-   },
-   "result": "escalated by verifier"
+   "result": "Clicked e11 (\"Submit Order\")."
   }
  ],
  "final_form": {
@@ -246,9 +210,20 @@
     "Color": "Silver",
     "Size": "N/A",
     "Quantity": "300",
-    "Unit Price": "1.90"
+    "Unit Price": "1.75"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

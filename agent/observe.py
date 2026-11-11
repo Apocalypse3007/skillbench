@@ -80,15 +80,16 @@ def render(obs):
 
 def form_state(obs):
     """Current form contents keyed by the page's own labels (UI-agnostic, for the verifier)."""
-    fields, rows = {}, {}
+    fields, rows, types = {}, {}, {}
     for e in obs["elements"]:
         if e["value"] is None:
             continue
         value = e["value"] if e["value"] != "" else "(blank)"
+        types[e["label"]] = e["type"]
         if e["row"]:
             rows.setdefault(e["row"], {})[e["label"]] = value
         else:
             fields[e["label"]] = value
     # Fully blank rows are never submitted, so leave them out.
     lines = [r for _, r in sorted(rows.items()) if any(v != "(blank)" for v in r.values())]
-    return {"fields": fields, "line_items": lines}
+    return {"fields": fields, "line_items": lines, "types": types}

@@ -2,17 +2,19 @@
  "config": "C",
  "condition": "normal",
  "po": "020",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
  "outcome": "correct_escalation",
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The customer 'Greenfield Public Library' is not listed in the available customer account options. The form cannot be completed correctly.",
+ "reason": "The customer name in the form does not match the PO. The PO states 'Greenfield Public Library', but the form has 'Harbor City Marathon' selected. This discrepancy needs to be resolved before submission.",
  "order": null,
- "steps": 16,
- "llm_calls": 18,
- "seconds": 15.8,
+ "steps": 14,
+ "llm_calls": 14,
+ "seconds": 10.3,
  "verifier_interventions": 2,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -144,26 +146,30 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Customer: Harbor City Marathon does not match the PO's customer: Greenfield Public Library"
+     "customer: form has 'Harbor City Marathon', PO says 'Greenfield Public Library'"
     ],
-    "po_lines": [
-     "TB-100 | Natural | N/A | 40 | 2.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Greenfield Public Library",
+     "po_number": "GPL-0019",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TB-100",
+       "color": "Natural",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 2.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
    "step": 12,
-   "action": {
-    "action": "select",
-    "id": "e1",
-    "value": "Greenfield Public Library"
-   },
-   "raw": null,
-   "result": "\"Greenfield Public Library\" is not an option of e1. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics']."
-  },
-  {
-   "step": 13,
    "action": {
     "action": "select",
     "id": "e1",
@@ -173,7 +179,7 @@
    "result": "Selected \"Harbor City Marathon\" in e1 (\"Customer\")."
   },
   {
-   "step": 14,
+   "step": 13,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -183,29 +189,33 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Customer: Harbor City Marathon does not match the PO's customer: Greenfield Public Library"
+     "customer: form has 'Harbor City Marathon', PO says 'Greenfield Public Library'"
     ],
-    "po_lines": [
-     "TB-100 | Natural | N/A | 40 | 2.80"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Greenfield Public Library",
+     "po_number": "GPL-0019",
+     "ship_by": "2026-12-05",
+     "lines": [
+      {
+       "sku": "TB-100",
+       "color": "Natural",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 2.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "blocked by verifier"
   },
   {
-   "step": 15,
-   "action": {
-    "action": "select",
-    "id": "e1",
-    "value": "Greenfield Public Library"
-   },
-   "raw": null,
-   "result": "\"Greenfield Public Library\" is not an option of e1. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics']."
-  },
-  {
-   "step": 16,
+   "step": 14,
    "action": {
     "action": "escalate",
-    "reason": "The customer 'Greenfield Public Library' is not listed in the available customer account options. The form cannot be completed correctly."
+    "reason": "The customer name in the form does not match the PO. The PO states 'Greenfield Public Library', but the form has 'Harbor City Marathon' selected. This discrepancy needs to be resolved before submission."
    },
    "raw": null,
    "result": "escalated"
@@ -226,7 +236,18 @@
     "Quantity": "40",
     "Unit Price": "2.80"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

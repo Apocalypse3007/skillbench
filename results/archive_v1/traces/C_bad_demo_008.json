@@ -1,0 +1,265 @@
+{
+ "config": "C",
+ "condition": "bad_demo",
+ "po": "008",
+ "form": "v1",
+ "demo": "bad",
+ "outcome": "silent_failure",
+ "field_accuracy": 0.923,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0042",
+  "ship_by": "2026-12-18",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "Black",
+    "size": "XL",
+    "qty": 24,
+    "unit_price": 3.75
+   },
+   {
+    "sku": "HD-100",
+    "color": "Maroon",
+    "size": "XL",
+    "qty": 12,
+    "unit_price": 18
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 15,
+ "llm_calls": 16,
+ "seconds": 13.9,
+ "verifier_interventions": 0,
+ "skill_flagged": [
+  {
+   "step": 8,
+   "problem": "The narration says to always use the catalog price, but the sample PO specifies $3.75 per item.",
+   "correction": "Use the price specified in the PO, not the catalog price."
+  }
+ ],
+ "model": "qwen3:8b",
+ "skill": [
+  "Select the customer account the PO is from, matching the customer name from the PO.",
+  "Copy the PO number exactly as written in the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog and enter its SKU as specified in the PO.",
+  "Pick the color the PO asks for, matching the color mentioned in the PO.",
+  "Pick the size as specified in the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price specified in the PO, not the catalog price, for the unit price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
+ ],
+ "po_text": "Subject: taproom merch\n\nHi folks - Lakeside Brewing Co, PO LBC-0042.\n\nCan we get 2 dozen black ceramic mugs and a dozen maroon pullover hoodys in XL?\nShip by December 18, 2026 please.\n\nCheers,\nTom @ Lakeside\n",
+ "truth": {
+  "customer": "Lakeside Brewing Co",
+  "po_number": "LBC-0042",
+  "ship_by": "2026-12-18",
+  "lines": [
+   {
+    "sku": "MG-100",
+    "color": "Black",
+    "size": "N/A",
+    "qty": 24,
+    "unit_price": 3.75
+   },
+   {
+    "sku": "HD-100",
+    "color": "Maroon",
+    "size": "XL",
+    "qty": 12,
+    "unit_price": 18.0
+   }
+  ],
+  "notes": ""
+ },
+ "trace": [
+  {
+   "step": 1,
+   "action": {
+    "action": "select",
+    "id": "e1",
+    "value": "Lakeside Brewing Co"
+   },
+   "raw": null,
+   "result": "Selected \"Lakeside Brewing Co\" in e1 (\"Customer\")."
+  },
+  {
+   "step": 2,
+   "action": {
+    "action": "fill",
+    "id": "e2",
+    "value": "LBC-0042"
+   },
+   "raw": null,
+   "result": "Filled e2 (\"PO Number\") with \"LBC-0042\"."
+  },
+  {
+   "step": 3,
+   "action": {
+    "action": "fill",
+    "id": "e3",
+    "value": "2026-12-18"
+   },
+   "raw": null,
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-18\"."
+  },
+  {
+   "step": 4,
+   "action": {
+    "action": "fill",
+    "id": "e4",
+    "value": "MG-100"
+   },
+   "raw": null,
+   "result": "Filled e4 (\"SKU\") with \"MG-100\"."
+  },
+  {
+   "step": 5,
+   "action": {
+    "action": "select",
+    "id": "e5",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e5 (\"Color\")."
+  },
+  {
+   "step": 6,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e6 (\"Size\")."
+  },
+  {
+   "step": 7,
+   "action": {
+    "action": "fill",
+    "id": "e7",
+    "value": "24"
+   },
+   "raw": null,
+   "result": "Filled e7 (\"Quantity\") with \"24\"."
+  },
+  {
+   "step": 8,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "3.75"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"3.75\"."
+  },
+  {
+   "step": 9,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\")."
+  },
+  {
+   "step": 10,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"HD-100\"."
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Maroon"
+   },
+   "raw": null,
+   "result": "Selected \"Maroon\" in e13 (\"Color\")."
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e14 (\"Size\")."
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "12"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"12\"."
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"18.00\"."
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "po_lines": [
+     "MG-100 | Black | XL | 24 | 3.75",
+     "HD-100 | Maroon | XL | 12 | 18.00"
+    ]
+   },
+   "result": "Clicked e11 (\"Submit Order\")."
+  }
+ ],
+ "final_form": {
+  "fields": {
+   "Customer": "Lakeside Brewing Co",
+   "PO Number": "LBC-0042",
+   "Ship By": "2026-12-18",
+   "Notes": "(blank)"
+  },
+  "line_items": [
+   {
+    "SKU": "MG-100",
+    "Color": "Black",
+    "Size": "XL",
+    "Quantity": "24",
+    "Unit Price": "3.75"
+   },
+   {
+    "SKU": "HD-100",
+    "Color": "Maroon",
+    "Size": "XL",
+    "Quantity": "12",
+    "Unit Price": "18.00"
+   }
+  ]
+ },
+ "error": null
+}

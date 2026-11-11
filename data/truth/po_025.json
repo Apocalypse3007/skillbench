@@ -1,0 +1,15 @@
+{
+  "customer": "Harbor City Marathon",
+  "po_number": "HCM-5590",
+  "ship_by": "2027-02-01",
+  "lines": [
+    {
+      "sku": "LY-100",
+      "color": "Black",
+      "size": "N/A",
+      "qty": 300,
+      "unit_price": 0.9
+    }
+  ],
+  "notes": ""
+}

@@ -2,10 +2,12 @@
  "config": "C",
  "condition": "normal",
  "po": "008",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
- "outcome": "silent_failure",
- "field_accuracy": 0.923,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
  "end": "submitted",
  "escalated_by": null,
  "reason": null,
@@ -17,7 +19,7 @@
    {
     "sku": "MG-100",
     "color": "Black",
-    "size": "XL",
+    "size": "N/A",
     "qty": 24,
     "unit_price": 3.75
    },
@@ -31,10 +33,10 @@
   ],
   "notes": ""
  },
- "steps": 15,
- "llm_calls": 16,
- "seconds": 14.0,
- "verifier_interventions": 0,
+ "steps": 20,
+ "llm_calls": 20,
+ "seconds": 15.6,
+ "verifier_interventions": 2,
  "skill_flagged": [],
  "model": "qwen3:8b",
  "skill": [
@@ -220,13 +222,147 @@
    },
    "raw": null,
    "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 1: MG-100 does not come in size XL (options: N/A)",
+     "Form line 'MG-100 Black XL qty 24 @ 3.75' is not in the PO",
+     "PO asks for 'MG-100 Black N/A qty 24 @ 3.75' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Lakeside Brewing Co",
+     "po_number": "LBC-0042",
+     "ship_by": "2026-12-18",
+     "lines": [
+      {
+       "sku": "MG-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 24,
+       "unit_price": 3.75
+      },
+      {
+       "sku": "HD-100",
+       "color": "Maroon",
+       "size": "XL",
+       "qty": 12,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\")."
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\")."
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 2: HD-100 does not come in size N/A (options: S, M, L, XL, 2XL)",
+     "Form line 'HD-100 Maroon N/A qty 12 @ 18.00' is not in the PO",
+     "PO asks for 'HD-100 Maroon XL qty 12 @ 18.0' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Lakeside Brewing Co",
+     "po_number": "LBC-0042",
+     "ship_by": "2026-12-18",
+     "lines": [
+      {
+       "sku": "MG-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 24,
+       "unit_price": 3.75
+      },
+      {
+       "sku": "HD-100",
+       "color": "Maroon",
+       "size": "XL",
+       "qty": 12,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e14 (\"Size\")."
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "MG-100 | Black | XL | 24 | 3.75",
-     "HD-100 | Maroon | XL | 12 | 18.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Lakeside Brewing Co",
+     "po_number": "LBC-0042",
+     "ship_by": "2026-12-18",
+     "lines": [
+      {
+       "sku": "MG-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 24,
+       "unit_price": 3.75
+      },
+      {
+       "sku": "HD-100",
+       "color": "Maroon",
+       "size": "XL",
+       "qty": 12,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -242,7 +378,7 @@
    {
     "SKU": "MG-100",
     "Color": "Black",
-    "Size": "XL",
+    "Size": "N/A",
     "Quantity": "24",
     "Unit Price": "3.75"
    },
@@ -253,7 +389,18 @@
     "Quantity": "12",
     "Unit Price": "18.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }

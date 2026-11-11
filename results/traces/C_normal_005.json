@@ -2,6 +2,8 @@
  "config": "C",
  "condition": "normal",
  "po": "005",
+ "split": "dev",
+ "verifier": "v2",
  "form": "v1",
  "demo": "clean",
  "outcome": "correct",
@@ -25,8 +27,8 @@
   "notes": ""
  },
  "steps": 10,
- "llm_calls": 11,
- "seconds": 9.0,
+ "llm_calls": 10,
+ "seconds": 7.0,
  "verifier_interventions": 0,
  "skill_flagged": [],
  "model": "qwen3:8b",
@@ -159,9 +161,23 @@
     "ok": true,
     "escalate": false,
     "issues": [],
-    "po_lines": [
-     "PL-100 | Navy | L | 25 | 13.00"
-    ]
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7781",
+     "ship_by": "2027-01-15",
+     "lines": [
+      {
+       "sku": "PL-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 25,
+       "unit_price": 13.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
    },
    "result": "Clicked e11 (\"Submit Order\")."
   }
@@ -181,7 +197,18 @@
     "Quantity": "25",
     "Unit Price": "13.00"
    }
-  ]
+  ],
+  "types": {
+   "Customer": "select",
+   "PO Number": "text",
+   "Ship By": "date",
+   "SKU": "text",
+   "Color": "select",
+   "Size": "select",
+   "Quantity": "number",
+   "Unit Price": "number",
+   "Notes": "textarea"
+  }
  },
  "error": null
 }
