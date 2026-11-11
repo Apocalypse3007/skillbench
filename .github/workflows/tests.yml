@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -12,7 +13,9 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: python -m playwright install --with-deps chromium
+      # No --with-deps: GitHub's Ubuntu image already has Chrome's system libraries, and installing them
+      # via apt makes CI fail whenever the Ubuntu package mirror is unreachable.
+      - run: python -m playwright install chromium
       # No LLM needed: these cover the mock app, dataset, observation/actions, scoring,
       # the verifier's deterministic checks and the report's metrics.
       - run: python -m pytest -q
