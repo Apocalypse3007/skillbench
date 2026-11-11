@@ -14,7 +14,7 @@ Cell = % correct / % silent failure.
 |---|---|---|---|---|
 | A - Baseline | 45% / 55% | 40% / 60% | 30% / 70% | 38% / 62% |
 | B - +Verify | 75% / 10% | 65% / 10% | 45% / 10% | 62% / 10% |
-| C - +Verify +Skeptic | 65% / 10% | 80% / 5% | 75% / 10% | 73% / 8% |
+| C - +Verify +Skeptic | 65% / 10% | 70% / 5% | 70% / 10% | 68% / 8% |
 
 **Held-out (8 POs)**
 
@@ -22,7 +22,7 @@ Cell = % correct / % silent failure.
 |---|---|---|---|---|
 | A - Baseline | 38% / 62% | 38% / 62% | 12% / 88% | 29% / 71% |
 | B - +Verify | 75% / 0% | 75% / 0% | 62% / 0% | 71% / 0% |
-| C - +Verify +Skeptic | 62% / 0% | 50% / 0% | 62% / 0% | 58% / 0% |
+| C - +Verify +Skeptic | 50% / 12% | 62% / 12% | 50% / 12% | 54% / 12% |
 
 ![silent failure chart](chart.png)
 
@@ -36,7 +36,7 @@ the PO asks for + code compares it with the form.
 | B | v1 | 33% | 13% | 12% | 42% |
 | B | v2 | 62% | 10% | 10% | 15% |
 | C | v1 | 38% | 13% | 12% | 37% |
-| C | v2 | 73% | 8% | 12% | 5% |
+| C | v2 | 68% | 8% | 10% | 8% |
 
 ## 3. Flawed demo
 
@@ -49,12 +49,12 @@ Injected mistake: the demo's Unit Price step enters the catalog price and narrat
 | B | normal | 9 | 0 | 9 | 0 |
 | B | bad_demo | 9 | 0 | 3 | 6 |
 | C | normal | 9 | 0 | 8 | 1 |
-| C | bad_demo | 9 | 0 | 9 | 0 |
+| C | bad_demo | 9 | 0 | 8 | 1 |
 
 Skeptic mode flagged 1 step(s) in the bad demo; the injected price step **was** among them.
-- step 8: The narration says to always use the catalog price, but the sample PO specifies $3.75 per item. -> Use the price specified in the PO, not the catalog price.
+- step 8: The narration says to always use the catalog price, but the sample PO specifies $3.75 per item, which should be used instead. -> Use the price from the PO; if the PO gives none, use the catalog price.
 
-On the clean demo, skeptic mode flagged 0 step(s) (false alarms if > 0).
+On the clean demo, skeptic mode flagged 1 step(s) (false alarms if > 0).
 
 ## 4. Learning from corrections
 
@@ -73,13 +73,13 @@ Configs A and B apply the correction blindly; config C vets it against the demo 
 | B | none (normal) | - | 86% | 0 | 7% |
 | B | good | - | 71% | 0/7 | 7% |
 | B | bad | - | 86% | 0/7 | 7% |
-| C | none (normal) | - | 57% | 0 | 7% |
-| C | good | accepted | 71% | 0/7 | 7% |
-| C | bad | accepted | 57% | 0/7 | 7% |
+| C | none (normal) | - | 71% | 0 | 11% |
+| C | good | accepted | 86% | 0/7 | 11% |
+| C | bad | **rejected** | 71% | 0/7 | 7% |
 
-Vetting of the good correction: accepted - "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+Vetting of the good correction: accepted - "The correction aligns with the principle that the PO is the source of truth. The original steps did not explicitly address cases where a PO splits an item into multiple sizes. The correction clarifies that each size should be entered as a separate line item, and that all sizes must be accounted for before submission. This ensures the order matches the PO exactly, which is consistent with the stated rules and the original demonstration."
 
-Vetting of the bad correction: accepted - "The correction aligns with the principle that the PO is the source of truth. It introduces an optimization for handling POs that split items into multiple sizes, allowing a single line item with total quantity and using the first size listed. This does not alter the core requirement that the order must match the PO exactly, and it improves efficiency without compromising accuracy. The correction is consistent with the demonstrated process and rules."
+Vetting of the bad correction: rejected - "The correction contradicts the original demonstration and stated rules. The original process requires adding a line item per product/color/size combination as specified in the PO. The correction suggests combining sizes into a single line with total quantity, which would alter the order structure and potentially misrepresent the PO's intent. Since the PO is the source of truth, we must follow the original process to ensure accuracy."
 
 ## 5. When can a stop point be removed?
 
@@ -97,10 +97,10 @@ Can a human sign-off step be removed? Only if we are confident the silent-failur
 | B | bad_demo | 28 | 2 | 7% | 23% | keep |
 | B | good_correction | 28 | 2 | 7% | 23% | keep |
 | B | bad_correction | 28 | 2 | 7% | 23% | keep |
-| C | normal | 28 | 2 | 7% | 23% | keep |
-| C | drift | 28 | 1 | 4% | 18% | keep |
-| C | bad_demo | 28 | 2 | 7% | 23% | keep |
-| C | good_correction | 28 | 2 | 7% | 23% | keep |
+| C | normal | 28 | 3 | 11% | 27% | keep |
+| C | drift | 28 | 2 | 7% | 23% | keep |
+| C | bad_demo | 28 | 3 | 11% | 27% | keep |
+| C | good_correction | 28 | 3 | 11% | 27% | keep |
 | C | bad_correction | 28 | 2 | 7% | 23% | keep |
 
 With zero silent failures, n runs give a 95% upper bound of about 3/n (rule of three): certifying <5% needs about 60 clean runs of that skill, and <1% needs about 300. Small samples cannot justify removing a stop point.
@@ -111,7 +111,7 @@ With zero silent failures, n runs give a 95% upper bound of about 3/n (rule of t
 |---|---|---|---|---|---|
 | A | 11 s | 14.2 | 14.2 | 0 | 0.92 |
 | B | 16 s | 17.0 | 16.6 | 107 | 1.00 |
-| C | 14 s | 16.4 | 16.4 | 99 | 1.00 |
+| C | 26 s | 17.1 | 16.7 | 110 | 1.00 |
 
 Cost per order is about Rs 0 (local model, no API calls); manual entry takes roughly 3-5 minutes per order.
 
@@ -138,8 +138,8 @@ Cost per order is about Rs 0 (local model, no API calls); manual entry takes rou
 | B | drift | 19 | 2 | 4 | 2 | 1 |
 | B | good_correction | 20 | 2 | 3 | 1 | 2 |
 | B | normal | 21 | 2 | 4 | 1 | 0 |
-| C | bad_correction | 18 | 2 | 4 | 4 | 0 |
-| C | bad_demo | 20 | 2 | 4 | 2 | 0 |
-| C | drift | 20 | 1 | 5 | 2 | 0 |
-| C | good_correction | 18 | 2 | 4 | 3 | 1 |
-| C | normal | 18 | 2 | 4 | 3 | 1 |
+| C | bad_correction | 17 | 2 | 2 | 3 | 4 |
+| C | bad_demo | 18 | 3 | 3 | 4 | 0 |
+| C | drift | 19 | 2 | 3 | 2 | 2 |
+| C | good_correction | 17 | 3 | 3 | 3 | 2 |
+| C | normal | 17 | 3 | 3 | 4 | 1 |

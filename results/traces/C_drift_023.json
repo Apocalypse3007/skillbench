@@ -10,25 +10,32 @@
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "verifier",
- "reason": "Line 1: PN-200 does not come in Red (options: Silver, Black); Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90); ship by: form has '2026-11-04', PO says '2027-01-04'; Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO",
+ "reason": "Line 1: PN-200 does not come in Red (options: Silver, Black); Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90); Form line 'PN-200 Red N/A qty 72 @ 0.45' is not in the PO; Line MG-200 Silver N/A: form has qty 36 @ 9.50, PO says qty 12 @ 9.5",
  "order": null,
  "steps": 24,
  "llm_calls": 24,
- "seconds": 22.4,
+ "seconds": 22.5,
  "verifier_interventions": 3,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: Q1 branch supplies\n\nSummit Credit Union - PO SCU-7840\n\nhalf a gross of red ballpoint pens\n3 dozen silver travel tumblers ($9.50 each per our quote)\n\nship by the 4th of January, 2027\nOwen\n",
  "truth": {
@@ -62,7 +69,8 @@
     "value": "Summit Credit Union"
    },
    "raw": null,
-   "result": "Selected \"Summit Credit Union\" in e2 (\"Account\")."
+   "result": "Selected \"Summit Credit Union\" in e2 (\"Account\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -72,17 +80,19 @@
     "value": "SCU-7840"
    },
    "raw": null,
-   "result": "Filled e1 (\"Customer PO #\") with \"SCU-7840\"."
+   "result": "Filled e1 (\"Customer PO #\") with \"SCU-7840\".",
+   "ok": true
   },
   {
    "step": 3,
    "action": {
     "action": "fill",
     "id": "e3",
-    "value": "2026-11-04"
+    "value": "2027-01-04"
    },
    "raw": null,
-   "result": "Filled e3 (\"Required Date\") with \"2026-11-04\"."
+   "result": "Filled e3 (\"Required Date\") with \"2027-01-04\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -91,17 +101,19 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 5,
    "action": {
     "action": "fill",
     "id": "e4",
-    "value": "24"
+    "value": "72"
    },
    "raw": null,
-   "result": "Filled e4 (\"Units\") with \"24\"."
+   "result": "Filled e4 (\"Units\") with \"72\".",
+   "ok": true
   },
   {
    "step": 6,
@@ -111,7 +123,8 @@
     "value": "PN-200"
    },
    "raw": null,
-   "result": "Filled e5 (\"Item Code\") with \"PN-200\"."
+   "result": "Filled e5 (\"Item Code\") with \"PN-200\".",
+   "ok": true
   },
   {
    "step": 7,
@@ -121,7 +134,8 @@
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 8,
@@ -131,7 +145,8 @@
     "value": "Red"
    },
    "raw": null,
-   "result": "Selected \"Red\" in e7 (\"Color\")."
+   "result": "Selected \"Red\" in e7 (\"Color\").",
+   "ok": true
   },
   {
    "step": 9,
@@ -141,7 +156,8 @@
     "value": "0.45"
    },
    "raw": null,
-   "result": "Filled e8 (\"Price Each\") with \"0.45\"."
+   "result": "Filled e8 (\"Price Each\") with \"0.45\".",
+   "ok": true
   },
   {
    "step": 10,
@@ -150,7 +166,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 11,
@@ -160,7 +177,8 @@
     "value": "36"
    },
    "raw": null,
-   "result": "Filled e12 (\"Units\") with \"36\"."
+   "result": "Filled e12 (\"Units\") with \"36\".",
+   "ok": true
   },
   {
    "step": 12,
@@ -170,40 +188,55 @@
     "value": "MG-200"
    },
    "raw": null,
-   "result": "Filled e13 (\"Item Code\") with \"MG-200\"."
+   "result": "Filled e13 (\"Item Code\") with \"MG-200\".",
+   "ok": true
   },
   {
    "step": 13,
    "action": {
     "action": "select",
     "id": "e14",
-    "value": "N/A"
+    "value": "Silver"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e14 (\"Size\")."
+   "result": "\"Silver\" is not an option of e14. Options: ['XS', 'S', 'M', 'L', 'XL', '2XL', 'N/A'].",
+   "ok": false
   },
   {
    "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\").",
+   "ok": true
+  },
+  {
+   "step": 15,
    "action": {
     "action": "select",
     "id": "e15",
     "value": "Silver"
    },
    "raw": null,
-   "result": "Selected \"Silver\" in e15 (\"Color\")."
+   "result": "Selected \"Silver\" in e15 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 15,
+   "step": 16,
    "action": {
     "action": "fill",
     "id": "e16",
     "value": "9.50"
    },
    "raw": null,
-   "result": "Filled e16 (\"Price Each\") with \"9.50\"."
+   "result": "Filled e16 (\"Price Each\") with \"9.50\".",
+   "ok": true
   },
   {
-   "step": 16,
+   "step": 17,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -215,8 +248,8 @@
     "issues": [
      "Line 1: PN-200 does not come in Red (options: Silver, Black)",
      "Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90)",
-     "ship by: form has '2026-11-04', PO says '2027-01-04'",
-     "Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO",
+     "Form line 'PN-200 Red N/A qty 72 @ 0.45' is not in the PO",
+     "Line MG-200 Silver N/A: form has qty 36 @ 9.50, PO says qty 12 @ 9.5",
      "PO asks for 'PN-100 Red N/A qty 72 @ 0.45' but the form has no such line"
     ],
     "mapped": true,
@@ -236,7 +269,7 @@
        "sku": "MG-200",
        "color": "Silver",
        "size": "N/A",
-       "qty": 36,
+       "qty": 12,
        "unit_price": 9.5
       }
      ],
@@ -247,34 +280,26 @@
    "result": "blocked by verifier"
   },
   {
-   "step": 17,
+   "step": 18,
    "action": {
     "action": "fill",
     "id": "e18",
     "value": "PN-100"
    },
    "raw": null,
-   "result": "Filled e18 (\"Item Code\") with \"PN-100\"."
+   "result": "Filled e18 (\"Item Code\") with \"PN-100\".",
+   "ok": true
   },
   {
-   "step": 18,
+   "step": 19,
    "action": {
     "action": "select",
     "id": "e20",
     "value": "Red"
    },
    "raw": null,
-   "result": "Selected \"Red\" in e20 (\"Color\")."
-  },
-  {
-   "step": 19,
-   "action": {
-    "action": "fill",
-    "id": "e19",
-    "value": "N/A"
-   },
-   "raw": null,
-   "result": "e19 is a select, not a text field."
+   "result": "Selected \"Red\" in e20 (\"Color\").",
+   "ok": true
   },
   {
    "step": 20,
@@ -284,7 +309,8 @@
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e19 (\"Size\")."
+   "result": "Selected \"N/A\" in e19 (\"Size\").",
+   "ok": true
   },
   {
    "step": 21,
@@ -294,7 +320,8 @@
     "value": "0.45"
    },
    "raw": null,
-   "result": "Filled e21 (\"Price Each\") with \"0.45\"."
+   "result": "Filled e21 (\"Price Each\") with \"0.45\".",
+   "ok": true
   },
   {
    "step": 22,
@@ -310,8 +337,8 @@
      "Line 3: Units is blank",
      "Line 1: PN-200 does not come in Red (options: Silver, Black)",
      "Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90)",
-     "ship by: form has '2026-11-04', PO says '2027-01-04'",
-     "Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO",
+     "Form line 'PN-200 Red N/A qty 72 @ 0.45' is not in the PO",
+     "Line MG-200 Silver N/A: form has qty 36 @ 9.50, PO says qty 12 @ 9.5",
      "Line PN-100 Red N/A: form has qty (blank) @ 0.45, PO says qty 72 @ 0.45"
     ],
     "mapped": true,
@@ -331,7 +358,7 @@
        "sku": "MG-200",
        "color": "Silver",
        "size": "N/A",
-       "qty": 36,
+       "qty": 12,
        "unit_price": 9.5
       }
      ],
@@ -349,7 +376,8 @@
     "value": "72"
    },
    "raw": null,
-   "result": "Filled e17 (\"Units\") with \"72\"."
+   "result": "Filled e17 (\"Units\") with \"72\".",
+   "ok": true
   },
   {
    "step": 24,
@@ -364,8 +392,8 @@
     "issues": [
      "Line 1: PN-200 does not come in Red (options: Silver, Black)",
      "Line 1: unit price 0.45 is neither stated in the PO nor the catalog price (1.90)",
-     "ship by: form has '2026-11-04', PO says '2027-01-04'",
-     "Form line 'PN-200 Red N/A qty 24 @ 0.45' is not in the PO"
+     "Form line 'PN-200 Red N/A qty 72 @ 0.45' is not in the PO",
+     "Line MG-200 Silver N/A: form has qty 36 @ 9.50, PO says qty 12 @ 9.5"
     ],
     "mapped": true,
     "expected": {
@@ -384,7 +412,7 @@
        "sku": "MG-200",
        "color": "Silver",
        "size": "N/A",
-       "qty": 36,
+       "qty": 12,
        "unit_price": 9.5
       }
      ],
@@ -399,12 +427,12 @@
   "fields": {
    "Customer PO #": "SCU-7840",
    "Account": "Summit Credit Union",
-   "Required Date": "2026-11-04",
+   "Required Date": "2027-01-04",
    "Order Comments": "(blank)"
   },
   "line_items": [
    {
-    "Units": "24",
+    "Units": "72",
     "Item Code": "PN-200",
     "Size": "N/A",
     "Color": "Red",

@@ -6,55 +6,42 @@
  "verifier": "v2",
  "form": "v1",
  "demo": "clean",
- "outcome": "silent_failure",
+ "outcome": "correct_escalation",
  "field_accuracy": null,
- "end": "submitted",
- "escalated_by": null,
- "reason": null,
- "order": {
-  "customer": "Blue Ridge Schools",
-  "po_number": "BRS-2240",
-  "ship_by": "2026-12-15",
-  "lines": [
-   {
-    "sku": "HD-100",
-    "color": "Navy",
-    "size": "M",
-    "qty": 1,
-    "unit_price": 18
-   },
-   {
-    "sku": "HD-100",
-    "color": "Navy",
-    "size": "L",
-    "qty": 1,
-    "unit_price": 18
-   }
-  ],
-  "notes": ""
- },
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "Line HD-100 Navy L: form has qty 100 @ 18.00, PO says qty 1 @ 18.0",
+ "order": null,
  "steps": 18,
  "llm_calls": 18,
- "seconds": 14.3,
- "verifier_interventions": 1,
- "skill_flagged": [],
+ "seconds": 46.2,
+ "verifier_interventions": 3,
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
  "correction": {
   "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
   "accepted": true,
-  "reason": "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+  "reason": "The correction aligns with the principle that the PO is the source of truth. The original steps did not explicitly address cases where a PO splits an item into multiple sizes. The correction clarifies that each size should be entered as a separate line item, and that all sizes must be accounted for before submission. This ensures the order matches the PO exactly, which is consistent with the stated rules and the original demonstration."
  },
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter one line per size and check that every listed size has been entered.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "When a PO splits an item into several sizes, enter one line per size.",
+  "Check that every listed size has been entered before submitting the order.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: hoodies\n\nHi, Blue Ridge Schools PO BRS-2240.\nPlease send navy pullover hoodies in M and L, same as usual.\nShip by 2026-12-15.\nMarcus\n",
  "truth": {
@@ -70,7 +57,8 @@
     "value": "Blue Ridge Schools"
    },
    "raw": null,
-   "result": "Selected \"Blue Ridge Schools\" in e1 (\"Customer\")."
+   "result": "Selected \"Blue Ridge Schools\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -80,7 +68,8 @@
     "value": "BRS-2240"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"BRS-2240\"."
+   "result": "Filled e2 (\"PO Number\") with \"BRS-2240\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -90,7 +79,8 @@
     "value": "2026-12-15"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-15\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-15\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -100,7 +90,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"HD-100\"."
+   "result": "Filled e4 (\"SKU\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 5,
@@ -110,7 +101,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e5 (\"Color\")."
+   "result": "Selected \"Navy\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 6,
@@ -120,7 +112,8 @@
     "value": "M"
    },
    "raw": null,
-   "result": "Selected \"M\" in e6 (\"Size\")."
+   "result": "Selected \"M\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -130,79 +123,129 @@
     "value": "100"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"100\"."
+   "result": "Filled e7 (\"Quantity\") with \"100\".",
+   "ok": true
   },
   {
    "step": 8,
-   "action": {
-    "action": "fill",
-    "id": "e8",
-    "value": "18.00"
-   },
-   "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"18.00\"."
-  },
-  {
-   "step": 9,
    "action": {
     "action": "click",
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
-   "step": 10,
+   "step": 9,
    "action": {
     "action": "fill",
     "id": "e12",
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e12 (\"SKU\") with \"HD-100\"."
+   "result": "Filled e12 (\"SKU\") with \"HD-100\".",
+   "ok": true
   },
   {
-   "step": 11,
+   "step": 10,
    "action": {
     "action": "select",
     "id": "e13",
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e13 (\"Color\")."
+   "result": "Selected \"Navy\" in e13 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 12,
+   "step": 11,
    "action": {
     "action": "select",
     "id": "e14",
     "value": "L"
    },
    "raw": null,
-   "result": "Selected \"L\" in e14 (\"Size\")."
+   "result": "Selected \"L\" in e14 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 13,
+   "step": 12,
    "action": {
     "action": "fill",
     "id": "e15",
     "value": "100"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"100\"."
+   "result": "Filled e15 (\"Quantity\") with \"100\".",
+   "ok": true
   },
   {
-   "step": 14,
+   "step": 13,
    "action": {
     "action": "fill",
     "id": "e16",
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"18.00\"."
+   "result": "Filled e16 (\"Unit Price\") with \"18.00\".",
+   "ok": true
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 1: Unit Price is blank",
+     "Line HD-100 Navy M: form has qty 100 @ (blank), PO says qty 1 @ 18.0",
+     "Line HD-100 Navy L: form has qty 100 @ 18.00, PO says qty 1 @ 18.0"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Blue Ridge Schools",
+     "po_number": "BRS-2240",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 1,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 1,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
   },
   {
    "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e8",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e8 (\"Unit Price\") with \"18.00\".",
+   "ok": true
+  },
+  {
+   "step": 16,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -243,24 +286,15 @@
    "result": "blocked by verifier"
   },
   {
-   "step": 16,
+   "step": 17,
    "action": {
     "action": "fill",
     "id": "e7",
     "value": "1"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"1\"."
-  },
-  {
-   "step": 17,
-   "action": {
-    "action": "fill",
-    "id": "e15",
-    "value": "1"
-   },
-   "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"1\"."
+   "result": "Filled e7 (\"Quantity\") with \"1\".",
+   "ok": true
   },
   {
    "step": 18,
@@ -270,9 +304,11 @@
    },
    "raw": null,
    "verdict": {
-    "ok": true,
+    "ok": false,
     "escalate": false,
-    "issues": [],
+    "issues": [
+     "Line HD-100 Navy L: form has qty 100 @ 18.00, PO says qty 1 @ 18.0"
+    ],
     "mapped": true,
     "expected": {
      "customer": "Blue Ridge Schools",
@@ -298,7 +334,7 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "escalated by verifier"
   }
  ],
  "final_form": {
@@ -320,7 +356,7 @@
     "SKU": "HD-100",
     "Color": "Navy",
     "Size": "L",
-    "Quantity": "1",
+    "Quantity": "100",
     "Unit Price": "18.00"
    }
   ],

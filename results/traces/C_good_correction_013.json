@@ -6,34 +6,70 @@
  "verifier": "v2",
  "form": "v1",
  "demo": "clean",
- "outcome": "false_escalation",
- "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "agent",
- "reason": "The form has a duplicate line item for TS-200 Heather Gray 2XL, but the PO specifies TS-200 Heather Gray XL with a quantity of 15. The line item needs to be corrected to match the PO exactly.",
- "order": null,
- "steps": 22,
- "llm_calls": 22,
- "seconds": 19.6,
+ "outcome": "correct",
+ "field_accuracy": 1.0,
+ "end": "submitted",
+ "escalated_by": null,
+ "reason": null,
+ "order": {
+  "customer": "Summit Credit Union",
+  "po_number": "SCU-7802",
+  "ship_by": "2026-12-03",
+  "lines": [
+   {
+    "sku": "MG-200",
+    "color": "Navy",
+    "size": "N/A",
+    "qty": 75,
+    "unit_price": 9.8
+   },
+   {
+    "sku": "TS-200",
+    "color": "Heather Gray",
+    "size": "2XL",
+    "qty": 10,
+    "unit_price": 6.5
+   },
+   {
+    "sku": "TS-200",
+    "color": "Heather Gray",
+    "size": "XL",
+    "qty": 15,
+    "unit_price": 6.5
+   }
+  ],
+  "notes": ""
+ },
+ "steps": 24,
+ "llm_calls": 24,
+ "seconds": 45.8,
  "verifier_interventions": 1,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
  "correction": {
   "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
   "accepted": true,
-  "reason": "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+  "reason": "The correction aligns with the principle that the PO is the source of truth. The original steps did not explicitly address cases where a PO splits an item into multiple sizes. The correction clarifies that each size should be entered as a separate line item, and that all sizes must be accounted for before submission. This ensures the order matches the PO exactly, which is consistent with the stated rules and the original demonstration."
  },
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter one line per size and check that every listed size has been entered.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "When a PO splits an item into several sizes, enter one line per size.",
+  "Check that every listed size has been entered before submitting the order.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: branch giveaway order\n\nSummit Credit Union, PO SCU-7802.\n- 75 pcs of the 20oz travel tumblers, navy\n- heather grey premium tees: 2xl x 10, xl x 15\nShip by Dec 3rd, 2026.\nOwen\n",
  "truth": {
@@ -74,7 +110,8 @@
     "value": "Summit Credit Union"
    },
    "raw": null,
-   "result": "Selected \"Summit Credit Union\" in e1 (\"Customer\")."
+   "result": "Selected \"Summit Credit Union\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -84,7 +121,8 @@
     "value": "SCU-7802"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"SCU-7802\"."
+   "result": "Filled e2 (\"PO Number\") with \"SCU-7802\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -94,7 +132,8 @@
     "value": "2026-12-03"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-03\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-03\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -104,7 +143,8 @@
     "value": "MG-200"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"MG-200\"."
+   "result": "Filled e4 (\"SKU\") with \"MG-200\".",
+   "ok": true
   },
   {
    "step": 5,
@@ -114,158 +154,120 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e5 (\"Color\")."
+   "result": "Selected \"Navy\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 6,
    "action": {
     "action": "select",
     "id": "e6",
-    "value": "N/A"
+    "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "\"Navy\" is not an option of e6. Options: ['XS', 'S', 'M', 'L', 'XL', '2XL', 'N/A'].",
+   "ok": false
   },
   {
    "step": 7,
+   "action": {
+    "action": "select",
+    "id": "e6",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
+  },
+  {
+   "step": 8,
    "action": {
     "action": "fill",
     "id": "e7",
     "value": "75"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"75\"."
+   "result": "Filled e7 (\"Quantity\") with \"75\".",
+   "ok": true
   },
   {
-   "step": 8,
+   "step": 9,
    "action": {
     "action": "fill",
     "id": "e8",
     "value": "9.80"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"9.80\"."
+   "result": "Filled e8 (\"Unit Price\") with \"9.80\".",
+   "ok": true
   },
   {
-   "step": 9,
+   "step": 10,
    "action": {
     "action": "click",
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
-   "step": 10,
+   "step": 11,
    "action": {
     "action": "fill",
     "id": "e12",
     "value": "TS-200"
    },
    "raw": null,
-   "result": "Filled e12 (\"SKU\") with \"TS-200\"."
+   "result": "Filled e12 (\"SKU\") with \"TS-200\".",
+   "ok": true
   },
   {
-   "step": 11,
+   "step": 12,
    "action": {
     "action": "select",
     "id": "e13",
     "value": "Heather Gray"
    },
    "raw": null,
-   "result": "Selected \"Heather Gray\" in e13 (\"Color\")."
+   "result": "Selected \"Heather Gray\" in e13 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 12,
+   "step": 13,
    "action": {
     "action": "select",
     "id": "e14",
     "value": "2XL"
    },
    "raw": null,
-   "result": "Selected \"2XL\" in e14 (\"Size\")."
+   "result": "Selected \"2XL\" in e14 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 13,
+   "step": 14,
    "action": {
     "action": "fill",
     "id": "e15",
     "value": "10"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"10\"."
+   "result": "Filled e15 (\"Quantity\") with \"10\".",
+   "ok": true
   },
   {
-   "step": 14,
+   "step": 15,
    "action": {
     "action": "fill",
     "id": "e16",
     "value": "6.50"
    },
    "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"6.50\"."
-  },
-  {
-   "step": 15,
-   "action": {
-    "action": "click",
-    "id": "e9"
-   },
-   "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Filled e16 (\"Unit Price\") with \"6.50\".",
+   "ok": true
   },
   {
    "step": 16,
-   "action": {
-    "action": "fill",
-    "id": "e17",
-    "value": "TS-200"
-   },
-   "raw": null,
-   "result": "Filled e17 (\"SKU\") with \"TS-200\"."
-  },
-  {
-   "step": 17,
-   "action": {
-    "action": "select",
-    "id": "e18",
-    "value": "Heather Gray"
-   },
-   "raw": null,
-   "result": "Selected \"Heather Gray\" in e18 (\"Color\")."
-  },
-  {
-   "step": 18,
-   "action": {
-    "action": "select",
-    "id": "e19",
-    "value": "2XL"
-   },
-   "raw": null,
-   "result": "Selected \"2XL\" in e19 (\"Size\")."
-  },
-  {
-   "step": 19,
-   "action": {
-    "action": "fill",
-    "id": "e20",
-    "value": "15"
-   },
-   "raw": null,
-   "result": "Filled e20 (\"Quantity\") with \"15\"."
-  },
-  {
-   "step": 20,
-   "action": {
-    "action": "fill",
-    "id": "e21",
-    "value": "6.50"
-   },
-   "raw": null,
-   "result": "Filled e21 (\"Unit Price\") with \"6.50\"."
-  },
-  {
-   "step": 21,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -275,8 +277,6 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Line 3: duplicate of an earlier line (TS-200 Heather Gray 2XL)",
-     "Form line 'TS-200 Heather Gray 2XL qty 15 @ 6.50' is not in the PO",
      "PO asks for 'TS-200 Heather Gray XL qty 15 @ 6.5' but the form has no such line"
     ],
     "mapped": true,
@@ -314,13 +314,126 @@
    "result": "blocked by verifier"
   },
   {
-   "step": 22,
+   "step": 17,
    "action": {
-    "action": "escalate",
-    "reason": "The form has a duplicate line item for TS-200 Heather Gray 2XL, but the PO specifies TS-200 Heather Gray XL with a quantity of 15. The line item needs to be corrected to match the PO exactly."
+    "action": "click",
+    "id": "e9"
    },
    "raw": null,
-   "result": "escalated"
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "TS-200"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"SKU\") with \"TS-200\".",
+   "ok": true
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "XL"
+   },
+   "raw": null,
+   "result": "Selected \"XL\" in e19 (\"Size\").",
+   "ok": true
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "fill",
+    "id": "e18",
+    "value": "Heather Gray"
+   },
+   "raw": null,
+   "result": "e18 is a select, not a text field.",
+   "ok": false
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "select",
+    "id": "e18",
+    "value": "Heather Gray"
+   },
+   "raw": null,
+   "result": "Selected \"Heather Gray\" in e18 (\"Color\").",
+   "ok": true
+  },
+  {
+   "step": 22,
+   "action": {
+    "action": "fill",
+    "id": "e20",
+    "value": "15"
+   },
+   "raw": null,
+   "result": "Filled e20 (\"Quantity\") with \"15\".",
+   "ok": true
+  },
+  {
+   "step": 23,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "6.50"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Unit Price\") with \"6.50\".",
+   "ok": true
+  },
+  {
+   "step": 24,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": true,
+    "escalate": false,
+    "issues": [],
+    "mapped": true,
+    "expected": {
+     "customer": "Summit Credit Union",
+     "po_number": "SCU-7802",
+     "ship_by": "2026-12-03",
+     "lines": [
+      {
+       "sku": "MG-200",
+       "color": "Navy",
+       "size": "N/A",
+       "qty": 75,
+       "unit_price": 9.8
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "2XL",
+       "qty": 10,
+       "unit_price": 6.5
+      },
+      {
+       "sku": "TS-200",
+       "color": "Heather Gray",
+       "size": "XL",
+       "qty": 15,
+       "unit_price": 6.5
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "Clicked e11 (\"Submit Order\").",
+   "ok": true
   }
  ],
  "final_form": {
@@ -348,7 +461,7 @@
    {
     "SKU": "TS-200",
     "Color": "Heather Gray",
-    "Size": "2XL",
+    "Size": "XL",
     "Quantity": "15",
     "Unit Price": "6.50"
    }

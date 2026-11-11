@@ -34,28 +34,29 @@
   "notes": ""
  },
  "steps": 18,
- "llm_calls": 18,
- "seconds": 14.4,
+ "llm_calls": 19,
+ "seconds": 36.8,
  "verifier_interventions": 1,
  "skill_flagged": [
   {
    "step": 8,
-   "problem": "The narration says to always use the catalog price, but the sample PO specifies $3.75 per item.",
-   "correction": "Use the price specified in the PO, not the catalog price."
+   "problem": "The narration says to always use the catalog price, but the sample PO specifies $3.75 per item, which should be used instead.",
+   "correction": "Use the price from the PO; if the PO gives none, use the catalog price."
   }
  ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account the PO is from, matching the customer name from the PO.",
-  "Copy the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the required date format.",
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
   "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Pick the color the PO asks for, matching the color mentioned in the PO.",
-  "Pick the size as specified in the PO. If the product does not have sizes, use N/A.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size as specified in the PO; use N/A for products that do not have sizes.",
   "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
-  "Use the price specified in the PO, not the catalog price, for the unit price.",
+  "Use the price from the PO; if the PO gives none, use the catalog price.",
   "Add one row per product/color/size combination as specified in the PO.",
-  "Submit the order only when every line item matches the PO exactly."
+  "Submit the order only when every line matches the PO exactly."
  ],
  "po_text": "Subject: hoodies\n\nHi, Blue Ridge Schools PO BRS-2240.\nPlease send navy pullover hoodies in M and L, same as usual.\nShip by 2026-12-15.\nMarcus\n",
  "truth": {
@@ -71,7 +72,8 @@
     "value": "Blue Ridge Schools"
    },
    "raw": null,
-   "result": "Selected \"Blue Ridge Schools\" in e1 (\"Customer\")."
+   "result": "Selected \"Blue Ridge Schools\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -81,7 +83,8 @@
     "value": "BRS-2240"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"BRS-2240\"."
+   "result": "Filled e2 (\"PO Number\") with \"BRS-2240\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -91,7 +94,8 @@
     "value": "2026-12-15"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-15\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-15\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -101,7 +105,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"HD-100\"."
+   "result": "Filled e4 (\"SKU\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 5,
@@ -111,7 +116,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e5 (\"Color\")."
+   "result": "Selected \"Navy\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 6,
@@ -121,7 +127,8 @@
     "value": "M"
    },
    "raw": null,
-   "result": "Selected \"M\" in e6 (\"Size\")."
+   "result": "Selected \"M\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -131,7 +138,8 @@
     "value": "100"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"100\"."
+   "result": "Filled e7 (\"Quantity\") with \"100\".",
+   "ok": true
   },
   {
    "step": 8,
@@ -141,7 +149,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"18.00\"."
+   "result": "Filled e8 (\"Unit Price\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 9,
@@ -150,7 +159,8 @@
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
    "step": 10,
@@ -160,7 +170,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e12 (\"SKU\") with \"HD-100\"."
+   "result": "Filled e12 (\"SKU\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 11,
@@ -170,7 +181,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e13 (\"Color\")."
+   "result": "Selected \"Navy\" in e13 (\"Color\").",
+   "ok": true
   },
   {
    "step": 12,
@@ -180,7 +192,8 @@
     "value": "L"
    },
    "raw": null,
-   "result": "Selected \"L\" in e14 (\"Size\")."
+   "result": "Selected \"L\" in e14 (\"Size\").",
+   "ok": true
   },
   {
    "step": 13,
@@ -190,7 +203,8 @@
     "value": "100"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"100\"."
+   "result": "Filled e15 (\"Quantity\") with \"100\".",
+   "ok": true
   },
   {
    "step": 14,
@@ -200,7 +214,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"18.00\"."
+   "result": "Filled e16 (\"Unit Price\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 15,
@@ -251,7 +266,8 @@
     "value": "1"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"1\"."
+   "result": "Filled e7 (\"Quantity\") with \"1\".",
+   "ok": true
   },
   {
    "step": 17,
@@ -261,7 +277,8 @@
     "value": "1"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"1\"."
+   "result": "Filled e15 (\"Quantity\") with \"1\".",
+   "ok": true
   },
   {
    "step": 18,
@@ -299,7 +316,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "Clicked e11 (\"Submit Order\").",
+   "ok": true
   }
  ],
  "final_form": {

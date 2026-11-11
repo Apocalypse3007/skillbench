@@ -33,23 +33,30 @@
   ],
   "notes": ""
  },
- "steps": 15,
- "llm_calls": 15,
- "seconds": 11.3,
+ "steps": 16,
+ "llm_calls": 17,
+ "seconds": 16.8,
  "verifier_interventions": 0,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: Redline expo order RR-1123\n\nLena here. For the robotics expo:\nlanyards (royal blue) x 150\nblack baseball caps x 40 - caps at $7.00 like last time\nPO RR-1123, ship by 2026-12-15\n",
  "truth": {
@@ -83,7 +90,8 @@
     "value": "Redline Robotics"
    },
    "raw": null,
-   "result": "Selected \"Redline Robotics\" in e1 (\"Customer\")."
+   "result": "Selected \"Redline Robotics\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -93,7 +101,8 @@
     "value": "RR-1123"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"RR-1123\"."
+   "result": "Filled e2 (\"PO Number\") with \"RR-1123\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -103,119 +112,141 @@
     "value": "2026-12-15"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-15\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-15\".",
+   "ok": true
   },
   {
    "step": 4,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
+  },
+  {
+   "step": 5,
    "action": {
     "action": "fill",
     "id": "e4",
     "value": "LY-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"LY-100\"."
+   "result": "Filled e4 (\"SKU\") with \"LY-100\".",
+   "ok": true
   },
   {
-   "step": 5,
+   "step": 6,
    "action": {
     "action": "select",
     "id": "e5",
     "value": "Royal Blue"
    },
    "raw": null,
-   "result": "Selected \"Royal Blue\" in e5 (\"Color\")."
+   "result": "Selected \"Royal Blue\" in e5 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 6,
+   "step": 7,
    "action": {
     "action": "select",
     "id": "e6",
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 7,
+   "step": 8,
    "action": {
     "action": "fill",
     "id": "e7",
     "value": "150"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"150\"."
+   "result": "Filled e7 (\"Quantity\") with \"150\".",
+   "ok": true
   },
   {
-   "step": 8,
+   "step": 9,
    "action": {
     "action": "fill",
     "id": "e8",
     "value": "0.95"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"0.95\"."
+   "result": "Filled e8 (\"Unit Price\") with \"0.95\".",
+   "ok": true
   },
   {
-   "step": 9,
+   "step": 10,
    "action": {
     "action": "click",
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
-   "step": 10,
+   "step": 11,
    "action": {
     "action": "fill",
     "id": "e12",
     "value": "CP-100"
    },
    "raw": null,
-   "result": "Filled e12 (\"SKU\") with \"CP-100\"."
+   "result": "Filled e12 (\"SKU\") with \"CP-100\".",
+   "ok": true
   },
   {
-   "step": 11,
+   "step": 12,
    "action": {
     "action": "select",
     "id": "e13",
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e13 (\"Color\")."
+   "result": "Selected \"Black\" in e13 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 12,
+   "step": 13,
    "action": {
     "action": "select",
     "id": "e14",
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e14 (\"Size\")."
+   "result": "Selected \"N/A\" in e14 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 13,
+   "step": 14,
    "action": {
     "action": "fill",
     "id": "e15",
     "value": "40"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"40\"."
+   "result": "Filled e15 (\"Quantity\") with \"40\".",
+   "ok": true
   },
   {
-   "step": 14,
+   "step": 15,
    "action": {
     "action": "fill",
     "id": "e16",
     "value": "7.00"
    },
    "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"7.00\"."
+   "result": "Filled e16 (\"Unit Price\") with \"7.00\".",
+   "ok": true
   },
   {
-   "step": 15,
+   "step": 16,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -250,7 +281,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "Clicked e11 (\"Submit Order\").",
+   "ok": true
   }
  ],
  "final_form": {

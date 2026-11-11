@@ -10,31 +10,32 @@
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The SKU 'WB-100' is not found in the catalog. The correct SKU for the product mentioned in the PO is not available.",
+ "reason": "The product code 'ST-100' is not found in the catalog. The PO mentions 'stainless steel water bottles' which is not listed in the available products. A human must handle this to verify the correct product and proceed.",
  "order": null,
  "steps": 11,
- "llm_calls": 11,
- "seconds": 8.8,
+ "llm_calls": 12,
+ "seconds": 28.7,
  "verifier_interventions": 1,
  "skill_flagged": [
   {
    "step": 8,
-   "problem": "The narration says to always use the catalog price, but the sample PO specifies $3.75 per item.",
-   "correction": "Use the price specified in the PO, not the catalog price."
+   "problem": "The narration says to always use the catalog price, but the sample PO specifies $3.75 per item, which should be used instead.",
+   "correction": "Use the price from the PO; if the PO gives none, use the catalog price."
   }
  ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account the PO is from, matching the customer name from the PO.",
-  "Copy the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the required date format.",
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
   "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Pick the color the PO asks for, matching the color mentioned in the PO.",
-  "Pick the size as specified in the PO. If the product does not have sizes, use N/A.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size as specified in the PO; use N/A for products that do not have sizes.",
   "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
-  "Use the price specified in the PO, not the catalog price, for the unit price.",
+  "Use the price from the PO; if the PO gives none, use the catalog price.",
   "Add one row per product/color/size combination as specified in the PO.",
-  "Submit the order only when every line item matches the PO exactly."
+  "Submit the order only when every line matches the PO exactly."
  ],
  "po_text": "Subject: finish line bottles\n\nHarbor City Marathon PO HCM-5561.\nWe need 200 stainless steel water bottles, silver, with our logo.\nShip by 2026-12-01.\nRob\n",
  "truth": {
@@ -50,7 +51,8 @@
     "value": "Harbor City Marathon"
    },
    "raw": null,
-   "result": "Selected \"Harbor City Marathon\" in e1 (\"Customer\")."
+   "result": "Selected \"Harbor City Marathon\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -60,7 +62,8 @@
     "value": "HCM-5561"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"HCM-5561\"."
+   "result": "Filled e2 (\"PO Number\") with \"HCM-5561\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -70,7 +73,8 @@
     "value": "2026-12-01"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-01\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-01\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -79,17 +83,19 @@
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
    "step": 5,
    "action": {
     "action": "fill",
     "id": "e4",
-    "value": "WB-100"
+    "value": "ST-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"WB-100\"."
+   "result": "Filled e4 (\"SKU\") with \"ST-100\".",
+   "ok": true
   },
   {
    "step": 6,
@@ -99,7 +105,8 @@
     "value": "Silver"
    },
    "raw": null,
-   "result": "Selected \"Silver\" in e5 (\"Color\")."
+   "result": "Selected \"Silver\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -109,7 +116,8 @@
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 8,
@@ -119,7 +127,8 @@
     "value": "200"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"200\"."
+   "result": "Filled e7 (\"Quantity\") with \"200\".",
+   "ok": true
   },
   {
    "step": 9,
@@ -129,7 +138,8 @@
     "value": "15.00"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"15.00\"."
+   "result": "Filled e8 (\"Unit Price\") with \"15.00\".",
+   "ok": true
   },
   {
    "step": 10,
@@ -142,9 +152,9 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Line 1: product code 'WB-100' is not in the catalog",
-     "Form line 'WB-100 Silver N/A qty 200 @ 15.00' is not in the PO",
-     "PO asks for 'NB-100 Silver N/A qty 200 @ 2.4' but the form has no such line"
+     "Line 1: product code 'ST-100' is not in the catalog",
+     "Form line 'ST-100 Silver N/A qty 200 @ 15.00' is not in the PO",
+     "PO asks for 'NB-100 Black N/A qty 200 @ 2.4' but the form has no such line"
     ],
     "mapped": true,
     "expected": {
@@ -154,7 +164,7 @@
      "lines": [
       {
        "sku": "NB-100",
-       "color": "Silver",
+       "color": "Black",
        "size": "N/A",
        "qty": 200,
        "unit_price": 2.4
@@ -170,7 +180,7 @@
    "step": 11,
    "action": {
     "action": "escalate",
-    "reason": "The SKU 'WB-100' is not found in the catalog. The correct SKU for the product mentioned in the PO is not available."
+    "reason": "The product code 'ST-100' is not found in the catalog. The PO mentions 'stainless steel water bottles' which is not listed in the available products. A human must handle this to verify the correct product and proceed."
    },
    "raw": null,
    "result": "escalated"
@@ -185,7 +195,7 @@
   },
   "line_items": [
    {
-    "SKU": "WB-100",
+    "SKU": "ST-100",
     "Color": "Silver",
     "Size": "N/A",
     "Quantity": "200",

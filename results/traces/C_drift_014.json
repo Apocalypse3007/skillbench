@@ -35,21 +35,28 @@
  },
  "steps": 16,
  "llm_calls": 16,
- "seconds": 13.8,
- "verifier_interventions": 0,
- "skill_flagged": [],
+ "seconds": 14.8,
+ "verifier_interventions": 1,
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: Redline expo order RR-1123\n\nLena here. For the robotics expo:\nlanyards (royal blue) x 150\nblack baseball caps x 40 - caps at $7.00 like last time\nPO RR-1123, ship by 2026-12-15\n",
  "truth": {
@@ -83,145 +90,191 @@
     "value": "Redline Robotics"
    },
    "raw": null,
-   "result": "Selected \"Redline Robotics\" in e2 (\"Account\")."
+   "result": "Selected \"Redline Robotics\" in e2 (\"Account\").",
+   "ok": true
   },
   {
    "step": 2,
-   "action": {
-    "action": "fill",
-    "id": "e1",
-    "value": "RR-1123"
-   },
-   "raw": null,
-   "result": "Filled e1 (\"Customer PO #\") with \"RR-1123\"."
-  },
-  {
-   "step": 3,
    "action": {
     "action": "fill",
     "id": "e3",
     "value": "2026-12-15"
    },
    "raw": null,
-   "result": "Filled e3 (\"Required Date\") with \"2026-12-15\"."
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-15\".",
+   "ok": true
   },
   {
-   "step": 4,
-   "action": {
-    "action": "click",
-    "id": "e10"
-   },
-   "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
-  },
-  {
-   "step": 5,
+   "step": 3,
    "action": {
     "action": "fill",
     "id": "e4",
     "value": "150"
    },
    "raw": null,
-   "result": "Filled e4 (\"Units\") with \"150\"."
+   "result": "Filled e4 (\"Units\") with \"150\".",
+   "ok": true
   },
   {
-   "step": 6,
+   "step": 4,
    "action": {
     "action": "fill",
     "id": "e5",
     "value": "LY-100"
    },
    "raw": null,
-   "result": "Filled e5 (\"Item Code\") with \"LY-100\"."
+   "result": "Filled e5 (\"Item Code\") with \"LY-100\".",
+   "ok": true
   },
   {
-   "step": 7,
+   "step": 5,
    "action": {
     "action": "select",
     "id": "e6",
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 8,
+   "step": 6,
    "action": {
     "action": "select",
     "id": "e7",
     "value": "Royal Blue"
    },
    "raw": null,
-   "result": "Selected \"Royal Blue\" in e7 (\"Color\")."
+   "result": "Selected \"Royal Blue\" in e7 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 9,
+   "step": 7,
    "action": {
     "action": "fill",
     "id": "e8",
     "value": "0.95"
    },
    "raw": null,
-   "result": "Filled e8 (\"Price Each\") with \"0.95\"."
+   "result": "Filled e8 (\"Price Each\") with \"0.95\".",
+   "ok": true
   },
   {
-   "step": 10,
+   "step": 8,
    "action": {
     "action": "click",
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
-   "step": 11,
+   "step": 9,
    "action": {
     "action": "fill",
     "id": "e12",
     "value": "40"
    },
    "raw": null,
-   "result": "Filled e12 (\"Units\") with \"40\"."
+   "result": "Filled e12 (\"Units\") with \"40\".",
+   "ok": true
   },
   {
-   "step": 12,
+   "step": 10,
    "action": {
     "action": "fill",
     "id": "e13",
     "value": "CP-100"
    },
    "raw": null,
-   "result": "Filled e13 (\"Item Code\") with \"CP-100\"."
+   "result": "Filled e13 (\"Item Code\") with \"CP-100\".",
+   "ok": true
   },
   {
-   "step": 13,
+   "step": 11,
    "action": {
     "action": "select",
     "id": "e14",
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e14 (\"Size\")."
+   "result": "Selected \"N/A\" in e14 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 14,
+   "step": 12,
    "action": {
     "action": "select",
     "id": "e15",
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e15 (\"Color\")."
+   "result": "Selected \"Black\" in e15 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 15,
+   "step": 13,
    "action": {
     "action": "fill",
     "id": "e16",
     "value": "7.00"
    },
    "raw": null,
-   "result": "Filled e16 (\"Price Each\") with \"7.00\"."
+   "result": "Filled e16 (\"Price Each\") with \"7.00\".",
+   "ok": true
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Customer PO # is blank",
+     "po number: form has '(blank)', PO says 'RR-1123'"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Redline Robotics",
+     "po_number": "RR-1123",
+     "ship_by": "2026-12-15",
+     "lines": [
+      {
+       "sku": "LY-100",
+       "color": "Royal Blue",
+       "size": "N/A",
+       "qty": 150,
+       "unit_price": 0.95
+      },
+      {
+       "sku": "CP-100",
+       "color": "Black",
+       "size": "N/A",
+       "qty": 40,
+       "unit_price": 7.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e1",
+    "value": "RR-1123"
+   },
+   "raw": null,
+   "result": "Filled e1 (\"Customer PO #\") with \"RR-1123\".",
+   "ok": true
   },
   {
    "step": 16,
@@ -259,7 +312,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Place Order\")."
+   "result": "Clicked e11 (\"Place Order\").",
+   "ok": true
   }
  ],
  "final_form": {

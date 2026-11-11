@@ -49,21 +49,28 @@
  },
  "steps": 29,
  "llm_calls": 29,
- "seconds": 26.8,
+ "seconds": 28.3,
  "verifier_interventions": 1,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: team hoodies\n\nLena from Redline Robotics. PO RR-1150.\nPullover hoodies in black for the build team: 4 small, 6 medium, 6 large, 2 XXL.\nNeed them shipped by Dec 20, 2026.\n",
  "truth": {
@@ -111,7 +118,8 @@
     "value": "Redline Robotics"
    },
    "raw": null,
-   "result": "Selected \"Redline Robotics\" in e2 (\"Account\")."
+   "result": "Selected \"Redline Robotics\" in e2 (\"Account\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -121,7 +129,8 @@
     "value": "RR-1150"
    },
    "raw": null,
-   "result": "Filled e1 (\"Customer PO #\") with \"RR-1150\"."
+   "result": "Filled e1 (\"Customer PO #\") with \"RR-1150\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -131,7 +140,8 @@
     "value": "2026-12-20"
    },
    "raw": null,
-   "result": "Filled e3 (\"Required Date\") with \"2026-12-20\"."
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-20\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -140,7 +150,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 5,
@@ -150,7 +161,8 @@
     "value": "4"
    },
    "raw": null,
-   "result": "Filled e4 (\"Units\") with \"4\"."
+   "result": "Filled e4 (\"Units\") with \"4\".",
+   "ok": true
   },
   {
    "step": 6,
@@ -160,7 +172,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e5 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e5 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 7,
@@ -170,7 +183,8 @@
     "value": "S"
    },
    "raw": null,
-   "result": "Selected \"S\" in e6 (\"Size\")."
+   "result": "Selected \"S\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 8,
@@ -180,7 +194,8 @@
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e7 (\"Color\")."
+   "result": "Selected \"Black\" in e7 (\"Color\").",
+   "ok": true
   },
   {
    "step": 9,
@@ -190,7 +205,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e8 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e8 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 10,
@@ -199,7 +215,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 11,
@@ -209,7 +226,8 @@
     "value": "6"
    },
    "raw": null,
-   "result": "Filled e12 (\"Units\") with \"6\"."
+   "result": "Filled e12 (\"Units\") with \"6\".",
+   "ok": true
   },
   {
    "step": 12,
@@ -219,7 +237,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e13 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e13 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 13,
@@ -229,7 +248,8 @@
     "value": "M"
    },
    "raw": null,
-   "result": "Selected \"M\" in e14 (\"Size\")."
+   "result": "Selected \"M\" in e14 (\"Size\").",
+   "ok": true
   },
   {
    "step": 14,
@@ -239,7 +259,8 @@
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e15 (\"Color\")."
+   "result": "Selected \"Black\" in e15 (\"Color\").",
+   "ok": true
   },
   {
    "step": 15,
@@ -249,7 +270,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e16 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e16 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 16,
@@ -258,7 +280,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 17,
@@ -268,7 +291,8 @@
     "value": "6"
    },
    "raw": null,
-   "result": "Filled e17 (\"Units\") with \"6\"."
+   "result": "Filled e17 (\"Units\") with \"6\".",
+   "ok": true
   },
   {
    "step": 18,
@@ -278,7 +302,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e18 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e18 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 19,
@@ -288,7 +313,8 @@
     "value": "L"
    },
    "raw": null,
-   "result": "Selected \"L\" in e19 (\"Size\")."
+   "result": "Selected \"L\" in e19 (\"Size\").",
+   "ok": true
   },
   {
    "step": 20,
@@ -298,7 +324,8 @@
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e20 (\"Color\")."
+   "result": "Selected \"Black\" in e20 (\"Color\").",
+   "ok": true
   },
   {
    "step": 21,
@@ -308,7 +335,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e21 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e21 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 22,
@@ -371,7 +399,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 24,
@@ -381,7 +410,8 @@
     "value": "2"
    },
    "raw": null,
-   "result": "Filled e22 (\"Units\") with \"2\"."
+   "result": "Filled e22 (\"Units\") with \"2\".",
+   "ok": true
   },
   {
    "step": 25,
@@ -391,7 +421,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e23 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e23 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 26,
@@ -401,7 +432,8 @@
     "value": "2XL"
    },
    "raw": null,
-   "result": "Selected \"2XL\" in e24 (\"Size\")."
+   "result": "Selected \"2XL\" in e24 (\"Size\").",
+   "ok": true
   },
   {
    "step": 27,
@@ -411,7 +443,8 @@
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e25 (\"Color\")."
+   "result": "Selected \"Black\" in e25 (\"Color\").",
+   "ok": true
   },
   {
    "step": 28,
@@ -421,7 +454,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e26 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e26 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 29,
@@ -473,7 +507,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Place Order\")."
+   "result": "Clicked e11 (\"Place Order\").",
+   "ok": true
   }
  ],
  "final_form": {

@@ -40,28 +40,34 @@
   ],
   "notes": ""
  },
- "steps": 21,
- "llm_calls": 21,
- "seconds": 17.7,
- "verifier_interventions": 0,
- "skill_flagged": [],
+ "steps": 22,
+ "llm_calls": 22,
+ "seconds": 18.5,
+ "verifier_interventions": 1,
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
  "correction": {
   "text": "When a PO splits an item into several sizes, save time: enter a single line with the total quantity, using the first size listed. The warehouse splits sizes later.",
-  "accepted": true,
-  "reason": "The correction aligns with the principle that the PO is the source of truth. It introduces an optimization for handling POs that split items into multiple sizes, allowing a single line item with total quantity and using the first size listed. This does not alter the core requirement that the order must match the PO exactly, and it improves efficiency without compromising accuracy. The correction is consistent with the demonstrated process and rules."
+  "accepted": false,
+  "reason": "The correction contradicts the original demonstration and stated rules. The original process requires adding a line item per product/color/size combination as specified in the PO. The correction suggests combining sizes into a single line with total quantity, which would alter the order structure and potentially misrepresent the PO's intent. Since the PO is the source of truth, we must follow the original process to ensure accuracy."
  },
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter a single line with the total quantity using the first size listed.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: re: tees for the sales kickoff\n\nDana from Acme again. PO-48250 for navy classic tees:\n15 M, 15 L, 10 XL. We negotiated $3.80 each on this one.\nNeeds to ship by the 1st of December 2026.\n",
  "truth": {
@@ -102,7 +108,8 @@
     "value": "Acme Corp"
    },
    "raw": null,
-   "result": "Selected \"Acme Corp\" in e1 (\"Customer\")."
+   "result": "Selected \"Acme Corp\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -112,7 +119,8 @@
     "value": "PO-48250"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"PO-48250\"."
+   "result": "Filled e2 (\"PO Number\") with \"PO-48250\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -122,7 +130,8 @@
     "value": "2026-12-01"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-01\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-01\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -132,7 +141,8 @@
     "value": "TS-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"TS-100\"."
+   "result": "Filled e4 (\"SKU\") with \"TS-100\".",
+   "ok": true
   },
   {
    "step": 5,
@@ -142,7 +152,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e5 (\"Color\")."
+   "result": "Selected \"Navy\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 6,
@@ -152,7 +163,8 @@
     "value": "M"
    },
    "raw": null,
-   "result": "Selected \"M\" in e6 (\"Size\")."
+   "result": "Selected \"M\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -162,7 +174,8 @@
     "value": "15"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"15\"."
+   "result": "Filled e7 (\"Quantity\") with \"15\".",
+   "ok": true
   },
   {
    "step": 8,
@@ -172,7 +185,8 @@
     "value": "3.80"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"3.80\"."
+   "result": "Filled e8 (\"Unit Price\") with \"3.80\".",
+   "ok": true
   },
   {
    "step": 9,
@@ -181,7 +195,8 @@
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
    "step": 10,
@@ -191,7 +206,8 @@
     "value": "TS-100"
    },
    "raw": null,
-   "result": "Filled e12 (\"SKU\") with \"TS-100\"."
+   "result": "Filled e12 (\"SKU\") with \"TS-100\".",
+   "ok": true
   },
   {
    "step": 11,
@@ -201,7 +217,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e13 (\"Color\")."
+   "result": "Selected \"Navy\" in e13 (\"Color\").",
+   "ok": true
   },
   {
    "step": 12,
@@ -211,7 +228,8 @@
     "value": "L"
    },
    "raw": null,
-   "result": "Selected \"L\" in e14 (\"Size\")."
+   "result": "Selected \"L\" in e14 (\"Size\").",
+   "ok": true
   },
   {
    "step": 13,
@@ -221,7 +239,8 @@
     "value": "15"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"15\"."
+   "result": "Filled e15 (\"Quantity\") with \"15\".",
+   "ok": true
   },
   {
    "step": 14,
@@ -231,69 +250,123 @@
     "value": "3.80"
    },
    "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"3.80\"."
+   "result": "Filled e16 (\"Unit Price\") with \"3.80\".",
+   "ok": true
   },
   {
    "step": 15,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "PO asks for 'TS-100 Navy XL qty 10 @ 3.8' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Acme Corp",
+     "po_number": "PO-48250",
+     "ship_by": "2026-12-01",
+     "lines": [
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "M",
+       "qty": 15,
+       "unit_price": 3.8
+      },
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "L",
+       "qty": 15,
+       "unit_price": 3.8
+      },
+      {
+       "sku": "TS-100",
+       "color": "Navy",
+       "size": "XL",
+       "qty": 10,
+       "unit_price": 3.8
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 16,
    "action": {
     "action": "click",
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
-   "step": 16,
+   "step": 17,
    "action": {
     "action": "fill",
     "id": "e17",
     "value": "TS-100"
    },
    "raw": null,
-   "result": "Filled e17 (\"SKU\") with \"TS-100\"."
+   "result": "Filled e17 (\"SKU\") with \"TS-100\".",
+   "ok": true
   },
   {
-   "step": 17,
+   "step": 18,
    "action": {
     "action": "select",
     "id": "e18",
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e18 (\"Color\")."
+   "result": "Selected \"Navy\" in e18 (\"Color\").",
+   "ok": true
   },
   {
-   "step": 18,
+   "step": 19,
    "action": {
     "action": "select",
     "id": "e19",
     "value": "XL"
    },
    "raw": null,
-   "result": "Selected \"XL\" in e19 (\"Size\")."
+   "result": "Selected \"XL\" in e19 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 19,
+   "step": 20,
    "action": {
     "action": "fill",
     "id": "e20",
     "value": "10"
    },
    "raw": null,
-   "result": "Filled e20 (\"Quantity\") with \"10\"."
+   "result": "Filled e20 (\"Quantity\") with \"10\".",
+   "ok": true
   },
   {
-   "step": 20,
+   "step": 21,
    "action": {
     "action": "fill",
     "id": "e21",
     "value": "3.80"
    },
    "raw": null,
-   "result": "Filled e21 (\"Unit Price\") with \"3.80\"."
+   "result": "Filled e21 (\"Unit Price\") with \"3.80\".",
+   "ok": true
   },
   {
-   "step": 21,
+   "step": 22,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -335,7 +408,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "Clicked e11 (\"Submit Order\").",
+   "ok": true
   }
  ],
  "final_form": {

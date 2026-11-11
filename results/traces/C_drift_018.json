@@ -6,29 +6,36 @@
  "verifier": "v2",
  "form": "v2",
  "demo": "clean",
- "outcome": "correct_escalation",
+ "outcome": "timeout_error",
  "field_accuracy": null,
- "end": "escalated",
- "escalated_by": "verifier",
- "reason": "Line 3: duplicate of an earlier line (HD-100 Navy M); Line 4: duplicate of an earlier line (HD-100 Navy L); Form line 'HD-100 Navy M qty 2 @ 18.00' is not in the PO; Form line 'HD-100 Navy L qty 1 @ 18.00' is not in the PO",
+ "end": "timeout",
+ "escalated_by": null,
+ "reason": null,
  "order": null,
  "steps": 30,
  "llm_calls": 30,
- "seconds": 27.9,
- "verifier_interventions": 3,
- "skill_flagged": [],
+ "seconds": 27.1,
+ "verifier_interventions": 2,
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: hoodies\n\nHi, Blue Ridge Schools PO BRS-2240.\nPlease send navy pullover hoodies in M and L, same as usual.\nShip by 2026-12-15.\nMarcus\n",
  "truth": {
@@ -44,7 +51,8 @@
     "value": "Blue Ridge Schools"
    },
    "raw": null,
-   "result": "Selected \"Blue Ridge Schools\" in e2 (\"Account\")."
+   "result": "Selected \"Blue Ridge Schools\" in e2 (\"Account\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -54,7 +62,8 @@
     "value": "BRS-2240"
    },
    "raw": null,
-   "result": "Filled e1 (\"Customer PO #\") with \"BRS-2240\"."
+   "result": "Filled e1 (\"Customer PO #\") with \"BRS-2240\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -64,7 +73,8 @@
     "value": "2026-12-15"
    },
    "raw": null,
-   "result": "Filled e3 (\"Required Date\") with \"2026-12-15\"."
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-15\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -73,7 +83,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 5,
@@ -83,7 +94,8 @@
     "value": "2"
    },
    "raw": null,
-   "result": "Filled e4 (\"Units\") with \"2\"."
+   "result": "Filled e4 (\"Units\") with \"2\".",
+   "ok": true
   },
   {
    "step": 6,
@@ -93,7 +105,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e5 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e5 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 7,
@@ -103,7 +116,8 @@
     "value": "M"
    },
    "raw": null,
-   "result": "Selected \"M\" in e6 (\"Size\")."
+   "result": "Selected \"M\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 8,
@@ -113,7 +127,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e7 (\"Color\")."
+   "result": "Selected \"Navy\" in e7 (\"Color\").",
+   "ok": true
   },
   {
    "step": 9,
@@ -123,7 +138,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e8 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e8 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 10,
@@ -132,7 +148,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 11,
@@ -142,7 +159,8 @@
     "value": "2"
    },
    "raw": null,
-   "result": "Filled e12 (\"Units\") with \"2\"."
+   "result": "Filled e12 (\"Units\") with \"2\".",
+   "ok": true
   },
   {
    "step": 12,
@@ -152,7 +170,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e13 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e13 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 13,
@@ -162,7 +181,8 @@
     "value": "L"
    },
    "raw": null,
-   "result": "Selected \"L\" in e14 (\"Size\")."
+   "result": "Selected \"L\" in e14 (\"Size\").",
+   "ok": true
   },
   {
    "step": 14,
@@ -172,7 +192,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e15 (\"Color\")."
+   "result": "Selected \"Navy\" in e15 (\"Color\").",
+   "ok": true
   },
   {
    "step": 15,
@@ -182,7 +203,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e16 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e16 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 16,
@@ -233,7 +255,8 @@
     "value": "1"
    },
    "raw": null,
-   "result": "Filled e12 (\"Units\") with \"1\"."
+   "result": "Filled e12 (\"Units\") with \"1\".",
+   "ok": true
   },
   {
    "step": 18,
@@ -243,7 +266,8 @@
     "value": "1"
    },
    "raw": null,
-   "result": "Filled e17 (\"Units\") with \"1\"."
+   "result": "Filled e17 (\"Units\") with \"1\".",
+   "ok": true
   },
   {
    "step": 19,
@@ -253,17 +277,19 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e18 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e18 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 20,
    "action": {
     "action": "select",
     "id": "e19",
-    "value": "M"
+    "value": "L"
    },
    "raw": null,
-   "result": "Selected \"M\" in e19 (\"Size\")."
+   "result": "Selected \"L\" in e19 (\"Size\").",
+   "ok": true
   },
   {
    "step": 21,
@@ -273,7 +299,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e20 (\"Color\")."
+   "result": "Selected \"Navy\" in e20 (\"Color\").",
+   "ok": true
   },
   {
    "step": 22,
@@ -283,7 +310,8 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e21 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e21 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 23,
@@ -296,8 +324,9 @@
     "ok": false,
     "escalate": false,
     "issues": [
-     "Line 3: duplicate of an earlier line (HD-100 Navy M)",
-     "Form line 'HD-100 Navy M qty 2 @ 18.00' is not in the PO"
+     "Line 3: duplicate of an earlier line (HD-100 Navy L)",
+     "Line HD-100 Navy M: form has qty 2 @ 18.00, PO says qty 1 @ 18.0",
+     "Form line 'HD-100 Navy L qty 1 @ 18.00' is not in the PO"
     ],
     "mapped": true,
     "expected": {
@@ -333,7 +362,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 25,
@@ -343,7 +373,8 @@
     "value": "1"
    },
    "raw": null,
-   "result": "Filled e22 (\"Units\") with \"1\"."
+   "result": "Filled e22 (\"Units\") with \"1\".",
+   "ok": true
   },
   {
    "step": 26,
@@ -353,17 +384,19 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e23 (\"Item Code\") with \"HD-100\"."
+   "result": "Filled e23 (\"Item Code\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 27,
    "action": {
     "action": "select",
     "id": "e24",
-    "value": "L"
+    "value": "M"
    },
    "raw": null,
-   "result": "Selected \"L\" in e24 (\"Size\")."
+   "result": "Selected \"M\" in e24 (\"Size\").",
+   "ok": true
   },
   {
    "step": 28,
@@ -373,7 +406,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e25 (\"Color\")."
+   "result": "Selected \"Navy\" in e25 (\"Color\").",
+   "ok": true
   },
   {
    "step": 29,
@@ -383,50 +417,18 @@
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e26 (\"Price Each\") with \"18.00\"."
+   "result": "Filled e26 (\"Price Each\") with \"18.00\".",
+   "ok": true
   },
   {
    "step": 30,
    "action": {
-    "action": "submit",
-    "id": "e11"
+    "action": "click",
+    "id": "e10"
    },
    "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Line 3: duplicate of an earlier line (HD-100 Navy M)",
-     "Line 4: duplicate of an earlier line (HD-100 Navy L)",
-     "Form line 'HD-100 Navy M qty 2 @ 18.00' is not in the PO",
-     "Form line 'HD-100 Navy L qty 1 @ 18.00' is not in the PO"
-    ],
-    "mapped": true,
-    "expected": {
-     "customer": "Blue Ridge Schools",
-     "po_number": "BRS-2240",
-     "ship_by": "2026-12-15",
-     "lines": [
-      {
-       "sku": "HD-100",
-       "color": "Navy",
-       "size": "M",
-       "qty": 1,
-       "unit_price": 18.0
-      },
-      {
-       "sku": "HD-100",
-       "color": "Navy",
-       "size": "L",
-       "qty": 1,
-       "unit_price": 18.0
-      }
-     ],
-     "escalate": false,
-     "escalate_reason": ""
-    }
-   },
-   "result": "escalated by verifier"
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   }
  ],
  "final_form": {
@@ -454,14 +456,14 @@
    {
     "Units": "1",
     "Item Code": "HD-100",
-    "Size": "M",
+    "Size": "L",
     "Color": "Navy",
     "Price Each": "18.00"
    },
    {
     "Units": "1",
     "Item Code": "HD-100",
-    "Size": "L",
+    "Size": "M",
     "Color": "Navy",
     "Price Each": "18.00"
    }

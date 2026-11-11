@@ -12,12 +12,13 @@ def compile_skill(demo_path, skeptic=False):
     demo = json.loads(demo_path.read_text())
     demo.pop("injected_mistake", None)  # benchmark metadata, never shown to the model
     text = prompts.demo_text(demo)
-    key = hashlib.sha1(f"{config.MODEL}|{skeptic}|{text}".encode()).hexdigest()[:12]
+    template = prompts.SKILL_SKEPTIC if skeptic else prompts.SKILL_NORMAL
+    # The prompts are part of the key, so editing a prompt recompiles instead of reusing a stale skill.
+    key = hashlib.sha1(f"{config.MODEL}|{prompts.SKILL_SYSTEM}|{template}|{text}".encode()).hexdigest()[:12]
     cache = config.SKILL_CACHE_DIR / f"{demo_path.stem}_{'skeptic' if skeptic else 'normal'}_{key}.json"
     if cache.exists():
         return json.loads(cache.read_text())
 
-    template = prompts.SKILL_SKEPTIC if skeptic else prompts.SKILL_NORMAL
     data, raw = chat_json(prompts.SKILL_SYSTEM, template.format(demo=text))
     if not data or not isinstance(data.get("skill"), list):
         raise RuntimeError(f"Skill compilation failed: {raw[:300]}")

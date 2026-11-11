@@ -28,26 +28,32 @@
  },
  "steps": 10,
  "llm_calls": 10,
- "seconds": 7.2,
+ "seconds": 7.3,
  "verifier_interventions": 0,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
  "correction": {
   "text": "When a PO splits an item into several sizes, save time: enter a single line with the total quantity, using the first size listed. The warehouse splits sizes later.",
-  "accepted": true,
-  "reason": "The correction aligns with the principle that the PO is the source of truth. It introduces an optimization for handling POs that split items into multiple sizes, allowing a single line item with total quantity and using the first size listed. This does not alter the core requirement that the order must match the PO exactly, and it improves efficiency without compromising accuracy. The correction is consistent with the demonstrated process and rules."
+  "accepted": false,
+  "reason": "The correction contradicts the original demonstration and stated rules. The original process requires adding a line item per product/color/size combination as specified in the PO. The correction suggests combining sizes into a single line with total quantity, which would alter the order structure and potentially misrepresent the PO's intent. Since the PO is the source of truth, we must follow the original process to ensure accuracy."
  },
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter a single line with the total quantity using the first size listed.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: Mug order - PD-0915\n\nHi,\n\nPinecrest Dental, PO PD-0915.\n48 White Ceramic Mugs 11oz (MG-100) at our agreed price of $3.50 each.\nShip by 2026-11-28.\n\nThank you!\nPriya Natarajan, Office Manager\n",
  "truth": {
@@ -74,7 +80,8 @@
     "value": "Pinecrest Dental"
    },
    "raw": null,
-   "result": "Selected \"Pinecrest Dental\" in e1 (\"Customer\")."
+   "result": "Selected \"Pinecrest Dental\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -84,7 +91,8 @@
     "value": "PD-0915"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"PD-0915\"."
+   "result": "Filled e2 (\"PO Number\") with \"PD-0915\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -94,7 +102,8 @@
     "value": "2026-11-28"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-11-28\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-11-28\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -104,7 +113,8 @@
     "value": "MG-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"MG-100\"."
+   "result": "Filled e4 (\"SKU\") with \"MG-100\".",
+   "ok": true
   },
   {
    "step": 5,
@@ -114,7 +124,8 @@
     "value": "White"
    },
    "raw": null,
-   "result": "Selected \"White\" in e5 (\"Color\")."
+   "result": "Selected \"White\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 6,
@@ -124,7 +135,8 @@
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -134,7 +146,8 @@
     "value": "48"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"48\"."
+   "result": "Filled e7 (\"Quantity\") with \"48\".",
+   "ok": true
   },
   {
    "step": 8,
@@ -144,7 +157,8 @@
     "value": "3.50"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"3.50\"."
+   "result": "Filled e8 (\"Unit Price\") with \"3.50\".",
+   "ok": true
   },
   {
    "step": 9,
@@ -153,7 +167,8 @@
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
    "step": 10,
@@ -184,7 +199,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "Clicked e11 (\"Submit Order\").",
+   "ok": true
   }
  ],
  "final_form": {

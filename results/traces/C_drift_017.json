@@ -10,25 +10,32 @@
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The form contains invalid line items (TB-200 in Silver and NB-100 in Silver) that do not match the product catalog. These items cannot be entered correctly.",
+ "reason": "The product TB-200 does not come in Silver as per the catalog. The PO specifies a different product (NB-100) with Black color. The form line is incorrect and needs manual correction.",
  "order": null,
- "steps": 18,
- "llm_calls": 18,
- "seconds": 15.7,
- "verifier_interventions": 2,
- "skill_flagged": [],
+ "steps": 11,
+ "llm_calls": 11,
+ "seconds": 9.1,
+ "verifier_interventions": 1,
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: finish line bottles\n\nHarbor City Marathon PO HCM-5561.\nWe need 200 stainless steel water bottles, silver, with our logo.\nShip by 2026-12-01.\nRob\n",
  "truth": {
@@ -44,7 +51,8 @@
     "value": "Harbor City Marathon"
    },
    "raw": null,
-   "result": "Selected \"Harbor City Marathon\" in e2 (\"Account\")."
+   "result": "Selected \"Harbor City Marathon\" in e2 (\"Account\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -54,7 +62,8 @@
     "value": "HCM-5561"
    },
    "raw": null,
-   "result": "Filled e1 (\"Customer PO #\") with \"HCM-5561\"."
+   "result": "Filled e1 (\"Customer PO #\") with \"HCM-5561\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -64,7 +73,8 @@
     "value": "2026-12-01"
    },
    "raw": null,
-   "result": "Filled e3 (\"Required Date\") with \"2026-12-01\"."
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-01\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -73,7 +83,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 5,
@@ -83,7 +94,8 @@
     "value": "200"
    },
    "raw": null,
-   "result": "Filled e4 (\"Units\") with \"200\"."
+   "result": "Filled e4 (\"Units\") with \"200\".",
+   "ok": true
   },
   {
    "step": 6,
@@ -93,7 +105,8 @@
     "value": "TB-200"
    },
    "raw": null,
-   "result": "Filled e5 (\"Item Code\") with \"TB-200\"."
+   "result": "Filled e5 (\"Item Code\") with \"TB-200\".",
+   "ok": true
   },
   {
    "step": 7,
@@ -103,7 +116,8 @@
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 8,
@@ -113,7 +127,8 @@
     "value": "Silver"
    },
    "raw": null,
-   "result": "Selected \"Silver\" in e7 (\"Color\")."
+   "result": "Selected \"Silver\" in e7 (\"Color\").",
+   "ok": true
   },
   {
    "step": 9,
@@ -123,7 +138,8 @@
     "value": "3.20"
    },
    "raw": null,
-   "result": "Filled e8 (\"Price Each\") with \"3.20\"."
+   "result": "Filled e8 (\"Price Each\") with \"3.20\".",
+   "ok": true
   },
   {
    "step": 10,
@@ -138,7 +154,7 @@
     "issues": [
      "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
      "Form line 'TB-200 Silver N/A qty 200 @ 3.20' is not in the PO",
-     "PO asks for 'NB-100 Silver N/A qty 200 @ 2.4' but the form has no such line"
+     "PO asks for 'NB-100 Black N/A qty 200 @ 2.4' but the form has no such line"
     ],
     "mapped": true,
     "expected": {
@@ -148,7 +164,7 @@
      "lines": [
       {
        "sku": "NB-100",
-       "color": "Silver",
+       "color": "Black",
        "size": "N/A",
        "qty": 200,
        "unit_price": 2.4
@@ -163,102 +179,8 @@
   {
    "step": 11,
    "action": {
-    "action": "click",
-    "id": "e10"
-   },
-   "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
-  },
-  {
-   "step": 12,
-   "action": {
-    "action": "fill",
-    "id": "e17",
-    "value": "200"
-   },
-   "raw": null,
-   "result": "Filled e17 (\"Units\") with \"200\"."
-  },
-  {
-   "step": 13,
-   "action": {
-    "action": "fill",
-    "id": "e18",
-    "value": "NB-100"
-   },
-   "raw": null,
-   "result": "Filled e18 (\"Item Code\") with \"NB-100\"."
-  },
-  {
-   "step": 14,
-   "action": {
-    "action": "select",
-    "id": "e20",
-    "value": "Silver"
-   },
-   "raw": null,
-   "result": "Selected \"Silver\" in e20 (\"Color\")."
-  },
-  {
-   "step": 15,
-   "action": {
-    "action": "select",
-    "id": "e19",
-    "value": "N/A"
-   },
-   "raw": null,
-   "result": "Selected \"N/A\" in e19 (\"Size\")."
-  },
-  {
-   "step": 16,
-   "action": {
-    "action": "fill",
-    "id": "e21",
-    "value": "2.40"
-   },
-   "raw": null,
-   "result": "Filled e21 (\"Price Each\") with \"2.40\"."
-  },
-  {
-   "step": 17,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Line 1: TB-200 does not come in Silver (options: Black, Red, Royal Blue, Forest Green)",
-     "Line 2: NB-100 does not come in Silver (options: Black, Navy)",
-     "Form line 'TB-200 Silver N/A qty 200 @ 3.20' is not in the PO"
-    ],
-    "mapped": true,
-    "expected": {
-     "customer": "Harbor City Marathon",
-     "po_number": "HCM-5561",
-     "ship_by": "2026-12-01",
-     "lines": [
-      {
-       "sku": "NB-100",
-       "color": "Silver",
-       "size": "N/A",
-       "qty": 200,
-       "unit_price": 2.4
-      }
-     ],
-     "escalate": false,
-     "escalate_reason": ""
-    }
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 18,
-   "action": {
     "action": "escalate",
-    "reason": "The form contains invalid line items (TB-200 in Silver and NB-100 in Silver) that do not match the product catalog. These items cannot be entered correctly."
+    "reason": "The product TB-200 does not come in Silver as per the catalog. The PO specifies a different product (NB-100) with Black color. The form line is incorrect and needs manual correction."
    },
    "raw": null,
    "result": "escalated"
@@ -278,13 +200,6 @@
     "Size": "N/A",
     "Color": "Silver",
     "Price Each": "3.20"
-   },
-   {
-    "Units": "200",
-    "Item Code": "NB-100",
-    "Size": "N/A",
-    "Color": "Silver",
-    "Price Each": "2.40"
    }
   ],
   "types": {

@@ -6,55 +6,40 @@
  "verifier": "v2",
  "form": "v1",
  "demo": "clean",
- "outcome": "correct",
- "field_accuracy": 1.0,
- "end": "submitted",
- "escalated_by": null,
- "reason": null,
- "order": {
-  "customer": "Blue Ridge Schools",
-  "po_number": "BRS-2231",
-  "ship_by": "2026-12-10",
-  "lines": [
-   {
-    "sku": "CP-200",
-    "color": "Navy",
-    "size": "N/A",
-    "qty": 60,
-    "unit_price": 5.25
-   },
-   {
-    "sku": "TB-200",
-    "color": "Red",
-    "size": "N/A",
-    "qty": 60,
-    "unit_price": 3.2
-   }
-  ],
-  "notes": ""
- },
- "steps": 21,
- "llm_calls": 21,
- "seconds": 18.6,
- "verifier_interventions": 2,
- "skill_flagged": [],
+ "outcome": "false_escalation",
+ "field_accuracy": null,
+ "end": "escalated",
+ "escalated_by": "verifier",
+ "reason": "Line 1: CP-200 does not come in Red (options: Black, Navy, Heather Gray, Maroon); Line 2: TB-200 does not come in Navy (options: Black, Red, Royal Blue, Forest Green); Form line 'CP-200 Red N/A qty 60 @ 5.25' is not in the PO; Form line 'TB-200 Navy N/A qty 60 @ 3.20' is not in the PO; PO asks for 'CP-200 Navy N/A qty 60 @ 5.25' but the form has no such line; PO asks for 'TB-200 Red N/A qty 60 @ 3.2' but the form has no such line",
+ "order": null,
+ "steps": 22,
+ "llm_calls": 22,
+ "seconds": 19.5,
+ "verifier_interventions": 3,
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
  "correction": {
   "text": "When a PO splits an item into several sizes, save time: enter a single line with the total quantity, using the first size listed. The warehouse splits sizes later.",
-  "accepted": true,
-  "reason": "The correction aligns with the principle that the PO is the source of truth. It introduces an optimization for handling POs that split items into multiple sizes, allowing a single line item with total quantity and using the first size listed. This does not alter the core requirement that the order must match the PO exactly, and it improves efficiency without compromising accuracy. The correction is consistent with the demonstrated process and rules."
+  "accepted": false,
+  "reason": "The correction contradicts the original demonstration and stated rules. The original process requires adding a line item per product/color/size combination as specified in the PO. The correction suggests combining sizes into a single line with total quantity, which would alter the order structure and potentially misrepresent the PO's intent. Since the PO is the source of truth, we must follow the original process to ensure accuracy."
  },
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter a single line with the total quantity using the first size listed.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: winter spirit items\n\nBlue Ridge Schools PO BRS-2231\n\n60 navy knit beenies\n60 red drawstring bags\n\nneeded by 12/10/2026\n\nMarcus\n",
  "truth": {
@@ -88,7 +73,8 @@
     "value": "Blue Ridge Schools"
    },
    "raw": null,
-   "result": "Selected \"Blue Ridge Schools\" in e1 (\"Customer\")."
+   "result": "Selected \"Blue Ridge Schools\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -98,7 +84,8 @@
     "value": "BRS-2231"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"BRS-2231\"."
+   "result": "Filled e2 (\"PO Number\") with \"BRS-2231\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -108,7 +95,8 @@
     "value": "2026-12-10"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-10\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-10\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -117,7 +105,8 @@
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
    "step": 5,
@@ -127,7 +116,8 @@
     "value": "CP-200"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"CP-200\"."
+   "result": "Filled e4 (\"SKU\") with \"CP-200\".",
+   "ok": true
   },
   {
    "step": 6,
@@ -137,7 +127,8 @@
     "value": "Red"
    },
    "raw": null,
-   "result": "Selected \"Red\" in e5 (\"Color\")."
+   "result": "Selected \"Red\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -147,7 +138,8 @@
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 8,
@@ -157,7 +149,8 @@
     "value": "60"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"60\"."
+   "result": "Filled e7 (\"Quantity\") with \"60\".",
+   "ok": true
   },
   {
    "step": 9,
@@ -167,7 +160,8 @@
     "value": "5.25"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"5.25\"."
+   "result": "Filled e8 (\"Unit Price\") with \"5.25\".",
+   "ok": true
   },
   {
    "step": 10,
@@ -176,7 +170,8 @@
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
    "step": 11,
@@ -186,7 +181,8 @@
     "value": "TB-200"
    },
    "raw": null,
-   "result": "Filled e12 (\"SKU\") with \"TB-200\"."
+   "result": "Filled e12 (\"SKU\") with \"TB-200\".",
+   "ok": true
   },
   {
    "step": 12,
@@ -196,40 +192,55 @@
     "value": "Red"
    },
    "raw": null,
-   "result": "Selected \"Red\" in e13 (\"Color\")."
+   "result": "Selected \"Red\" in e13 (\"Color\").",
+   "ok": true
   },
   {
    "step": 13,
    "action": {
     "action": "select",
     "id": "e14",
-    "value": "N/A"
+    "value": "Red"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e14 (\"Size\")."
+   "result": "\"Red\" is not an option of e14. Options: ['XS', 'S', 'M', 'L', 'XL', '2XL', 'N/A'].",
+   "ok": false
   },
   {
    "step": 14,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "N/A"
+   },
+   "raw": null,
+   "result": "Selected \"N/A\" in e14 (\"Size\").",
+   "ok": true
+  },
+  {
+   "step": 15,
    "action": {
     "action": "fill",
     "id": "e15",
     "value": "60"
    },
    "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"60\"."
+   "result": "Filled e15 (\"Quantity\") with \"60\".",
+   "ok": true
   },
   {
-   "step": 15,
+   "step": 16,
    "action": {
     "action": "fill",
     "id": "e16",
     "value": "3.20"
    },
    "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"3.20\"."
+   "result": "Filled e16 (\"Unit Price\") with \"3.20\".",
+   "ok": true
   },
   {
-   "step": 16,
+   "step": 17,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -271,16 +282,6 @@
    "result": "blocked by verifier"
   },
   {
-   "step": 17,
-   "action": {
-    "action": "select",
-    "id": "e5",
-    "value": "Navy"
-   },
-   "raw": null,
-   "result": "Selected \"Navy\" in e5 (\"Color\")."
-  },
-  {
    "step": 18,
    "action": {
     "action": "select",
@@ -288,7 +289,8 @@
     "value": "Navy"
    },
    "raw": null,
-   "result": "Selected \"Navy\" in e13 (\"Color\")."
+   "result": "Selected \"Navy\" in e13 (\"Color\").",
+   "ok": true
   },
   {
    "step": 19,
@@ -301,8 +303,11 @@
     "ok": false,
     "escalate": false,
     "issues": [
+     "Line 1: CP-200 does not come in Red (options: Black, Navy, Heather Gray, Maroon)",
      "Line 2: TB-200 does not come in Navy (options: Black, Red, Royal Blue, Forest Green)",
+     "Form line 'CP-200 Red N/A qty 60 @ 5.25' is not in the PO",
      "Form line 'TB-200 Navy N/A qty 60 @ 3.20' is not in the PO",
+     "PO asks for 'CP-200 Navy N/A qty 60 @ 5.25' but the form has no such line",
      "PO asks for 'TB-200 Red N/A qty 60 @ 3.2' but the form has no such line"
     ],
     "mapped": true,
@@ -340,19 +345,38 @@
     "value": "Red"
    },
    "raw": null,
-   "result": "Selected \"Red\" in e13 (\"Color\")."
+   "result": "Selected \"Red\" in e13 (\"Color\").",
+   "ok": true
   },
   {
    "step": 21,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Navy"
+   },
+   "raw": null,
+   "result": "Selected \"Navy\" in e13 (\"Color\").",
+   "ok": true
+  },
+  {
+   "step": 22,
    "action": {
     "action": "submit",
     "id": "e11"
    },
    "raw": null,
    "verdict": {
-    "ok": true,
+    "ok": false,
     "escalate": false,
-    "issues": [],
+    "issues": [
+     "Line 1: CP-200 does not come in Red (options: Black, Navy, Heather Gray, Maroon)",
+     "Line 2: TB-200 does not come in Navy (options: Black, Red, Royal Blue, Forest Green)",
+     "Form line 'CP-200 Red N/A qty 60 @ 5.25' is not in the PO",
+     "Form line 'TB-200 Navy N/A qty 60 @ 3.20' is not in the PO",
+     "PO asks for 'CP-200 Navy N/A qty 60 @ 5.25' but the form has no such line",
+     "PO asks for 'TB-200 Red N/A qty 60 @ 3.2' but the form has no such line"
+    ],
     "mapped": true,
     "expected": {
      "customer": "Blue Ridge Schools",
@@ -378,7 +402,7 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "escalated by verifier"
   }
  ],
  "final_form": {
@@ -391,14 +415,14 @@
   "line_items": [
    {
     "SKU": "CP-200",
-    "Color": "Navy",
+    "Color": "Red",
     "Size": "N/A",
     "Quantity": "60",
     "Unit Price": "5.25"
    },
    {
     "SKU": "TB-200",
-    "Color": "Red",
+    "Color": "Navy",
     "Size": "N/A",
     "Quantity": "60",
     "Unit Price": "3.20"

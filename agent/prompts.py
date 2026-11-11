@@ -42,6 +42,9 @@ Demonstrations are recorded by busy humans and can contain mistakes. Before writ
 check every recorded step and its narration against the sample PO, the stated rules and common sense.
 The PO is the source of truth for what the customer ordered. Flag any step that looks wrong
 (e.g. it ignores or contradicts what the PO says), and write the skill with the corrected behaviour.
+Only flag a step whose action or narration contradicts the sample PO or the stated rules; do not flag
+steps that are already correct. When you correct a flagged step, keep a fallback for when the PO does not
+state that value (e.g. "use the PO's price; if the PO gives none, use the catalog price").
 
 Return JSON: {{"flagged": [{{"step": <number>, "problem": "...", "correction": "..."}}],
 "skill": ["step 1 text", "step 2 text", ...]}}

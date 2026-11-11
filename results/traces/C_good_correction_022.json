@@ -49,26 +49,34 @@
  },
  "steps": 30,
  "llm_calls": 30,
- "seconds": 25.8,
+ "seconds": 97.5,
  "verifier_interventions": 2,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
  "correction": {
   "text": "When a PO splits an item into several sizes, enter one line per size, and check that every listed size has been entered before submitting.",
   "accepted": true,
-  "reason": "The correction aligns with the principle that the PO is the source of truth. It ensures that when a PO specifies multiple sizes, each size is treated as a separate line item, which is consistent with the demonstrated process of adding one row per product/color/size combination. This correction improves accuracy without contradicting existing steps or rules."
+  "reason": "The correction aligns with the principle that the PO is the source of truth. The original steps did not explicitly address cases where a PO splits an item into multiple sizes. The correction clarifies that each size should be entered as a separate line item, and that all sizes must be accounted for before submission. This ensures the order matches the PO exactly, which is consistent with the stated rules and the original demonstration."
  },
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO. If a PO splits an item into several sizes, enter one line per size and check that every listed size has been entered.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "When a PO splits an item into several sizes, enter one line per size.",
+  "Check that every listed size has been entered before submitting the order.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: team hoodies\n\nLena from Redline Robotics. PO RR-1150.\nPullover hoodies in black for the build team: 4 small, 6 medium, 6 large, 2 XXL.\nNeed them shipped by Dec 20, 2026.\n",
  "truth": {
@@ -116,7 +124,8 @@
     "value": "Redline Robotics"
    },
    "raw": null,
-   "result": "Selected \"Redline Robotics\" in e1 (\"Customer\")."
+   "result": "Selected \"Redline Robotics\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -126,7 +135,8 @@
     "value": "RR-1150"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"RR-1150\"."
+   "result": "Filled e2 (\"PO Number\") with \"RR-1150\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -136,7 +146,8 @@
     "value": "2026-12-20"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-20\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-20\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -146,7 +157,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "e4 is not a select."
+   "result": "e4 is not a select.",
+   "ok": false
   },
   {
    "step": 5,
@@ -156,7 +168,8 @@
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"HD-100\"."
+   "result": "Filled e4 (\"SKU\") with \"HD-100\".",
+   "ok": true
   },
   {
    "step": 6,
@@ -166,7 +179,8 @@
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e5 (\"Color\")."
+   "result": "Selected \"Black\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -176,7 +190,8 @@
     "value": "S"
    },
    "raw": null,
-   "result": "Selected \"S\" in e6 (\"Size\")."
+   "result": "Selected \"S\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 8,
@@ -186,194 +201,152 @@
     "value": "4"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"4\"."
+   "result": "Filled e7 (\"Quantity\") with \"4\".",
+   "ok": true
   },
   {
    "step": 9,
-   "action": {
-    "action": "click",
-    "id": "e9"
-   },
-   "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
-  },
-  {
-   "step": 10,
-   "action": {
-    "action": "fill",
-    "id": "e12",
-    "value": "HD-100"
-   },
-   "raw": null,
-   "result": "Filled e12 (\"SKU\") with \"HD-100\"."
-  },
-  {
-   "step": 11,
-   "action": {
-    "action": "select",
-    "id": "e13",
-    "value": "Black"
-   },
-   "raw": null,
-   "result": "Selected \"Black\" in e13 (\"Color\")."
-  },
-  {
-   "step": 12,
-   "action": {
-    "action": "select",
-    "id": "e14",
-    "value": "M"
-   },
-   "raw": null,
-   "result": "Selected \"M\" in e14 (\"Size\")."
-  },
-  {
-   "step": 13,
-   "action": {
-    "action": "fill",
-    "id": "e15",
-    "value": "6"
-   },
-   "raw": null,
-   "result": "Filled e15 (\"Quantity\") with \"6\"."
-  },
-  {
-   "step": 14,
-   "action": {
-    "action": "fill",
-    "id": "e16",
-    "value": "18.00"
-   },
-   "raw": null,
-   "result": "Filled e16 (\"Unit Price\") with \"18.00\"."
-  },
-  {
-   "step": 15,
-   "action": {
-    "action": "click",
-    "id": "e9"
-   },
-   "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
-  },
-  {
-   "step": 16,
-   "action": {
-    "action": "fill",
-    "id": "e17",
-    "value": "HD-100"
-   },
-   "raw": null,
-   "result": "Filled e17 (\"SKU\") with \"HD-100\"."
-  },
-  {
-   "step": 17,
-   "action": {
-    "action": "select",
-    "id": "e18",
-    "value": "Black"
-   },
-   "raw": null,
-   "result": "Selected \"Black\" in e18 (\"Color\")."
-  },
-  {
-   "step": 18,
-   "action": {
-    "action": "select",
-    "id": "e19",
-    "value": "L"
-   },
-   "raw": null,
-   "result": "Selected \"L\" in e19 (\"Size\")."
-  },
-  {
-   "step": 19,
-   "action": {
-    "action": "fill",
-    "id": "e20",
-    "value": "6"
-   },
-   "raw": null,
-   "result": "Filled e20 (\"Quantity\") with \"6\"."
-  },
-  {
-   "step": 20,
-   "action": {
-    "action": "fill",
-    "id": "e21",
-    "value": "18.00"
-   },
-   "raw": null,
-   "result": "Filled e21 (\"Unit Price\") with \"18.00\"."
-  },
-  {
-   "step": 21,
-   "action": {
-    "action": "submit",
-    "id": "e11"
-   },
-   "raw": null,
-   "verdict": {
-    "ok": false,
-    "escalate": false,
-    "issues": [
-     "Line 1: Unit Price is blank",
-     "Line HD-100 Black S: form has qty 4 @ (blank), PO says qty 4 @ 18.0",
-     "PO asks for 'HD-100 Black 2XL qty 2 @ 18.0' but the form has no such line"
-    ],
-    "mapped": true,
-    "expected": {
-     "customer": "Redline Robotics",
-     "po_number": "RR-1150",
-     "ship_by": "2026-12-20",
-     "lines": [
-      {
-       "sku": "HD-100",
-       "color": "Black",
-       "size": "S",
-       "qty": 4,
-       "unit_price": 18.0
-      },
-      {
-       "sku": "HD-100",
-       "color": "Black",
-       "size": "M",
-       "qty": 6,
-       "unit_price": 18.0
-      },
-      {
-       "sku": "HD-100",
-       "color": "Black",
-       "size": "L",
-       "qty": 6,
-       "unit_price": 18.0
-      },
-      {
-       "sku": "HD-100",
-       "color": "Black",
-       "size": "2XL",
-       "qty": 2,
-       "unit_price": 18.0
-      }
-     ],
-     "escalate": false,
-     "escalate_reason": ""
-    }
-   },
-   "result": "blocked by verifier"
-  },
-  {
-   "step": 22,
    "action": {
     "action": "fill",
     "id": "e8",
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"18.00\"."
+   "result": "Filled e8 (\"Unit Price\") with \"18.00\".",
+   "ok": true
   },
   {
-   "step": 23,
+   "step": 10,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
+  },
+  {
+   "step": 11,
+   "action": {
+    "action": "fill",
+    "id": "e12",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e12 (\"SKU\") with \"HD-100\".",
+   "ok": true
+  },
+  {
+   "step": 12,
+   "action": {
+    "action": "select",
+    "id": "e13",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e13 (\"Color\").",
+   "ok": true
+  },
+  {
+   "step": 13,
+   "action": {
+    "action": "select",
+    "id": "e14",
+    "value": "M"
+   },
+   "raw": null,
+   "result": "Selected \"M\" in e14 (\"Size\").",
+   "ok": true
+  },
+  {
+   "step": 14,
+   "action": {
+    "action": "fill",
+    "id": "e15",
+    "value": "6"
+   },
+   "raw": null,
+   "result": "Filled e15 (\"Quantity\") with \"6\".",
+   "ok": true
+  },
+  {
+   "step": 15,
+   "action": {
+    "action": "fill",
+    "id": "e16",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e16 (\"Unit Price\") with \"18.00\".",
+   "ok": true
+  },
+  {
+   "step": 16,
+   "action": {
+    "action": "click",
+    "id": "e9"
+   },
+   "raw": null,
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
+  },
+  {
+   "step": 17,
+   "action": {
+    "action": "fill",
+    "id": "e17",
+    "value": "HD-100"
+   },
+   "raw": null,
+   "result": "Filled e17 (\"SKU\") with \"HD-100\".",
+   "ok": true
+  },
+  {
+   "step": 18,
+   "action": {
+    "action": "select",
+    "id": "e18",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e18 (\"Color\").",
+   "ok": true
+  },
+  {
+   "step": 19,
+   "action": {
+    "action": "select",
+    "id": "e19",
+    "value": "L"
+   },
+   "raw": null,
+   "result": "Selected \"L\" in e19 (\"Size\").",
+   "ok": true
+  },
+  {
+   "step": 20,
+   "action": {
+    "action": "fill",
+    "id": "e20",
+    "value": "6"
+   },
+   "raw": null,
+   "result": "Filled e20 (\"Quantity\") with \"6\".",
+   "ok": true
+  },
+  {
+   "step": 21,
+   "action": {
+    "action": "fill",
+    "id": "e21",
+    "value": "18.00"
+   },
+   "raw": null,
+   "result": "Filled e21 (\"Unit Price\") with \"18.00\".",
+   "ok": true
+  },
+  {
+   "step": 22,
    "action": {
     "action": "submit",
     "id": "e11"
@@ -427,63 +400,125 @@
    "result": "blocked by verifier"
   },
   {
-   "step": 24,
+   "step": 23,
    "action": {
     "action": "click",
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
-   "step": 25,
+   "step": 24,
    "action": {
     "action": "fill",
     "id": "e22",
     "value": "HD-100"
    },
    "raw": null,
-   "result": "Filled e22 (\"SKU\") with \"HD-100\"."
+   "result": "Filled e22 (\"SKU\") with \"HD-100\".",
+   "ok": true
   },
   {
-   "step": 26,
-   "action": {
-    "action": "select",
-    "id": "e23",
-    "value": "Black"
-   },
-   "raw": null,
-   "result": "Selected \"Black\" in e23 (\"Color\")."
-  },
-  {
-   "step": 27,
+   "step": 25,
    "action": {
     "action": "select",
     "id": "e24",
     "value": "2XL"
    },
    "raw": null,
-   "result": "Selected \"2XL\" in e24 (\"Size\")."
+   "result": "Selected \"2XL\" in e24 (\"Size\").",
+   "ok": true
   },
   {
-   "step": 28,
+   "step": 26,
    "action": {
     "action": "fill",
     "id": "e25",
     "value": "2"
    },
    "raw": null,
-   "result": "Filled e25 (\"Quantity\") with \"2\"."
+   "result": "Filled e25 (\"Quantity\") with \"2\".",
+   "ok": true
   },
   {
-   "step": 29,
+   "step": 27,
    "action": {
     "action": "fill",
     "id": "e26",
     "value": "18.00"
    },
    "raw": null,
-   "result": "Filled e26 (\"Unit Price\") with \"18.00\"."
+   "result": "Filled e26 (\"Unit Price\") with \"18.00\".",
+   "ok": true
+  },
+  {
+   "step": 28,
+   "action": {
+    "action": "submit",
+    "id": "e11"
+   },
+   "raw": null,
+   "verdict": {
+    "ok": false,
+    "escalate": false,
+    "issues": [
+     "Line 4: Color is blank",
+     "Form line 'HD-100 (blank) 2XL qty 2 @ 18.00' is not in the PO",
+     "PO asks for 'HD-100 Black 2XL qty 2 @ 18.0' but the form has no such line"
+    ],
+    "mapped": true,
+    "expected": {
+     "customer": "Redline Robotics",
+     "po_number": "RR-1150",
+     "ship_by": "2026-12-20",
+     "lines": [
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "S",
+       "qty": 4,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "M",
+       "qty": 6,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "L",
+       "qty": 6,
+       "unit_price": 18.0
+      },
+      {
+       "sku": "HD-100",
+       "color": "Black",
+       "size": "2XL",
+       "qty": 2,
+       "unit_price": 18.0
+      }
+     ],
+     "escalate": false,
+     "escalate_reason": ""
+    }
+   },
+   "result": "blocked by verifier"
+  },
+  {
+   "step": 29,
+   "action": {
+    "action": "select",
+    "id": "e23",
+    "value": "Black"
+   },
+   "raw": null,
+   "result": "Selected \"Black\" in e23 (\"Color\").",
+   "ok": true
   },
   {
    "step": 30,
@@ -535,7 +570,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "Clicked e11 (\"Submit Order\").",
+   "ok": true
   }
  ],
  "final_form": {

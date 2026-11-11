@@ -27,22 +27,29 @@
   "notes": ""
  },
  "steps": 10,
- "llm_calls": 10,
- "seconds": 7.2,
+ "llm_calls": 11,
+ "seconds": 9.9,
  "verifier_interventions": 0,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: Northwind tees NWE-3360\n\nNorthwind Events, PO NWE-3360.\n100 Black Classic Cotton Tees, size L, $4.00 each.\nTotal for this order: $350.00.\nShip by 2026-12-08.\n",
  "truth": {
@@ -58,7 +65,8 @@
     "value": "Northwind Events"
    },
    "raw": null,
-   "result": "Selected \"Northwind Events\" in e1 (\"Customer\")."
+   "result": "Selected \"Northwind Events\" in e1 (\"Customer\").",
+   "ok": true
   },
   {
    "step": 2,
@@ -68,7 +76,8 @@
     "value": "NWE-3360"
    },
    "raw": null,
-   "result": "Filled e2 (\"PO Number\") with \"NWE-3360\"."
+   "result": "Filled e2 (\"PO Number\") with \"NWE-3360\".",
+   "ok": true
   },
   {
    "step": 3,
@@ -78,7 +87,8 @@
     "value": "2026-12-08"
    },
    "raw": null,
-   "result": "Filled e3 (\"Ship By\") with \"2026-12-08\"."
+   "result": "Filled e3 (\"Ship By\") with \"2026-12-08\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -88,7 +98,8 @@
     "value": "TS-100"
    },
    "raw": null,
-   "result": "Filled e4 (\"SKU\") with \"TS-100\"."
+   "result": "Filled e4 (\"SKU\") with \"TS-100\".",
+   "ok": true
   },
   {
    "step": 5,
@@ -98,7 +109,8 @@
     "value": "Black"
    },
    "raw": null,
-   "result": "Selected \"Black\" in e5 (\"Color\")."
+   "result": "Selected \"Black\" in e5 (\"Color\").",
+   "ok": true
   },
   {
    "step": 6,
@@ -108,7 +120,8 @@
     "value": "L"
    },
    "raw": null,
-   "result": "Selected \"L\" in e6 (\"Size\")."
+   "result": "Selected \"L\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 7,
@@ -118,7 +131,8 @@
     "value": "100"
    },
    "raw": null,
-   "result": "Filled e7 (\"Quantity\") with \"100\"."
+   "result": "Filled e7 (\"Quantity\") with \"100\".",
+   "ok": true
   },
   {
    "step": 8,
@@ -128,7 +142,8 @@
     "value": "4.00"
    },
    "raw": null,
-   "result": "Filled e8 (\"Unit Price\") with \"4.00\"."
+   "result": "Filled e8 (\"Unit Price\") with \"4.00\".",
+   "ok": true
   },
   {
    "step": 9,
@@ -137,7 +152,8 @@
     "id": "e9"
    },
    "raw": null,
-   "result": "Clicked e9 (\"Add Line Item\")."
+   "result": "Clicked e9 (\"Add Line Item\").",
+   "ok": true
   },
   {
    "step": 10,
@@ -168,7 +184,8 @@
      "escalate_reason": ""
     }
    },
-   "result": "Clicked e11 (\"Submit Order\")."
+   "result": "Clicked e11 (\"Submit Order\").",
+   "ok": true
   }
  ],
  "final_form": {

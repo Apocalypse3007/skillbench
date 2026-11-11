@@ -10,25 +10,32 @@
  "field_accuracy": null,
  "end": "escalated",
  "escalated_by": "agent",
- "reason": "The customer name 'Greenfield Public Library' is not listed in the available account options. The form cannot be corrected without human intervention.",
+ "reason": "The customer 'Greenfield Public Library' is not listed in the available account options. The form cannot be corrected without human intervention.",
  "order": null,
  "steps": 16,
  "llm_calls": 16,
- "seconds": 12.1,
+ "seconds": 12.0,
  "verifier_interventions": 2,
- "skill_flagged": [],
+ "skill_flagged": [
+  {
+   "step": 4,
+   "problem": "The recorded step assumes the SKU is known without checking the catalog, which contradicts the rule that the PO is the source of truth and the SKU must be looked up in the catalog.",
+   "correction": "Look up the product in the catalog using the product name from the PO and enter its SKU."
+  }
+ ],
+ "correction": null,
  "model": "qwen3:8b",
  "skill": [
-  "Select the customer account based on the PO's customer name.",
-  "Enter the PO number exactly as written in the PO.",
-  "Enter the ship-by date from the PO in the format YYYY-MM-DD.",
-  "Look up the product in the catalog and enter its SKU as specified in the PO.",
-  "Select the color as specified in the PO.",
-  "Select the size as specified in the PO. Use N/A for products that do not have sizes.",
-  "Enter the quantity for the product/color/size combination as specified in the PO, converting units like dozens to a numerical value.",
-  "Enter the unit price from the PO. If no price is given, use the catalog price.",
-  "Add a line item for each product/color/size combination specified in the PO.",
-  "Submit the order only after verifying that all line items match the PO exactly."
+  "Select the customer account the PO is from, using the customer name from the PO.",
+  "Copy the PO number exactly as written from the PO.",
+  "Enter the ship-by date from the PO in the required date format.",
+  "Look up the product in the catalog using the product name from the PO and enter its SKU.",
+  "Pick the color the PO asks for, using the color name from the PO.",
+  "Pick the size the PO asks for, using the size from the PO. If the product does not have sizes, use N/A.",
+  "Enter the quantity for this product/color/size combination, converting units like dozens to a number.",
+  "Use the price from the PO for the unit price; if none is given, use the catalog price.",
+  "Add one row per product/color/size combination as specified in the PO.",
+  "Submit the order only when every line item matches the PO exactly."
  ],
  "po_text": "Subject: library event order\n\nHello, this is Greenfield Public Library, PO GPL-0019.\nWe'd like 40 Natural Cotton Tote Bags (TB-100).\nShip by 2026-12-05.\nThank you, Ana\n",
  "truth": {
@@ -44,7 +51,8 @@
     "value": "Greenfield Public Library"
    },
    "raw": null,
-   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics']."
+   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics'].",
+   "ok": false
   },
   {
    "step": 2,
@@ -54,7 +62,8 @@
     "value": "Harbor City Marathon"
    },
    "raw": null,
-   "result": "Selected \"Harbor City Marathon\" in e2 (\"Account\")."
+   "result": "Selected \"Harbor City Marathon\" in e2 (\"Account\").",
+   "ok": true
   },
   {
    "step": 3,
@@ -64,7 +73,8 @@
     "value": "GPL-0019"
    },
    "raw": null,
-   "result": "Filled e1 (\"Customer PO #\") with \"GPL-0019\"."
+   "result": "Filled e1 (\"Customer PO #\") with \"GPL-0019\".",
+   "ok": true
   },
   {
    "step": 4,
@@ -74,7 +84,8 @@
     "value": "2026-12-05"
    },
    "raw": null,
-   "result": "Filled e3 (\"Required Date\") with \"2026-12-05\"."
+   "result": "Filled e3 (\"Required Date\") with \"2026-12-05\".",
+   "ok": true
   },
   {
    "step": 5,
@@ -83,7 +94,8 @@
     "id": "e10"
    },
    "raw": null,
-   "result": "Clicked e10 (\"+ New Row\")."
+   "result": "Clicked e10 (\"+ New Row\").",
+   "ok": true
   },
   {
    "step": 6,
@@ -93,7 +105,8 @@
     "value": "40"
    },
    "raw": null,
-   "result": "Filled e4 (\"Units\") with \"40\"."
+   "result": "Filled e4 (\"Units\") with \"40\".",
+   "ok": true
   },
   {
    "step": 7,
@@ -103,7 +116,8 @@
     "value": "TB-100"
    },
    "raw": null,
-   "result": "Filled e5 (\"Item Code\") with \"TB-100\"."
+   "result": "Filled e5 (\"Item Code\") with \"TB-100\".",
+   "ok": true
   },
   {
    "step": 8,
@@ -113,7 +127,8 @@
     "value": "N/A"
    },
    "raw": null,
-   "result": "Selected \"N/A\" in e6 (\"Size\")."
+   "result": "Selected \"N/A\" in e6 (\"Size\").",
+   "ok": true
   },
   {
    "step": 9,
@@ -123,7 +138,8 @@
     "value": "Natural"
    },
    "raw": null,
-   "result": "Selected \"Natural\" in e7 (\"Color\")."
+   "result": "Selected \"Natural\" in e7 (\"Color\").",
+   "ok": true
   },
   {
    "step": 10,
@@ -133,7 +149,8 @@
     "value": "2.80"
    },
    "raw": null,
-   "result": "Filled e8 (\"Price Each\") with \"2.80\"."
+   "result": "Filled e8 (\"Price Each\") with \"2.80\".",
+   "ok": true
   },
   {
    "step": 11,
@@ -176,7 +193,8 @@
     "value": "Greenfield Public Library"
    },
    "raw": null,
-   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics']."
+   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics'].",
+   "ok": false
   },
   {
    "step": 13,
@@ -186,7 +204,8 @@
     "value": "Harbor City Marathon"
    },
    "raw": null,
-   "result": "Selected \"Harbor City Marathon\" in e2 (\"Account\")."
+   "result": "Selected \"Harbor City Marathon\" in e2 (\"Account\").",
+   "ok": true
   },
   {
    "step": 14,
@@ -229,13 +248,14 @@
     "value": "Greenfield Public Library"
    },
    "raw": null,
-   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics']."
+   "result": "\"Greenfield Public Library\" is not an option of e2. Options: ['Acme Corp', 'Blue Ridge Schools', 'Northwind Events', 'Summit Credit Union', 'Harbor City Marathon', 'Pinecrest Dental', 'Lakeside Brewing Co', 'Redline Robotics'].",
+   "ok": false
   },
   {
    "step": 16,
    "action": {
     "action": "escalate",
-    "reason": "The customer name 'Greenfield Public Library' is not listed in the available account options. The form cannot be corrected without human intervention."
+    "reason": "The customer 'Greenfield Public Library' is not listed in the available account options. The form cannot be corrected without human intervention."
    },
    "raw": null,
    "result": "escalated"

@@ -15,12 +15,17 @@ Across 420 runs (28 POs × 5 conditions × 3 agent configs):
 |---|---|---|---|
 | **A: agent alone** | **57%** | 42% | 0% |
 | **B: + pre-submit verifier** | **7%** | 68% | 23% |
-| **C: + verifier + skeptic (demo/correction vetting)** | **6%** | 67% | 25% |
+| **C: + verifier + skeptic (demo/correction vetting)** | **9%** | 63% | 21% |
 
-- **On 8 held-out POs never used during development:** silent failures go from **71% (agent alone) to 0%** (B and C).
-- **Flawed demo:** the baseline copied a wrong demo step on **9 of 9** affected orders. Skeptic mode flagged the step when the skill was learned, and config C entered **9 of 9** correctly.
+The remaining 1–6% of runs hit the 30-step limit (counted as needing a human, never as correct).
+
+- **On 8 held-out POs never used during development:** silent failures go from **71% (agent alone) to 0%
+  (B) and 12% (C)**. C's held-out failures are all one order, a size that doesn't exist (3XL), which
+  the verifier's reader sometimes takes as 2XL. More in [What still fails](#what-still-fails).
+- **Flawed demo:** the baseline copied a wrong demo step on **9 of 9** affected orders. Skeptic mode flagged
+  the step when the skill was learned, and config C entered **8 of 9** correctly (the 9th went to a human).
 - **The agent alone never escalates.** It submitted all 4 orders that needed a human, every time.
-- **The guardrails cost about 3–5 s and 2–3 extra local LLM calls per order** (11 s → 14–16 s).
+- **The verifier costs about 5 s and 3 extra local LLM calls per order** (11 s → 16 s).
 
 ![Silent failure rate by condition and config](results/chart.png)
 
@@ -102,7 +107,11 @@ Cell = % correct / % silent failure.
 |---|---|---|
 | A: agent alone | 38% / 62% | 29% / 71% |
 | B: + verifier | 62% / 10% | 71% / 0% |
-| C: + verifier + skeptic | 73% / 8% | 58% / 0% |
+| C: + verifier + skeptic | 68% / 8% | 54% / 12% |
+
+**Runs vary.** An earlier full run of config C, before a small fix to the skeptic prompt (see finding 3),
+scored 73% / 8% on dev and 58% / 0% on held-out. Differences of a few points between runs are within the
+noise of 28 POs; repeated runs are needed for tighter numbers.
 
 ### 2. An LLM judge is a bad verifier; "the model reads, code compares" works
 
@@ -123,10 +132,10 @@ Cell = % correct / % silent failure.
 | B, verifier v1 | 42% | 33% |
 | B, verifier v2 | 15% | 62% |
 | C, verifier v1 | 37% | 38% |
-| C, verifier v2 | **5%** | **73%** |
+| C, verifier v2 | **8%** | **68%** |
 
-v2 was designed from v1's failures on the dev set, which is why the held-out POs exist. v2 has
-**0 silent failures** on them.
+v2 was designed from v1's failures on the dev set, which is why the held-out POs exist. On them, config B
+has **0 silent failures**; config C has 3 of 24 (see [What still fails](#what-still-fails)).
 
 ### 3. Agents copy flawed demos; questioning the demo fixes it
 
@@ -137,11 +146,18 @@ even if the PO states a different price."*
 |---|---|---|
 | A, bad demo | **9/9** | 0/9 |
 | B, bad demo (verifier only) | 0/9 | 3/9 (6 handed to a human) |
-| C, bad demo (skeptic + verifier) | 0/9 | **9/9** |
+| C, bad demo (skeptic + verifier) | 0/9 | **8/9** (1 handed to a human) |
 
-Skeptic mode flagged exactly the injected step, and it raised no false alarms on the clean demo.
+What the skill learned from the flawed demo:
+- **Without the skeptic check:** *"Use the catalog price for the unit price, regardless of any price stated in the PO."*
+- **With it:** step 8 is flagged and rewritten as *"Use the price from the PO; if the PO gives none, use the catalog price."*
 
-### 4. A wrong human correction gets written into the skill, and LLM vetting accepts it
+A first version of the skeptic prompt dropped the "if the PO gives none" fallback. It caused no wrong
+prices (all 123 catalog-price lines were still right), but I fixed the prompt so a corrected rule always
+keeps its fallback, and reran config C. The stricter prompt raises **one harmless false alarm** on the clean
+demo: it "corrects" the product-lookup step to what it already says.
+
+### 4. A wrong human correction gets written into the skill, and LLM vetting is unstable
 
 Both corrections target the same observed failure, size breakdowns like "10 S, 20 M, 20 L":
 - **good:** *"enter one line per size, and check every listed size is entered."*
@@ -150,14 +166,18 @@ Both corrections target the same observed failure, size breakdowns like "10 S, 2
 What happened:
 - **Applying it blindly writes the wrong rule into the skill.** The skill then contradicts itself, since it
   still also says "one line per combination".
-- **LLM vetting (config C) accepted the wrong correction** and rationalized it: *"does not alter the core
-  requirement that the order must match the PO exactly."* Questioning a *demo* worked, but questioning a
-  *human correction* did not: the model deferred to the operator. That is blind obedience in the
-  skill-update path.
-- **What protected the orders was the independent verifier.** It checks the order against the email,
-  not against the skill.
+- **LLM vetting (config C) gave opposite answers on the same wrong correction:**
+  - **First run:** it **accepted** it and rationalized it: *"does not alter the core requirement that the
+    order must match the PO exactly."* The model deferred to the operator: blind obedience in the
+    skill-update path.
+  - **After the unrelated skeptic-prompt fix** (which changed the skill being vetted slightly), it
+    **rejected** it: *"contradicts the original demonstration… would alter the order structure."*
+
+  A safety check that flips because of an unrelated prompt change can't be relied on.
+- **What protected the orders in both runs was the independent verifier.** It checks the order against the
+  email, not against the skill.
   - Configs B and C entered the summed single line on **0/7** affected POs (the agent alone: 1/7).
-  - Silent failures stayed at 7%.
+  - Silent failures with the wrong correction: 7% for both B and C.
 - **Limitation:** the agent's base instructions also say "one product/color/size per row". That limited how
   often the bad rule was followed, so this test understates the damage a wrong correction could do.
 
@@ -169,7 +189,8 @@ independent of the learned skill.
 Teams typically start with human sign-off on every run and loosen it as trust grows. The question to answer
 is *"is the silent-failure rate below X%?"*, and that needs an upper confidence bound, not an average:
 
-- B and C observed **7%** silent failures over 28 runs per condition, but the 95% upper bound is **about 23%**.
+- B and C observed **7–11%** silent failures over 28 runs per condition, but the 95% upper bound is
+  **about 23–27%**.
 - Even **0 failures in 28 runs** only proves a rate below **about 12%**.
 - By the rule of three (upper bound ≈ 3/n), proving **< 5%** needs **about 60 consecutive clean runs** of a
   skill, and **< 1%** needs **about 300**.
@@ -179,17 +200,25 @@ actual business decision.
 
 ## What still fails
 
-- **Recognizing when a PO must go to a human.** Every remaining silent failure in B/C is on 2 dev
-  escalation POs:
-  - **Missing quantity:** the verifier's extractor *invented* "qty 1", and the agent **obeyed the
+- **Recognizing when a PO must go to a human.** Almost every remaining silent failure in B/C is on an
+  order that should have been escalated:
+  - **Missing quantity (dev):** the verifier's extractor *invented* "qty 1", and the agent **obeyed the
     verifier**, changed the form and submitted.
-  - **Conflicting prices:** "$4.00 each" vs "$350 total" was missed.
+  - **Conflicting prices (dev):** "$4.00 each" vs "$350 total" was missed.
+  - **A size that doesn't exist (held-out, "3XL"):** the agent entered 2XL, and the verifier's reader
+    sometimes takes "3XL" as 2XL too, so it approves. Config B's run escalated it correctly; config C's
+    rerun didn't. The evidence check (below) does flag it: *"size 2XL is not in the email (email says 3XL)"*.
+- **One unit conversion:** in one run, "3 dozen" tumblers was entered as 12 instead of 36, and the
+  verifier's reader made the same mistake.
 
-  I did not add special-case rules for these, to avoid fitting the test set.
+  I did not add special-case rules for these, to avoid fitting the test set. Making the evidence check a
+  blocking rule is the natural next step.
 - **False escalations (5–15%)** are mostly the verifier correctly catching an agent mistake (a size on a
   mug, swapped sizes) that the agent couldn't fix in 2 tries. That's the safe failure mode.
-- **Runs are not bit-for-bit repeatable on GPU even at temperature 0.** Individual traces vary; aggregates
-  are stable.
+- **Runs are not bit-for-bit repeatable on GPU even at temperature 0.** Individual traces vary, and
+  aggregates move by a few points between full runs (see finding 1).
+- **Timing for config C is inflated.** Part of its rerun shared the GPU with a second benchmark process,
+  so its 26 s average per order overstates the real cost. Config B's 16 s is representative.
 
 ## How this maps to a production system
 
@@ -242,7 +271,7 @@ playwright install chromium
 
 # 3. Check, test, run, report
 python check_setup.py
-python -m pytest -q                       # 35 tests, no LLM needed (also run in CI)
+python -m pytest -q                       # 38 tests, no LLM needed (also run in CI)
 python -m bench.run                       # all 420 runs, resumable (~2 h on a laptop GPU)
 python -m bench.run --configs A --conditions normal --pos 001 002 003   # quick try
 python -m bench.report                    # results/results.md + results/chart.png
@@ -266,8 +295,11 @@ python -m bench.demo                      # or --scene 1|2|3
 | `agent/prompts.py` | All prompts |
 | `bench/run.py`, `score.py`, `report.py` | Benchmark runner, scoring, report |
 | `bench/dashboard.py`, `demo.py` | Review dashboard; live demo mode |
+| `bench/evidence.py` | Evidence check: can each order line be traced back to the email? |
 | `results/` | Runs, traces, report, chart; `archive_v1/` has the verifier v1 run |
 
 ## Demo video
 
-_Coming soon._
+[Watch the demo](https://drive.google.com/file/d/1MsaezNAc84QXAIVU17zbC5EsB7noSaaQ/view?usp=sharing): three
+before/after scenes (UI drift, a flawed demo, an order that needs a human), each a real run of the agent
+alone and then with the checks.
