@@ -241,8 +241,9 @@ python -m bench.run --configs A --conditions normal --pos 001 002 003   # quick 
 python -m bench.report                    # results/results.md + results/chart.png
 python -m bench.dashboard                 # results/dashboard.html
 
-# 4. Watch it work (visible browser with captions)
-python -m bench.demo
+# 4. Watch it work: 3 scenes, each a real before/after pair (agent alone vs with checks)
+#    with the customer's email, a live agent log, verifier verdicts and a result card per run
+python -m bench.demo                      # or --scene 1|2|3
 ```
 
 ## Repository map

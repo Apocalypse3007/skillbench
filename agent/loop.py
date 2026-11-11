@@ -27,10 +27,11 @@ def _screenshot(page, shots_dir, step, el_id):
     return name
 
 
-def run_episode(page, po_text, skill, use_verifier, shots_dir=None):
+def run_episode(page, po_text, skill, use_verifier, shots_dir=None, on_step=None):
     """Fill one PO. Returns a dict with end ("submitted"|"escalated"|"timeout"), order and a trace.
 
     shots_dir: if given, save a screenshot after every step (for the review dashboard).
+    on_step: if given, called with each finished step record (for the live demo).
     """
     if shots_dir:
         shots_dir.mkdir(parents=True, exist_ok=True)
@@ -40,13 +41,18 @@ def run_episode(page, po_text, skill, use_verifier, shots_dir=None):
     fix_attempts = interventions = 0
     result = {"end": "timeout", "order": None, "escalated_by": None, "reason": None}
 
-    def shoot_previous():
-        if shots_dir and steps:
-            prev = steps[-1]
+    def finish_previous():
+        """Runs once per step, after it has fully played out (whichever way the loop body exited)."""
+        if not steps:
+            return
+        prev = steps[-1]
+        if shots_dir:
             prev["screenshot"] = _screenshot(page, shots_dir, prev["step"], (prev["action"] or {}).get("id"))
+        if on_step:
+            on_step(prev)
 
     for step in range(1, config.MAX_STEPS + 1):
-        shoot_previous()
+        finish_previous()
         obs = observe(page)
         user = prompts.AGENT_USER.format(
             skill=skill, catalog=catalog, po=po_text, obs=render(obs),
@@ -98,7 +104,7 @@ def run_episode(page, po_text, skill, use_verifier, shots_dir=None):
             if status:
                 history[-1] += f' Page says: "{status}"'
 
-    shoot_previous()
+    finish_previous()
     result.update(
         steps=len(steps), llm_calls=STATS["calls"] - calls0, seconds=round(time.time() - t0, 1),
         verifier_interventions=interventions, trace=steps, final_form=form_state(observe(page)))
