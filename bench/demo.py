@@ -44,7 +44,7 @@ RESULT_TEXT = {
 CHANGED_LABELS = ["Customer PO #", "Account", "Required Date", "Units", "Item Code", "Price Each",
                   "Order Comments", "+ New Row", "Place Order"]
 
-UI_JS = """([email, mode, color]) => {
+UI_JS = """([email, mode, color, catalog]) => {
   const mk = (tag, css, parent) => { const e = document.createElement(tag); e.style.cssText = css;
     (parent || document.body).appendChild(e); return e; };
   const col = mk('div', 'position:fixed;top:12px;right:12px;width:430px;bottom:64px;display:flex;' +
@@ -55,6 +55,12 @@ UI_JS = """([email, mode, color]) => {
     'max-height:250px;overflow:auto;white-space:pre-wrap;font:12.5px/1.4 Consolas,monospace;color:#222', col);
   mail.innerHTML = "<b style='font-family:system-ui'>Customer's email (what the agent reads)</b>\\n";
   mail.appendChild(document.createTextNode(email));
+  if (catalog) {
+    const cat = mk('div', 'background:#eef4fc;border:1px solid #9ec5f4;border-radius:6px;padding:8px 10px;' +
+      'white-space:pre-wrap;font:12.5px/1.4 Consolas,monospace;color:#222', col);
+    cat.innerHTML = "<b style='font-family:system-ui'>Catalog (what the agent also sees)</b>\\n";
+    cat.appendChild(document.createTextNode(catalog));
+  }
   const log = mk('div', 'flex:1;background:#fff;border:1px solid #ccc;border-radius:6px;padding:8px;overflow:auto', col);
   log.id = '__demo_log';
   log.innerHTML = "<b>Agent log (live)</b>";
@@ -177,6 +183,14 @@ def load_po(po):
     return (config.POS_DIR / f"po_{po}.txt").read_text(), json.loads((config.TRUTH_DIR / f"po_{po}.json").read_text())
 
 
+def catalog_lines(truth):
+    """The catalog entries for the products in this order, straight from catalog.json."""
+    skus = {l["sku"] for l in truth.get("lines", [])}
+    cat = json.loads(config.CATALOG_PATH.read_text())
+    return "\n".join(f"{p['sku']} {p['name']} - catalog price ${p['price']:.2f}"
+                     for p in cat["products"] if p["sku"] in skus)
+
+
 def price_step(compiled):
     return next((s for s in compiled["skill"] if "price" in s.lower()), "(no price step)")
 
@@ -195,11 +209,13 @@ def intro(page, scene, pause):
                    "(e.g. Quantity is now <b>Units</b> and comes first; SKU is now <b>Item Code</b>; "
                    "Submit is now <b>Place Order</b>). The agent never saw this layout.", 6, pause)
     elif scene["cond"] == "bad_demo":
+        demo_bad = json.loads(config.DEMOS["bad"].read_text())
         clean = json.loads(config.DEMOS["clean"].read_text())["steps"]
-        bad = json.loads(config.DEMOS["bad"].read_text())["steps"]
+        bad = demo_bad["steps"]
         i = next(k for k, (a, b) in enumerate(zip(clean, bad)) if a != b)
-        card(page, f"<b>Scene 2 - flawed demo.</b> Two recordings of the same task differ in one step "
-                   f"(step {i + 1}, {e(bad[i]['target'])}):<br><br>"
+        card(page, f"<b>Scene 2 - flawed demo.</b> The demo was recorded on this example order:<br>"
+                   f"<i>\"{e(demo_bad['sample_po'])}\"</i> (catalog price for those tees: $4.00)<br><br>"
+                   f"Two recordings of it differ in one step (step {i + 1}, {e(bad[i]['target'])}):<br><br>"
                    f"Correct demo: entered <b>{e(clean[i]['value'])}</b> - <i>\"{e(clean[i]['why'])}\"</i><br>"
                    f"<span style='color:#c62f2f'>Flawed demo: entered <b>{e(bad[i]['value'])}</b> - "
                    f"<i>\"{e(bad[i]['why'])}\"</i></span><br><br>"
@@ -225,7 +241,7 @@ def run(browser, scene, cfg_name, pause):
     page.goto(config.FORMS[form].as_uri())
     if form == "v2":
         page.evaluate(HIGHLIGHT_JS, CHANGED_LABELS)
-    page.evaluate(UI_JS, [po_text, mode, color])
+    page.evaluate(UI_JS, [po_text, mode, color, catalog_lines(truth)])
     page.evaluate(CAPTION_JS, f"{scene['title']}: {mode}")
 
     if scene["cond"] == "bad_demo":
