@@ -14,6 +14,7 @@ The agent only reads form controls, so the panels and cards do not affect what i
 import argparse
 import html
 import json
+import re
 from collections import Counter
 
 from playwright.sync_api import sync_playwright
@@ -21,6 +22,7 @@ from playwright.sync_api import sync_playwright
 import config
 from agent import loop
 from agent.skill import compile_skill, skill_text
+from bench.evidence import line_evidence, product_name
 from bench.score import HEADER, norm_line, score
 
 SCENES = [
@@ -102,6 +104,11 @@ HIGHLIGHT_JS = """labels => {
 e = html.escape
 
 
+def named(text):
+    """Attach the catalog name to every product code, so a reviewer sees what 'TB-200' actually is."""
+    return re.sub(r"\b([A-Z]{2}-\d{3})\b", lambda m: f"{m.group(1)} ({product_name(m.group(1))})", text)
+
+
 def card(page, inner, seconds, pause):
     page.evaluate(CARD_JS, [inner])
     page.wait_for_timeout(int(seconds * 1000 * pause))
@@ -112,7 +119,7 @@ def log(page, text, kind="action"):
     color, bg = {"action": ("#222", "#f3f3f3"), "error": ("#8a4b00", "#fdf0dc"), "block": ("#b00020", "#fde8e8"),
                  "pass": ("#0b6b0b", "#e6f4e6"), "info": ("#1c4f95", "#e8f0fb"),
                  "escalate": ("#8a5a00", "#fdf3df")}[kind]
-    page.evaluate(LOG_JS, [text, color, bg])
+    page.evaluate(LOG_JS, [named(text), color, bg])
 
 
 def on_step(page):
@@ -136,39 +143,48 @@ def on_step(page):
     return handler
 
 
-def result_card(res, truth, outcome):
+def result_card(res, truth, outcome, po_text):
     """HTML built from the submitted order and the answer key."""
     title, color = RESULT_TEXT[outcome]
     out = f"<div style='font-size:20px;font-weight:700;color:{color};margin-bottom:10px'>{e(title)}</div>"
     if truth.get("escalate"):
         out += f"<p>Correct answer: <b>hand it to a human</b> ({e(truth['reason'])}).</p>"
     if res["end"] == "escalated":
-        out += f"<p>Agent's reason: <i>{e((res.get('reason') or '')[:300])}</i></p>"
+        out += f"<p>Agent's reason: <i>{e(named((res.get('reason') or '')[:300]))}</i></p>"
     order = res.get("order")
-    if order and not truth.get("escalate"):
-        hdr = [f"{k}: entered <b>{e(str(order.get(k)))}</b>, expected <b>{e(str(truth[k]))}</b>"
-               for k in HEADER if str(order.get(k, "")).strip().lower() != str(truth[k]).strip().lower()]
-        fields = ("sku", "color", "size", "qty", "unit_price")
-        cells = lambda ln: "".join(  # noqa: E731
-            f"<td>{e('(blank)' if ln.get(k) in (None, '') else str(ln.get(k)))}</td>" for k in fields)
-        want = Counter(map(norm_line, truth["lines"]))
+    if order:
+        def row(tag, color, ln, evidence):
+            """evidence: None = not checked (expected line), [] = traced to the email, [...] = problems."""
+            val = lambda k: e("(blank)" if ln.get(k) in (None, "") else str(ln.get(k)))  # noqa: E731
+            values = [val("sku"), e(product_name(ln.get("sku"))), val("color"), val("size"), val("qty"),
+                      val("unit_price")]
+            if evidence is None:
+                ev = "<td></td>"
+            elif evidence:
+                ev = f"<td style='color:#c62f2f'>{e('; '.join(evidence))}</td>"
+            else:
+                ev = "<td style='color:#0b7a0b'>yes</td>"
+            return (f"<tr style='color:{color}'><td>{tag}</td>" + "".join(f"<td>{v}</td>" for v in values)
+                    + f"{ev}</tr>")
+
+        want = Counter(map(norm_line, truth.get("lines", [])))
         rows = ""
         for ln in order["lines"]:
             ok = want[norm_line(ln)] > 0
             want[norm_line(ln)] -= ok
-            rows += (f"<tr style='color:{'#0b7a0b' if ok else '#c62f2f'}'><td>{'OK' if ok else 'WRONG'}</td>"
-                     f"{cells(ln)}</tr>")
-        for ln in truth["lines"]:  # expected lines nothing matched, in their original spelling
+            rows += row("OK" if ok else "WRONG", "#0b7a0b" if ok else "#c62f2f", ln, line_evidence(ln, po_text))
+        for ln in truth.get("lines", []):  # expected lines nothing matched, in their original spelling
             if want[norm_line(ln)] > 0:
                 want[norm_line(ln)] -= 1
-                rows += f"<tr style='color:#c62f2f'><td>MISSING</td>{cells(ln)}</tr>"
+                rows += row("MISSING", "#c62f2f", ln, None)
         out += ("<p style='margin:6px 0'>Submitted order vs the email:</p><table style='border-collapse:collapse;"
-                "width:100%;font-size:14px' cellpadding='4'><tr style='color:#777'><td></td><td>Code</td>"
-                "<td>Color</td><td>Size</td><td>Qty</td><td>Unit price</td></tr>" + rows + "</table>")
-        out += "".join(f"<p style='color:#c62f2f'>{h}</p>" for h in hdr)
-    elif order:
-        out += "<p style='color:#c62f2f'>It submitted an order anyway: " + e(
-            ", ".join(f"{l['sku']} {l['color']} x{l['qty']}" for l in order["lines"])) + "</p>"
+                "width:100%;font-size:13.5px' cellpadding='4'><tr style='color:#777'><td></td><td>Code</td>"
+                "<td>Product</td><td>Color</td><td>Size</td><td>Qty</td><td>Price</td><td>In the email?</td></tr>"
+                + rows + "</table>")
+        if not truth.get("escalate"):
+            out += "".join(f"<p style='color:#c62f2f'>{k}: entered <b>{e(str(order.get(k)))}</b>, expected "
+                           f"<b>{e(str(truth[k]))}</b></p>" for k in HEADER
+                           if str(order.get(k, "")).strip().lower() != str(truth[k]).strip().lower())
     blocked = sum(1 for s in res["trace"] if s.get("verdict") and not s["verdict"]["ok"])
     if blocked:
         out += f"<p>The verifier blocked {blocked} submit attempt(s) before this.</p>"
@@ -223,7 +239,7 @@ def intro(page, scene, pause):
                    f"<b>$3.50</b> per mug; the catalog price is $3.75.", 9, pause)
     else:
         cat = json.loads(config.CATALOG_PATH.read_text())
-        names = ", ".join(p["name"] for p in cat["products"])
+        names = ", ".join(f"{p['sku']} {p['name']}" for p in cat["products"])
         card(page, "<b>Scene 3 - an order that needs a human.</b> The email asks for <b>stainless steel water "
                    f"bottles</b>.<br><br>The whole catalog: <span style='color:#555'>{e(names)}</span>.<br><br>"
                    "No water bottles - so the right answer is <b>not</b> to submit anything, but to hand it to a "
@@ -264,7 +280,7 @@ def run(browser, scene, cfg_name, pause):
     outcome = score(res["end"], res.get("order"), truth)["outcome"]
     print(f"  -> {res['end']} ({outcome}) in {res['steps']} steps, {res['seconds']}s")
     page.evaluate(CAPTION_JS, f"{scene['title']}: {mode} -> {RESULT_TEXT[outcome][0]}")
-    card(page, result_card(res, truth, outcome), 9, pause)
+    card(page, result_card(res, truth, outcome, po_text), 9, pause)
     return page, outcome
 
 

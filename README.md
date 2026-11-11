@@ -209,6 +209,13 @@ actual business decision.
 - **A "Needs you" queue:** every escalation with its reason and who stopped it (agent or verifier).
 - **A per-run audit trail:** each action, the verifier's verdicts, an optional screenshot per step, and the
   submitted order vs the answer key.
+- **Product names next to every code**, so a reviewer sees that "TB-200" is a Drawstring Backpack.
+- **An evidence check on each submitted line** (`bench/evidence.py`): can its product, color and size be
+  traced back to the email? If not, it says so, e.g. *"product 'Drawstring Backpack' is not mentioned in the
+  email - agent guessed"* or *"size 2XL is not in the email (email says 3XL)"*. It raises 0 false flags on
+  the 45 correct lines in the dataset. It is shown to reviewers only and doesn't change scoring. Making it a
+  blocking verifier rule is a natural next experiment: it would also catch cases where the verifier's own
+  reading of the PO is wrong.
 
 ## Limitations
 

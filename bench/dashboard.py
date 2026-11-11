@@ -4,8 +4,17 @@ and a step-by-step audit trail per run (actions, verifier verdicts, screenshots,
 Usage: python -m bench.dashboard   (then open results/dashboard.html in a browser)
 """
 import json
+import re
 
 import config
+from bench.evidence import line_evidence, product_name
+
+
+def named(text):
+    """Attach the catalog name to every product code, so a reviewer sees what 'TB-200' actually is."""
+    if not text:
+        return text
+    return re.sub(r"\b([A-Z]{2}-\d{3})\b", lambda m: f"{m.group(1)} ({product_name(m.group(1))})", text)
 
 KEEP = ["config", "condition", "po", "split", "outcome", "end", "escalated_by", "reason", "seconds", "steps",
         "llm_calls", "verifier_interventions", "po_text", "truth", "order", "skill", "correction", "skill_flagged"]
@@ -18,9 +27,17 @@ def load_runs():
         run = {k: t.get(k) for k in KEEP}
         run["id"] = p.stem
         run["split"] = run["split"] or next(s for s, ids in config.SPLITS.items() if run["po"] in ids)
-        run["trace"] = [{"step": s["step"], "action": s.get("action"), "result": s.get("result"),
+        run["reason"] = named(run["reason"])
+        if run["order"]:
+            for ln in run["order"]["lines"]:
+                ln["name"] = product_name(ln.get("sku"))
+                ln["evidence"] = line_evidence(ln, run["po_text"])
+        for ln in (run["truth"] or {}).get("lines", []):
+            ln["name"] = product_name(ln.get("sku"))
+        run["trace"] = [{"step": s["step"], "action": s.get("action"), "result": named(s.get("result")),
                          "screenshot": f"screens/{p.stem}/{s['screenshot']}" if s.get("screenshot") else None,
-                         "verdict": {k: s["verdict"].get(k) for k in ("ok", "escalate", "issues")}
+                         "verdict": {"ok": s["verdict"].get("ok"), "escalate": s["verdict"].get("escalate"),
+                                     "issues": [named(i) for i in s["verdict"].get("issues", [])]}
                          if s.get("verdict") else None}
                         for s in t.get("trace", [])]
         runs.append(run)
@@ -156,16 +173,20 @@ function render() {
 }
 
 function orderTable(order, truth) {
-  if (truth && truth.escalate) return `<p>Expected: <b>escalate</b> - ${esc(truth.reason)}</p>`;
+  const expected = truth && truth.escalate ? `<p>Expected: <b>escalate</b> - ${esc(truth.reason)}</p>` : "";
   const key = (l) => [l.sku, l.color, l.size, Number(l.qty), Number(l.unit_price).toFixed(2)].join("|").toLowerCase();
   const want = (truth?.lines || []).map(key);
   const got = (order?.lines || []);
-  const rows = got.map((l) => `<tr class="${want.includes(key(l)) ? "" : "miss"}"><td>${esc(l.sku)}</td><td>${esc(l.color)}</td>
-      <td>${esc(l.size)}</td><td>${esc(l.qty)}</td><td>${esc(l.unit_price)}</td></tr>`).join("");
+  const ev = (l) => !l.evidence ? "" : l.evidence.length ? `<span class="miss">${esc(l.evidence.join("; "))}</span>`
+                                                           : `<span style="color:var(--good)">yes</span>`;
+  const rows = got.map((l) => `<tr class="${want.includes(key(l)) ? "" : "miss"}"><td>${esc(l.sku)}</td><td>${esc(l.name)}</td>
+      <td>${esc(l.color)}</td><td>${esc(l.size)}</td><td>${esc(l.qty ?? "(blank)")}</td><td>${esc(l.unit_price ?? "(blank)")}</td>
+      <td>${ev(l)}</td></tr>`).join("");
   const missing = (truth?.lines || []).filter((l) => !got.map(key).includes(key(l)))
-      .map((l) => `<tr><td colspan="5" class="miss">missing: ${esc([l.sku, l.color, l.size, "qty " + l.qty, "@ " + l.unit_price].join(" "))}</td></tr>`).join("");
-  return order ? `<table><tr><th>Code</th><th>Color</th><th>Size</th><th>Qty</th><th>Price</th></tr>${rows}${missing}</table>`
-               : `<p style="color:var(--muted)">Nothing submitted.</p>${truth ? `<table>${missing}</table>` : ""}`;
+      .map((l) => `<tr><td colspan="7" class="miss">missing: ${esc([l.sku, "(" + l.name + ")", l.color, l.size, "qty " + l.qty, "@ " + l.unit_price].join(" "))}</td></tr>`).join("");
+  const head = `<tr><th>Code</th><th>Product</th><th>Color</th><th>Size</th><th>Qty</th><th>Price</th><th>In the email?</th></tr>`;
+  return expected + (order ? `<table>${head}${rows}${missing}</table>`
+                           : `<p style="color:var(--muted)">Nothing submitted.</p>${missing ? `<table>${missing}</table>` : ""}`);
 }
 
 function show(id) {
